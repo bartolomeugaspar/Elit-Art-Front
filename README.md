@@ -1,55 +1,73 @@
-# Novo Projeto Next.js
+# Estrutura de Componentes - Elit'arte
 
-Este é um projeto [Next.js](https://nextjs.org/) criado com TypeScript e Tailwind CSS.
+Esta pasta contém todos os componentes React organizados de forma modular para facilitar a manutenção e reutilização.
 
-## Começando
-
-Primeiro, instale as dependências:
-
-```bash
-npm install
-# ou
-yarn install
-# ou
-pnpm install
-```
-
-Depois, execute o servidor de desenvolvimento:
-
-```bash
-npm run dev
-# ou
-yarn dev
-# ou
-pnpm dev
-```
-
-Abra [http://localhost:3000](http://localhost:3000) no seu navegador para ver o resultado.
-
-## Tecnologias Utilizadas
-
-- **Next.js 14** - Framework React com App Router
-- **TypeScript** - Tipagem estática
-- **Tailwind CSS** - Framework CSS utilitário
-- **Lucide React** - Ícones modernos
-- **ESLint** - Linting de código
-
-## Estrutura do Projeto
+## 📁 Estrutura de Pastas
 
 ```
-├── app/
-│   ├── globals.css
-│   ├── layout.tsx
-│   └── page.tsx
-├── public/
-├── next.config.js
-├── tailwind.config.js
-├── tsconfig.json
-└── package.json
+components/
+├── layout/           # Componentes de layout
+│   ├── Header.tsx   # Cabeçalho com navegação
+│   └── Footer.tsx   # Rodapé com informações de contato
+├── sections/        # Seções da página principal
+│   ├── HeroSection.tsx     # Seção hero principal
+│   ├── AreasSection.tsx    # Áreas artísticas
+│   ├── ProjectsSection.tsx # Projetos em destaque
+│   └── ValuesSection.tsx   # Valores e missão
+└── index.ts         # Arquivo de exportação centralizada
 ```
 
-## Deploy
+## 🎯 Benefícios da Organização
 
-A maneira mais fácil de fazer deploy da sua aplicação Next.js é usar a [Plataforma Vercel](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme).
+### **Modularidade**
+- Cada componente tem uma responsabilidade específica
+- Fácil de testar e manter individualmente
+- Reutilização em outras páginas
 
-Confira a [documentação de deployment do Next.js](https://nextjs.org/docs/deployment) para mais detalhes.
+### **Organização Clara**
+- **layout/**: Componentes estruturais (Header, Footer)
+- **sections/**: Seções específicas da página principal
+
+### **Importações Simplificadas**
+```typescript
+// Antes (página monolítica)
+// Todo código em um único arquivo de 300+ linhas
+
+// Depois (componentes modulares)
+import { Header, Footer, HeroSection } from '@/components'
+```
+
+## 🚀 Como Usar
+
+### Importar Componentes Individuais
+```typescript
+import Header from '@/components/layout/Header'
+import HeroSection from '@/components/sections/HeroSection'
+```
+
+### Importar Múltiplos Componentes
+```typescript
+import { 
+  Header, 
+  Footer, 
+  HeroSection, 
+  AreasSection 
+} from '@/components'
+```
+
+## 📝 Convenções
+
+- **Nomes**: PascalCase para componentes
+- **Arquivos**: Extensão `.tsx` para componentes React
+- **Exports**: Default export para cada componente
+- **Imports**: Organizados alfabeticamente
+
+## 🔧 Manutenção
+
+Para adicionar novos componentes:
+
+1. Crie o arquivo na pasta apropriada
+2. Adicione a exportação no `index.ts`
+3. Importe onde necessário
+
+Esta estrutura torna o projeto mais escalável e profissional!
