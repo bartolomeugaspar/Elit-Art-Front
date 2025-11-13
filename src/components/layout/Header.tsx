@@ -11,20 +11,20 @@ export default function Header() {
       <nav className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-2">
-            <div className="w-10 h-10 bg-gradient-to-br from-red-600 to-yellow-500 rounded-full flex items-center justify-center">
+            <div className="w-10 h-10 bg-gradient-to-br from-elit-red to-elit-orange rounded-full flex items-center justify-center">
               <span className="text-white font-bold text-lg">E</span>
             </div>
-            <span className="text-2xl font-bold text-gray-800">Elit'arte</span>
+            <span className="text-2xl font-bold text-elit-dark">Elit'arte</span>
           </div>
           
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
-            <a href="#home" className="text-gray-700 hover:text-red-600 transition-colors">Home</a>
-            <a href="#sobre" className="text-gray-700 hover:text-red-600 transition-colors">Sobre Nós</a>
-            <a href="#areas" className="text-gray-700 hover:text-red-600 transition-colors">Áreas de Atuação</a>
-            <a href="#projetos" className="text-gray-700 hover:text-red-600 transition-colors">Projetos</a>
-            <a href="#equipa" className="text-gray-700 hover:text-red-600 transition-colors">Equipa</a>
-            <a href="#contato" className="text-gray-700 hover:text-red-600 transition-colors">Contato</a>
+            <a href="#home" className="text-elit-dark hover:text-elit-red transition-colors">Home</a>
+            <a href="#sobre" className="text-elit-dark hover:text-elit-red transition-colors">Sobre Nós</a>
+            <a href="#areas" className="text-elit-dark hover:text-elit-red transition-colors">Áreas de Atuação</a>
+            <a href="#projetos" className="text-elit-dark hover:text-elit-red transition-colors">Projetos</a>
+            <a href="#equipa" className="text-elit-dark hover:text-elit-red transition-colors">Equipa</a>
+            <a href="#contato" className="text-elit-dark hover:text-elit-red transition-colors">Contato</a>
           </div>
 
           {/* Mobile Menu Button */}

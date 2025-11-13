@@ -4,7 +4,7 @@ import { Inter } from 'next/font/google'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata = {
-  title: 'Elit\'arte - Movimento Artístico Angolano',
+  title: 'Elit\'arte | Amantes da Arte',
   description: 'Movimento artístico que celebra e preserva a rica cultura angolana através da fusão harmoniosa entre tradição e contemporaneidade',
 }
 

@@ -6,7 +6,7 @@ export default function Footer() {
           {/* Logo e Descrição */}
           <div className="md:col-span-2">
             <div className="flex items-center space-x-2 mb-6">
-              <div className="w-12 h-12 bg-gradient-to-br from-red-600 to-yellow-500 rounded-full flex items-center justify-center">
+              <div className="w-12 h-12 bg-gradient-to-br from-elit-red to-elit-orange rounded-full flex items-center justify-center">
                 <span className="text-white font-bold text-xl">E</span>
               </div>
               <span className="text-3xl font-bold">Elit'arte</span>
@@ -16,13 +16,13 @@ export default function Footer() {
               conectando tradições ancestrais com expressões contemporâneas.
             </p>
             <div className="flex space-x-4">
-              <div className="w-10 h-10 bg-red-600 rounded-full flex items-center justify-center hover:bg-red-700 transition-colors cursor-pointer">
+              <div className="w-10 h-10 bg-elit-red rounded-full flex items-center justify-center hover:bg-elit-red/80 transition-colors cursor-pointer">
                 <span className="text-sm font-bold">f</span>
               </div>
-              <div className="w-10 h-10 bg-yellow-600 rounded-full flex items-center justify-center hover:bg-yellow-700 transition-colors cursor-pointer">
+              <div className="w-10 h-10 bg-elit-yellow rounded-full flex items-center justify-center hover:bg-elit-yellow/80 transition-colors cursor-pointer">
                 <span className="text-sm font-bold">@</span>
               </div>
-              <div className="w-10 h-10 bg-green-600 rounded-full flex items-center justify-center hover:bg-green-700 transition-colors cursor-pointer">
+              <div className="w-10 h-10 bg-elit-green rounded-full flex items-center justify-center hover:bg-elit-green/80 transition-colors cursor-pointer">
                 <span className="text-sm font-bold">in</span>
               </div>
             </div>
