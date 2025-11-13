@@ -79,9 +79,35 @@ export default function TeamSection() {
             {leaders.map((leader, index) => (
               <div key={index} className="bg-white rounded-2xl shadow-lg p-8 hover:shadow-xl transition-shadow">
                 <div className="text-center mb-6">
-                  <div className="w-24 h-24 bg-elit-red rounded-full mx-auto mb-4 flex items-center justify-center">
-                    <Users className="w-12 h-12 text-white" />
-                  </div>
+                  {index === 0 ? (
+                    <div className="w-24 h-24 mx-auto mb-4 overflow-hidden rounded-full">
+                      <img 
+                        src="/Design sem nome-fotor-20251113211836.png" 
+                        alt="Faustino Domingos (Guido Alves)" 
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                  ) : index === 1 ? (
+                    <div className="w-24 h-24 mx-auto mb-4 overflow-hidden rounded-full">
+                      <img 
+                        src="/WhatsApp Image 2025-11-13 at 20.42.33-fotor-20251113212412.png" 
+                        alt="Josemara Comongo (Maíris de Jesus)" 
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                  ) : index === 2 ? (
+                    <div className="w-24 h-24 mx-auto mb-4 overflow-hidden rounded-full">
+                      <img 
+                        src="/WhatsApp Image 2025-11-13 at 20.43.21 (1).jpeg" 
+                        alt="Luísa Gonçalves" 
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                  ) : (
+                    <div className="w-24 h-24 bg-elit-red rounded-full mx-auto mb-4 flex items-center justify-center">
+                      <Users className="w-12 h-12 text-white" />
+                    </div>
+                  )}
                   <h4 className="text-xl font-bold text-elit-dark">{leader.name}</h4>
                   {leader.artisticName && (
                     <p className="text-elit-orange font-medium">({leader.artisticName})</p>
@@ -97,12 +123,12 @@ export default function TeamSection() {
                 </blockquote>
                 
                 <div className="space-y-2 text-sm">
-                  <div className="flex items-center">
-                    <Mail className="w-4 h-4 text-elit-red mr-2" />
-                    <span className="text-gray-600">{leader.email}</span>
+                  <div className="flex items-start">
+                    <Mail className="w-4 h-4 text-elit-red mr-2 mt-0.5 flex-shrink-0" />
+                    <span className="text-gray-600 break-all">{leader.email}</span>
                   </div>
                   <div className="flex items-center">
-                    <Phone className="w-4 h-4 text-elit-orange mr-2" />
+                    <Phone className="w-4 h-4 text-elit-orange mr-2 flex-shrink-0" />
                     <span className="text-gray-600">{leader.phone}</span>
                   </div>
                 </div>
@@ -134,12 +160,12 @@ export default function TeamSection() {
                 <p className="text-gray-700 text-sm mb-4">{artist.description}</p>
                 
                 <div className="space-y-1 text-xs">
-                  <div className="flex items-center">
-                    <Mail className="w-3 h-3 text-elit-red mr-2" />
-                    <span className="text-gray-600">{artist.email}</span>
+                  <div className="flex items-start">
+                    <Mail className="w-3 h-3 text-elit-red mr-2 mt-0.5 flex-shrink-0" />
+                    <span className="text-gray-600 break-all">{artist.email}</span>
                   </div>
                   <div className="flex items-center">
-                    <Phone className="w-3 h-3 text-elit-orange mr-2" />
+                    <Phone className="w-3 h-3 text-elit-orange mr-2 flex-shrink-0" />
                     <span className="text-gray-600">{artist.phone}</span>
                   </div>
                 </div>

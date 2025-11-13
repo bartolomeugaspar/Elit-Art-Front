@@ -184,34 +184,6 @@ export default function AreasSection() {
           </div>
         </div>
 
-        {/* Música */}
-        <div className="mb-20">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div className="lg:order-2">
-              <div className="flex items-center mb-6">
-                <div className="w-16 h-16 bg-elit-yellow rounded-full flex items-center justify-center mr-4">
-                  <Music className="w-8 h-8 text-white" />
-                </div>
-                <h3 className="text-3xl font-bold text-elit-dark">Música</h3>
-              </div>
-              <div className="bg-white p-6 rounded-xl shadow-lg">
-                <p className="text-gray-700 leading-relaxed mb-4">
-                  A área da música do Elit'arte, formada por não mais de 06 artistas, procura interpretar e produzir 
-                  canções angolanas, cujo conteúdo seja de vanguarda e numa fusão de estilos tradicionais com modernos, 
-                  quer do ponto de vista dos instrumentos, quer do texto.
-                </p>
-                <p className="text-gray-700 leading-relaxed">
-                  <strong>Linha de ação:</strong> Concursos, oficinas de canto, composição musical; instrumentalização; 
-                  palestras; produção de espectáculo musical.
-                </p>
-              </div>
-            </div>
-            <div className="lg:order-1 grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <img src="/WhatsApp Image 2025-11-13 at 16.44.21.jpeg" alt="Música Elit'Arte" className="w-full h-48 object-cover rounded-lg shadow-md" />
-              <img src="/WhatsApp Image 2025-11-13 at 16.44.22.jpeg" alt="Música Elit'Arte" className="w-full h-48 object-cover rounded-lg shadow-md" />
-            </div>
-          </div>
-        </div>
       </div>
     </section>
   )

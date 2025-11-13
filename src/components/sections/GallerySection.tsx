@@ -28,12 +28,6 @@ export default function GallerySection() {
     },
     {
       type: 'image',
-      src: '/WhatsApp Image 2025-11-13 at 16.39.50 (2).jpeg',
-      alt: 'Performance criativa',
-      category: 'Teatro'
-    },
-    {
-      type: 'image',
       src: '/WhatsApp Image 2025-11-13 at 16.39.50 (3).jpeg',
       alt: 'Talento em ação',
       category: 'Teatro'
@@ -64,12 +58,6 @@ export default function GallerySection() {
     },
     {
       type: 'image',
-      src: '/WhatsApp Image 2025-11-13 at 16.44.22 (2).jpeg',
-      alt: 'Harmonia cultural',
-      category: 'Música'
-    },
-    {
-      type: 'image',
       src: '/WhatsApp Image 2025-11-13 at 16.44.23 (1).jpeg',
       alt: 'Arte visual contemporânea',
       category: 'Pintura'
@@ -79,18 +67,6 @@ export default function GallerySection() {
       src: '/WhatsApp Image 2025-11-13 at 16.44.24 (1).jpeg',
       alt: 'Criação artística',
       category: 'Pintura'
-    },
-    {
-      type: 'image',
-      src: '/WhatsApp Image 2025-11-13 at 16.56.06.jpeg',
-      alt: 'Literatura angolana',
-      category: 'Literatura'
-    },
-    {
-      type: 'image',
-      src: '/WhatsApp Image 2025-11-13 at 16.56.17.jpeg',
-      alt: 'Escrita criativa',
-      category: 'Literatura'
     },
     {
       type: 'image',
@@ -170,6 +146,78 @@ export default function GallerySection() {
       alt: 'Talento emergente',
       category: 'Equipa'
     },
+    {
+      type: 'image',
+      src: '/WhatsApp Image 2025-11-13 at 16.39.45.jpeg',
+      alt: 'Momentos artísticos únicos',
+      category: 'Fundação'
+    },
+    {
+      type: 'image',
+      src: '/WhatsApp Image 2025-11-13 at 16.39.47 (1).jpeg',
+      alt: 'Expressão cultural angolana',
+      category: 'Teatro'
+    },
+    {
+      type: 'image',
+      src: '/WhatsApp Image 2025-11-13 at 16.39.47.jpeg',
+      alt: 'Performance teatral',
+      category: 'Teatro'
+    },
+    {
+      type: 'image',
+      src: '/WhatsApp Image 2025-11-13 at 16.39.48.jpeg',
+      alt: 'Arte em movimento',
+      category: 'Teatro'
+    },
+    {
+      type: 'image',
+      src: '/WhatsApp Image 2025-11-13 at 16.39.50.jpeg',
+      alt: 'Criatividade sem limites',
+      category: 'Teatro'
+    },
+    {
+      type: 'image',
+      src: '/WhatsApp Image 2025-11-13 at 16.39.51.jpeg',
+      alt: 'Música tradicional',
+      category: 'Música'
+    },
+    {
+      type: 'image',
+      src: '/WhatsApp Image 2025-11-13 at 17.41.20.jpeg',
+      alt: 'Bastidores cinematográficos',
+      category: 'Cinema'
+    },
+    {
+      type: 'image',
+      src: '/WhatsApp Image 2025-11-13 at 17.41.21.jpeg',
+      alt: 'Produção audiovisual',
+      category: 'Cinema'
+    },
+    {
+      type: 'image',
+      src: '/WhatsApp Image 2025-11-13 at 17.41.22.jpeg',
+      alt: 'Trabalho colaborativo',
+      category: 'Equipa'
+    },
+    {
+      type: 'image',
+      src: '/WhatsApp Image 2025-11-13 at 17.41.24 (1).jpeg',
+      alt: 'Momentos especiais da fundação',
+      category: 'Fundação'
+    },
+    {
+      type: 'image',
+      src: '/WhatsApp Image 2025-11-13 at 17.41.25 (1).jpeg',
+      alt: 'História do movimento',
+      category: 'Fundação'
+    },
+    {
+      type: 'image',
+      src: '/WhatsApp Image 2025-11-13 at 17.41.25 (2).jpeg',
+      alt: 'Legado cultural preservado',
+      category: 'Fundação'
+    }
   ]
 
   const categories = ['Todos', 'Fundação', 'Teatro', 'Música', 'Pintura', 'Literatura', 'Cinema', 'Equipa']
@@ -187,11 +235,11 @@ export default function GallerySection() {
         </div>
 
         {/* Filter Categories */}
-        <div className="flex flex-wrap justify-center gap-4 mb-12">
+        <div className="flex flex-wrap justify-center gap-2 sm:gap-4 mb-12">
           {categories.map((category, index) => (
             <button
               key={index}
-              className="px-6 py-2 rounded-full border border-elit-yellow text-elit-yellow hover:bg-elit-yellow hover:text-elit-dark transition-colors"
+              className="px-3 sm:px-6 py-2 text-sm sm:text-base rounded-full border border-elit-yellow text-elit-yellow hover:bg-elit-yellow hover:text-elit-dark transition-colors"
             >
               {category}
             </button>

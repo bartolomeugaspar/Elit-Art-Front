@@ -14,8 +14,8 @@ export default function HistorySection() {
 
           {/* Timeline */}
           <div className="relative">
-            {/* Linha central */}
-            <div className="absolute left-1/2 transform -translate-x-1/2 w-1 bg-gradient-to-b from-elit-red via-elit-yellow to-elit-orange" style={{height: 'calc(100% - 260px)'}}></div>
+            {/* Linha central - Hidden on mobile */}
+            <div className="hidden lg:block absolute left-1/2 transform -translate-x-1/2 w-1 bg-gradient-to-b from-elit-red via-elit-yellow to-elit-orange" style={{height: 'calc(100% - 260px)'}}></div>
 
             {/* Fundação */}
             <div className="relative mb-16">
@@ -26,7 +26,7 @@ export default function HistorySection() {
               </div>
               
               <div className="grid lg:grid-cols-2 gap-12 items-center">
-                <div className="lg:text-right">
+                <div className="text-center lg:text-right">
                   <h3 className="text-3xl font-bold text-elit-dark mb-4">Fundação</h3>
                   <div className="bg-white p-6 rounded-xl shadow-lg">
                     <p className="text-lg text-gray-700 leading-relaxed mb-4">
@@ -74,7 +74,7 @@ export default function HistorySection() {
                   <div className="absolute -bottom-4 -left-4 w-20 h-20 bg-elit-orange/30 rounded-full animate-pulse delay-1000"></div>
                 </div>
                 
-                <div className="lg:order-1">
+                <div className="lg:order-1 text-center lg:text-left">
                   <h3 className="text-3xl font-bold text-elit-dark mb-4">Evolução</h3>
                   <div className="bg-white p-6 rounded-xl shadow-lg">
                     <p className="text-gray-700 leading-relaxed">

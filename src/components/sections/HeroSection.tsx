@@ -9,12 +9,12 @@ export default function HeroSection() {
 
   const slides = [
     {
-      image: '/WhatsApp Image 2025-11-13 at 16.39.48.jpeg',
+      image: '/WhatsApp Image 2025-11-13 at 20.43.02.jpeg',
       title: 'Liderança Artística',
       subtitle: 'Formando os líderes culturais de amanhã'
     },
     {
-      image: '/WhatsApp Image 2025-11-13 at 16.44.22 (1).jpeg',
+      image: '/WhatsApp Image 2025-11-13 at 20.43.11.jpeg',
       title: 'Teatro & Performance',
       subtitle: 'Expressão dramática que toca a alma'
     },
@@ -29,12 +29,12 @@ export default function HeroSection() {
       subtitle: 'Cores e formas da cultura angolana'
     },
     {
-      image: '/WhatsApp Image 2025-11-13 at 16.39.49 (1).jpeg',
+      image: '/WhatsApp Image 2025-11-13 at 20.43.20 (1).jpeg',
       title: 'Comunidade Artística',
       subtitle: 'Unidos pela paixão da arte'
     },
     {
-      image: '/tr.jpeg',
+      image: '/WhatsApp Image 2025-11-13 at 20.43.23 (1).jpeg',
       title: 'Tradição & Modernidade',
       subtitle: 'Preservando raízes, criando futuro'
     }
