@@ -6,52 +6,101 @@ import { useState } from 'react'
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
+  const navigationItems = [
+    { label: 'Home', href: '#home' },
+    { label: 'Sobre Nós', href: '#sobre' },
+    { label: 'Áreas de Atuação', href: '#areas' },
+    { label: 'Projetos', href: '#projetos' },
+    { label: 'Equipa', href: '#equipa' },
+    { label: 'Contato', href: '#contacto' }
+  ]
+
+  const handleNavClick = (href: string) => {
+    setIsMenuOpen(false)
+    const element = document.querySelector(href)
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' })
+    }
+  }
+
   return (
-    <header className="bg-white/90 backdrop-blur-md shadow-lg sticky top-0 z-50">
-      <nav className="container mx-auto px-4 py-4">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-white shadow-lg py-3">
+      <div className="container mx-auto px-6">
         <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-3">
+          {/* Logo */}
+          <div 
+            className="flex items-center space-x-3 cursor-pointer group"
+            onClick={() => handleNavClick('#home')}
+          >
             <img 
               src="/icon.jpeg" 
-              alt="Elit'Arte Logo" 
-              className="w-12 h-12 rounded-full object-cover shadow-md"
+              alt="Elit'Arte" 
+              className="w-10 h-10 rounded-full object-cover"
             />
-            <span className="text-2xl font-bold text-elit-dark">Elit'Arte</span>
+            <div>
+              <h1 className="text-xl font-bold text-gray-900">
+                Elit'Arte
+              </h1>
+            </div>
           </div>
-          
+
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
-            <a href="#home" className="text-elit-dark hover:text-elit-red transition-colors">Home</a>
-            <a href="#sobre" className="text-elit-dark hover:text-elit-red transition-colors">Sobre Nós</a>
-            <a href="#areas" className="text-elit-dark hover:text-elit-red transition-colors">Áreas de Atuação</a>
-            <a href="#projetos" className="text-elit-dark hover:text-elit-red transition-colors">Projetos</a>
-            <a href="#equipa" className="text-elit-dark hover:text-elit-red transition-colors">Equipa</a>
-            <a href="#contato" className="text-elit-dark hover:text-elit-red transition-colors">Contato</a>
+          <nav className="hidden md:flex items-center space-x-8">
+            {navigationItems.map((item, index) => (
+              <button
+                key={index}
+                onClick={() => handleNavClick(item.href)}
+                className="text-sm font-medium text-gray-700 hover:text-elit-red transition-all duration-300 hover:scale-105"
+              >
+                {item.label}
+              </button>
+            ))}
+          </nav>
+
+          {/* CTA Button */}
+          <div className="hidden md:block">
+            <button
+              onClick={() => handleNavClick('#contacto')}
+              className="bg-elit-red hover:bg-elit-red/90 text-white px-6 py-2 rounded-full text-sm font-semibold transition-all duration-300 hover:scale-105 shadow-lg"
+            >
+              Contactar
+            </button>
           </div>
 
           {/* Mobile Menu Button */}
-          <button 
-            className="md:hidden"
+          <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
+            className="md:hidden p-2 rounded-lg text-gray-900 transition-colors"
           >
-            {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
 
         {/* Mobile Navigation */}
         {isMenuOpen && (
-          <div className="md:hidden mt-4 pb-4 border-t border-gray-200">
-            <div className="flex flex-col space-y-4 mt-4">
-              <a href="#home" className="text-elit-dark hover:text-elit-red transition-colors">Home</a>
-              <a href="#sobre" className="text-elit-dark hover:text-elit-red transition-colors">Sobre Nós</a>
-              <a href="#areas" className="text-elit-dark hover:text-elit-red transition-colors">Áreas de Atuação</a>
-              <a href="#projetos" className="text-elit-dark hover:text-elit-red transition-colors">Projetos</a>
-              <a href="#equipa" className="text-elit-dark hover:text-elit-red transition-colors">Equipa</a>
-              <a href="#contato" className="text-elit-dark hover:text-elit-red transition-colors">Contato</a>
+          <div className="md:hidden mt-6 pb-6">
+            <div className="bg-white rounded-2xl shadow-xl p-6 space-y-4">
+              {navigationItems.map((item, index) => (
+                <button
+                  key={index}
+                  onClick={() => handleNavClick(item.href)}
+                  className="block w-full text-left text-gray-700 hover:text-elit-red font-medium py-2 transition-colors"
+                >
+                  {item.label}
+                </button>
+              ))}
+              <div className="pt-4 border-t border-gray-100">
+                <button
+                  onClick={() => handleNavClick('#contacto')}
+                  className="w-full bg-elit-red hover:bg-elit-red/90 text-white py-3 rounded-xl font-semibold transition-colors"
+                >
+                  Contactar
+                </button>
+              </div>
             </div>
           </div>
         )}
-      </nav>
+      </div>
     </header>
   )
 }

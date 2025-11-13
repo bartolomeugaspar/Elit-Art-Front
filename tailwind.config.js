@@ -8,14 +8,14 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        // Cores baseadas no ícone Elit'arte
-        'elit-red': '#DC2626',      // Vermelho vibrante do ícone
-        'elit-orange': '#EA580C',   // Laranja/vermelho alaranjado
-        'elit-yellow': '#F59E0B',   // Amarelo dourado
-        'elit-green': '#16A34A',    // Verde da bandeira angolana
-        'elit-blue': '#2563EB',     // Azul complementar
-        'elit-dark': '#1F2937',     // Cinza escuro para textos
-        'elit-light': '#F9FAFB',    // Cinza claro para backgrounds
+        // Cores idênticas ao logotipo Elit'Arte
+        'elit-red': '#8B4513',      // Marrom/vermelho escuro do "arte"
+        'elit-orange': '#D2691E',   // Laranja médio do logotipo
+        'elit-yellow': '#F4A460',   // Dourado claro do "elit"
+        'elit-brown': '#654321',    // Marrom escuro para contraste
+        'elit-gold': '#DAA520',     // Dourado mais vibrante
+        'elit-dark': '#2D1810',     // Marrom muito escuro para textos
+        'elit-light': '#F5F5DC',    // Bege claro para backgrounds
         
         // Cores originais mantidas para compatibilidade
         background: 'hsl(var(--background))',

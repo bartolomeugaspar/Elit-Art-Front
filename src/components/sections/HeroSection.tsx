@@ -1,31 +1,177 @@
+'use client'
+
+import { useState, useEffect } from 'react'
+import { ChevronLeft, ChevronRight, Play, Pause } from 'lucide-react'
+
 export default function HeroSection() {
+  const [currentSlide, setCurrentSlide] = useState(0)
+  const [isAutoPlaying, setIsAutoPlaying] = useState(true)
+
+  const slides = [
+    {
+      image: '/lideres.jpeg',
+      title: 'Liderança Artística',
+      subtitle: 'Formando os líderes culturais de amanhã'
+    },
+    {
+      image: '/WhatsApp Image 2025-11-13 at 16.39.45.jpeg',
+      title: 'Teatro & Performance',
+      subtitle: 'Expressão dramática que toca a alma'
+    },
+    {
+      image: '/WhatsApp Image 2025-11-13 at 16.39.47.jpeg',
+      title: 'Música & Dança',
+      subtitle: 'Ritmos que celebram nossa identidade'
+    },
+    {
+      image: '/WhatsApp Image 2025-11-13 at 16.39.50.jpeg',
+      title: 'Arte Visual',
+      subtitle: 'Cores e formas da cultura angolana'
+    },
+    {
+      image: '/WhatsApp Image 2025-11-13 at 16.39.49.jpeg',
+      title: 'Comunidade Artística',
+      subtitle: 'Unidos pela paixão da arte'
+    },
+    {
+      image: '/ss.jpeg',
+      title: 'Tradição & Modernidade',
+      subtitle: 'Preservando raízes, criando futuro'
+    }
+  ]
+
+  useEffect(() => {
+    if (!isAutoPlaying) return
+
+    const timer = setInterval(() => {
+      setCurrentSlide(prev => {
+        const next = (prev + 1) % slides.length
+        return next
+      })
+    }, 4000)
+
+    return () => clearInterval(timer)
+  }, [isAutoPlaying])
+
+  const nextSlide = () => {
+    setCurrentSlide((prev) => (prev + 1) % slides.length)
+  }
+
+  const prevSlide = () => {
+    setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length)
+  }
+
+  const goToSlide = (index: number) => {
+    setCurrentSlide(index)
+  }
+
   return (
-    <section id="home" className="relative py-20 overflow-hidden">
-      <div className="container mx-auto px-4">
-        <div className="text-center max-w-4xl mx-auto">
-          <h1 className="text-6xl md:text-7xl font-bold mb-6">
-            <span className="text-elit-red">Elit</span>
-            <span className="text-elit-yellow">'</span>
-            <span className="text-elit-green">Arte</span>
-          </h1>
-          <p className="text-xl md:text-2xl text-elit-dark mb-8 leading-relaxed">
-            Movimento artístico que celebra e preserva a rica cultura angolana através da fusão harmoniosa entre tradição e contemporaneidade
+    <section id="home" className="relative h-[95vh] flex items-center justify-center overflow-hidden">
+      {/* Carousel Background */}
+      <div className="absolute inset-0">
+        {slides.map((slide, index) => (
+          <div
+            key={index}
+            className={`absolute inset-0 transition-opacity duration-1000 ${
+              index === currentSlide ? 'opacity-100' : 'opacity-0'
+            }`}
+          >
+            <div 
+              className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+              style={{
+                backgroundImage: `linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.6)), url('${slide.image}')`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center center'
+              }}
+            />
+          </div>
+        ))}
+      </div>
+
+      {/* Content */}
+      <div className="relative z-10 container mx-auto px-4 text-center text-white">
+        <div className="max-w-6xl mx-auto">
+          {/* Frase-mestra */}
+          <p className="text-xl md:text-2xl font-light mb-8 text-elit-yellow italic animate-fade-in">
+            "Elit'arte: Onde a essência angolana encontra a expressão artística."
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button className="bg-gradient-to-r from-elit-red to-elit-orange text-white px-8 py-4 rounded-full font-semibold hover:shadow-lg transition-all transform hover:scale-105">
-              Descobrir Arte
+          
+          {/* Título Principal */}
+          <h1 className="text-5xl md:text-8xl font-bold mb-6 leading-tight">
+            <span className="block">
+              <span className="text-elit-yellow">Elit</span>
+              <span className="text-elit-gold">'</span>
+              <span className="text-elit-red">Arte</span>
+            </span>
+          </h1>
+          
+          <p className="text-lg md:text-xl text-gray-200 mb-12 max-w-3xl mx-auto leading-relaxed">
+            Movimento artístico angolano que une teatro, música, dança, literatura, pintura e cinema, 
+            celebrando nossa rica cultura através da fusão entre tradição e contemporaneidade.
+          </p>
+          
+          <div className="flex flex-col sm:flex-row gap-6 justify-center mb-12">
+            <button className="bg-gradient-to-r from-elit-red to-elit-brown text-white px-10 py-4 rounded-full font-semibold hover:shadow-2xl transition-all transform hover:scale-105 text-lg">
+              Explorar Portfólio
             </button>
-            <button className="border-2 border-elit-green text-elit-green px-8 py-4 rounded-full font-semibold hover:bg-elit-green hover:text-white transition-all">
-              Ver Projetos
+            <button className="border-2 border-elit-gold text-elit-gold px-10 py-4 rounded-full font-semibold hover:bg-elit-gold hover:text-elit-dark transition-all text-lg">
+              Conhecer História
             </button>
           </div>
         </div>
       </div>
-      
+
+      {/* Navigation Controls */}
+      <div className="absolute inset-0 flex items-center justify-between px-4 z-20">
+        <button
+          onClick={prevSlide}
+          className="bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white p-3 rounded-full transition-all hover:scale-110"
+        >
+          <ChevronLeft size={24} />
+        </button>
+        <button
+          onClick={nextSlide}
+          className="bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white p-3 rounded-full transition-all hover:scale-110"
+        >
+          <ChevronRight size={24} />
+        </button>
+      </div>
+
+      {/* Slide Indicators */}
+      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex space-x-3 z-20">
+        {slides.map((_, index) => (
+          <button
+            key={index}
+            onClick={() => goToSlide(index)}
+            className={`w-3 h-3 rounded-full transition-all duration-300 ${
+              index === currentSlide 
+                ? 'bg-elit-gold scale-125' 
+                : 'bg-white/50 hover:bg-white/70'
+            }`}
+          />
+        ))}
+      </div>
+
+      {/* Auto-play Control */}
+      <div className="absolute top-8 right-8 z-20">
+        <button
+          onClick={() => setIsAutoPlaying(!isAutoPlaying)}
+          className="bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white p-3 rounded-full transition-all hover:scale-110"
+        >
+          {isAutoPlaying ? <Pause size={20} /> : <Play size={20} />}
+        </button>
+      </div>
+
       {/* Decorative Elements */}
-      <div className="absolute top-20 left-10 w-20 h-20 bg-elit-red/20 rounded-full animate-pulse"></div>
-      <div className="absolute bottom-20 right-10 w-32 h-32 bg-elit-yellow/20 rounded-full animate-pulse delay-1000"></div>
-      <div className="absolute top-1/2 left-1/4 w-16 h-16 bg-elit-green/20 rounded-full animate-pulse delay-500"></div>
+      <div className="absolute top-20 left-10 w-16 h-16 opacity-30 animate-pulse">
+        <div className="w-full h-full bg-elit-gold/30 rounded-full"></div>
+      </div>
+      <div className="absolute bottom-20 right-10 w-20 h-20 opacity-30 animate-pulse delay-1000">
+        <div className="w-full h-full bg-elit-orange/30 rounded-full"></div>
+      </div>
+      <div className="absolute top-1/3 right-1/4 w-12 h-12 opacity-30 animate-pulse delay-500">
+        <div className="w-full h-full bg-elit-red/30 rounded-full"></div>
+      </div>
     </section>
   )
 }
