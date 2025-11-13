@@ -6,7 +6,7 @@ export default function HeroSection() {
           <h1 className="text-6xl md:text-7xl font-bold mb-6">
             <span className="text-elit-red">Elit</span>
             <span className="text-elit-yellow">'</span>
-            <span className="text-elit-green">arte</span>
+            <span className="text-elit-green">Arte</span>
           </h1>
           <p className="text-xl md:text-2xl text-elit-dark mb-8 leading-relaxed">
             Movimento artístico que celebra e preserva a rica cultura angolana através da fusão harmoniosa entre tradição e contemporaneidade

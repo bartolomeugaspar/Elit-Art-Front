@@ -5,11 +5,13 @@ export default function Footer() {
         <div className="grid md:grid-cols-4 gap-8">
           {/* Logo e Descrição */}
           <div className="md:col-span-2">
-            <div className="flex items-center space-x-2 mb-6">
-              <div className="w-12 h-12 bg-gradient-to-br from-elit-red to-elit-orange rounded-full flex items-center justify-center">
-                <span className="text-white font-bold text-xl">E</span>
-              </div>
-              <span className="text-3xl font-bold">Elit'arte</span>
+            <div className="flex items-center space-x-3 mb-6">
+              <img 
+                src="/icon.jpeg" 
+                alt="Elit'Arte Logo" 
+                className="w-14 h-14 rounded-full object-cover shadow-lg"
+              />
+              <span className="text-3xl font-bold">Elit'Arte</span>
             </div>
             <p className="text-gray-300 leading-relaxed mb-6 max-w-md">
               Movimento artístico dedicado à preservação e celebração da rica cultura angolana, 
