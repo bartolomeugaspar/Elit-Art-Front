@@ -233,7 +233,7 @@ export default function GallerySection() {
             <p className="text-elit-light">Assista aos nossos momentos mais marcantes</p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
             <div className="bg-gray-800 rounded-xl p-4 sm:p-6 text-center">
               <div className="w-full h-48 sm:h-56 rounded-lg mb-4 overflow-hidden">
                 <video 
@@ -241,7 +241,7 @@ export default function GallerySection() {
                   controls
                   poster="/WhatsApp Image 2025-11-13 at 17.41.23 (2).jpeg"
                 >
-                  <source src="/WhatsApp Video 2025-11-13 at 17.02.50.mp4" type="video/mp4" />
+                  <source src="/otchale.mp4" type="video/mp4" />
                   Seu navegador não suporta o elemento de vídeo.
                 </video>
               </div>
@@ -249,12 +249,49 @@ export default function GallerySection() {
               <p className="text-elit-light text-sm">O quanto custa a tua humanidade - 27 de setembro</p>
             </div>
             
-            <div className="bg-gray-800 rounded-xl p-6 text-center">
-              <div className="w-full h-48 bg-gray-700 rounded-lg mb-4 flex items-center justify-center">
-                <Play className="w-16 h-16 text-elit-yellow" />
+            <div className="bg-gray-800 rounded-xl p-4 sm:p-6 text-center">
+              <div className="w-full h-48 sm:h-56 rounded-lg mb-4 overflow-hidden">
+                <video 
+                  className="w-full h-full object-cover"
+                  controls
+                  poster="/WhatsApp Image 2025-11-13 at 17.41.23 (2).jpeg"
+                >
+                  <source src="/ter.mp4" type="video/mp4" />
+                  Seu navegador não suporta o elemento de vídeo.
+                </video>
               </div>
-              <h4 className="text-xl font-bold mb-2">"O preço da ingratidão"</h4>
+              <h4 className="text-lg sm:text-xl font-bold mb-2">"O preço da ingratidão"</h4>
               <p className="text-elit-light text-sm">Apresentação no LAASP - 27 de Dezembro</p>
+            </div>
+
+            <div className="bg-gray-800 rounded-xl p-4 sm:p-6 text-center">
+              <div className="w-full h-48 sm:h-56 rounded-lg mb-4 overflow-hidden">
+                <video 
+                  className="w-full h-full object-cover"
+                  controls
+                  poster="/WhatsApp Image 2025-11-13 at 17.41.23 (2).jpeg"
+                >
+                  <source src="/qw.mp4" type="video/mp4" />
+                  Seu navegador não suporta o elemento de vídeo.
+                </video>
+              </div>
+              <h4 className="text-lg sm:text-xl font-bold mb-2">Apresentação Especial</h4>
+              <p className="text-elit-light text-sm">Momento artístico do Elit'Arte</p>
+            </div>
+
+            <div className="bg-gray-800 rounded-xl p-4 sm:p-6 text-center">
+              <div className="w-full h-48 sm:h-56 rounded-lg mb-4 overflow-hidden">
+                <video 
+                  className="w-full h-full object-cover"
+                  controls
+                  poster="/WhatsApp Image 2025-11-13 at 17.41.23 (2).jpeg"
+                >
+                  <source src="/res.mp4" type="video/mp4" />
+                  Seu navegador não suporta o elemento de vídeo.
+                </video>
+              </div>
+              <h4 className="text-lg sm:text-xl font-bold mb-2">Performance Artística</h4>
+              <p className="text-elit-light text-sm">Expressão cultural angolana</p>
             </div>
           </div>
         </div>

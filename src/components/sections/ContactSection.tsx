@@ -27,28 +27,6 @@ export default function ContactSection() {
       description: "Local de ensaios e sede"
     }
   ]
-
-  const socialMedia = [
-    {
-      icon: Facebook,
-      name: "Facebook",
-      handle: "@ElitArteAngola",
-      color: "bg-blue-600"
-    },
-    {
-      icon: Instagram,
-      name: "Instagram",
-      handle: "@elit_arte_angola",
-      color: "bg-pink-600"
-    },
-    {
-      icon: Youtube,
-      name: "YouTube",
-      handle: "Elit'Arte Angola",
-      color: "bg-red-600"
-    }
-  ]
-
   return (
     <section id="contacto" className="py-20 bg-gradient-to-br from-elit-dark to-gray-900 text-white">
       <div className="container mx-auto px-4">
@@ -130,55 +108,6 @@ export default function ContactSection() {
               </button>
             </form>
           </div>
-        </div>
-
-        {/* Social Media */}
-        <div className="text-center mb-16">
-          <h3 className="text-3xl font-bold mb-8">Siga-nos nas Redes Sociais</h3>
-          <div className="flex justify-center space-x-6">
-            {socialMedia.map((social, index) => (
-              <a
-                key={index}
-                href="#"
-                className={`${social.color} p-4 rounded-full hover:scale-110 transition-transform group`}
-              >
-                <social.icon className="w-8 h-8 text-white" />
-              </a>
-            ))}
-          </div>
-          <div className="mt-6 space-y-2">
-            {socialMedia.map((social, index) => (
-              <p key={index} className="text-elit-light">
-                <span className="text-elit-yellow font-medium">{social.name}:</span> {social.handle}
-              </p>
-            ))}
-          </div>
-        </div>
-
-        {/* Call to Action */}
-        <div className="bg-gradient-to-r from-elit-red via-elit-yellow to-elit-green p-8 rounded-2xl text-center">
-          <h3 className="text-3xl font-bold mb-4">Junte-se a Nós!</h3>
-          <p className="text-xl mb-6">
-            Faça parte desta jornada de transformação cultural. Apoie o Elit'arte!
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button className="bg-white text-elit-red px-8 py-3 rounded-full font-bold hover:bg-elit-light transition-colors">
-              Torne-se Membro
-            </button>
-            <button className="bg-transparent border-2 border-white text-white px-8 py-3 rounded-full font-bold hover:bg-white hover:text-elit-red transition-colors">
-              Seja Nosso Parceiro
-            </button>
-          </div>
-        </div>
-
-        {/* Footer Note */}
-        <div className="text-center mt-12 pt-8 border-t border-white/20">
-          <p className="text-elit-light">
-            © 2024 Elit'Arte - Movimento Artístico Cultural de Angola
-          </p>
-          <p className="text-elit-yellow font-medium mt-2">
-            "A arte é a nossa linguagem universal; a cultura, a nossa assinatura."
-          </p>
         </div>
       </div>
     </section>
