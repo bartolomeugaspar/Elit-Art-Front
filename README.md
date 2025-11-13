@@ -2,10 +2,13 @@
 
 > **Movimento artístico angolano dedicado à preservação e celebração da rica cultura angolana**
 
+## 🌐 **[🚀 ACESSE O SITE ONLINE](https://elit-arte.vercel.app/)**
+
 [![Next.js](https://img.shields.io/badge/Next.js-14-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?style=for-the-badge&logo=typescript)](https://www.typescriptlang.org/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind-3-38bdf8?style=for-the-badge&logo=tailwind-css)](https://tailwindcss.com/)
 [![Responsive](https://img.shields.io/badge/Responsive-✅-green?style=for-the-badge)](https://github.com/bartolomeugaspar/Elit-Art-Front)
+[![Live Site](https://img.shields.io/badge/Live_Site-🌐_Online-success?style=for-the-badge)](https://elit-arte.vercel.app/)
 
 ## 🌟 Sobre o Elit'Arte
 
@@ -125,7 +128,22 @@ src/
 --elit-light: #F5F5DC;    /* Bege claro */
 ```
 
-## 🚀 Como Executar
+## 🌐 Acesso Online
+
+### 📱 **No Telefone/Mobile**
+1. Abra o navegador (Chrome, Safari, etc.)
+2. Acesse: **https://elit-arte.vercel.app/**
+3. O site é totalmente responsivo e otimizado para mobile!
+
+### 💻 **No Desktop**
+- Acesse diretamente: **https://elit-arte.vercel.app/**
+- Experiência completa com todas as funcionalidades
+
+### 📲 **Instalar como App (PWA)**
+- **Android**: Menu → "Adicionar à tela inicial"
+- **iOS**: Compartilhar → "Adicionar à Tela de Início"
+
+## 🚀 Desenvolvimento Local
 
 ### Pré-requisitos
 - Node.js 18+ 
@@ -153,7 +171,15 @@ npm run build
 
 # Execute o build
 npm start
+
+# Para export estático (GitHub Pages)
+npm run export
 ```
+
+### 🚀 Deploy Automático
+- **Vercel**: Deploy automático a cada push no GitHub
+- **GitHub Pages**: Configurado com GitHub Actions
+- **Netlify**: Compatível com build estático
 
 ## 👥 Equipa
 
