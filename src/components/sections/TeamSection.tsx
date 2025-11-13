@@ -90,7 +90,7 @@ export default function TeamSection() {
                   ) : index === 1 ? (
                     <div className="w-24 h-24 mx-auto mb-4 overflow-hidden rounded-full">
                       <img 
-                        src="/WhatsApp Image 2025-11-13 at 20.42.33-fotor-20251113212412.png" 
+                        src="/jos.jpeg" 
                         alt="Josemara Comongo (Maíris de Jesus)" 
                         className="w-full h-full object-cover"
                       />
@@ -98,7 +98,7 @@ export default function TeamSection() {
                   ) : index === 2 ? (
                     <div className="w-24 h-24 mx-auto mb-4 overflow-hidden rounded-full">
                       <img 
-                        src="/WhatsApp Image 2025-11-13 at 20.43.21 (1).jpeg" 
+                        src="/lu.jpeg" 
                         alt="Luísa Gonçalves" 
                         className="w-full h-full object-cover"
                       />

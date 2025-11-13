@@ -42,8 +42,8 @@ export default function AreasSection() {
               </div>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <img src="/WhatsApp Image 2025-11-13 at 16.39.49.jpeg" alt="Teatro Elit'Arte" className="w-full h-48 object-cover rounded-lg shadow-md" />
-              <img src="/WhatsApp Image 2025-11-13 at 16.39.49 (1).jpeg" alt="Teatro Elit'Arte" className="w-full h-48 object-cover rounded-lg shadow-md" />
+              <img src="/teatro1.jpeg" alt="Teatro Elit'Arte" className="w-full h-48 object-cover rounded-lg shadow-md" />
+              <img src="/teatro2.jpeg" alt="Teatro Elit'Arte" className="w-full h-48 object-cover rounded-lg shadow-md" />
             </div>
           </div>
         </div>
@@ -70,8 +70,8 @@ export default function AreasSection() {
               </div>
             </div>
             <div className="lg:order-1 grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <img src="/WhatsApp Image 2025-11-13 at 16.44.21.jpeg" alt="Música Elit'Arte" className="w-full h-48 object-cover rounded-lg shadow-md" />
-              <img src="/WhatsApp Image 2025-11-13 at 16.44.22.jpeg" alt="Música Elit'Arte" className="w-full h-48 object-cover rounded-lg shadow-md" />
+              <img src="/musica.jpeg" alt="Música Elit'Arte" className="w-full h-48 object-cover rounded-lg shadow-md" />
+              <img src="/musica1.jpeg" alt="Música Elit'Arte" className="w-full h-48 object-cover rounded-lg shadow-md" />
             </div>
           </div>
         </div>
@@ -98,7 +98,7 @@ export default function AreasSection() {
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <img src="/WhatsApp Image 2025-11-13 at 16.44.23.jpeg" alt="Dança Elit'Arte" className="w-full h-48 object-cover rounded-lg shadow-md" />
-              <img src="/WhatsApp Image 2025-11-13 at 16.44.24.jpeg" alt="Dança Elit'Arte" className="w-full h-48 object-cover rounded-lg shadow-md" />
+              <img src="/danca.jpeg" alt="Dança Elit'Arte" className="w-full h-48 object-cover rounded-lg shadow-md" />
             </div>
           </div>
         </div>
@@ -125,7 +125,7 @@ export default function AreasSection() {
             </div>
             <div className="lg:order-1 grid grid-cols-1 sm:grid-cols-2 gap-4">
               <img src="/WhatsApp Image 2025-11-13 at 16.55.22.jpeg" alt="Literatura Elit'Arte" className="w-full h-48 object-cover rounded-lg shadow-md" />
-              <img src="/WhatsApp Image 2025-11-13 at 16.55.36.jpeg" alt="Literatura Elit'Arte" className="w-full h-48 object-cover rounded-lg shadow-md" />
+              <img src="/litera.jpeg" alt="Literatura Elit'Arte" className="w-full h-48 object-cover rounded-lg shadow-md" />
             </div>
           </div>
         </div>
@@ -152,7 +152,7 @@ export default function AreasSection() {
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <img src="/WhatsApp Image 2025-11-13 at 16.55.57.jpeg" alt="Cinema Elit'Arte" className="w-full h-48 object-cover rounded-lg shadow-md" />
-              <img src="/WhatsApp Image 2025-11-13 at 17.02.52 (1).jpeg" alt="Cinema Elit'Arte" className="w-full h-48 object-cover rounded-lg shadow-md" />
+              <img src="/WhatsApp Image 2025-11-13 at 16.55.36.jpeg" alt="Cinema Elit'Arte" className="w-full h-48 object-cover rounded-lg shadow-md" />
             </div>
           </div>
         </div>
@@ -178,8 +178,8 @@ export default function AreasSection() {
               </div>
             </div>
             <div className="lg:order-1 grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <img src="/WhatsApp Image 2025-11-13 at 17.02.51.jpeg" alt="Pintura Elit'Arte" className="w-full h-48 object-cover rounded-lg shadow-md" />
-              <img src="/WhatsApp Image 2025-11-13 at 17.02.52.jpeg" alt="Pintura Elit'Arte" className="w-full h-48 object-cover rounded-lg shadow-md" />
+              <img src="/pintura.jpeg" alt="Pintura Elit'Arte" className="w-full h-48 object-cover rounded-lg shadow-md" />
+              <img src="/pintura1.jpeg" alt="Pintura Elit'Arte" className="w-full h-48 object-cover rounded-lg shadow-md" />
             </div>
           </div>
         </div>

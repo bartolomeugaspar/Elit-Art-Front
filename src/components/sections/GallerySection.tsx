@@ -217,6 +217,30 @@ export default function GallerySection() {
       src: '/WhatsApp Image 2025-11-13 at 17.41.25 (2).jpeg',
       alt: 'Legado cultural preservado',
       category: 'Fundação'
+    },
+    {
+      type: 'image',
+      src: '/meninas.jpeg',
+      alt: 'Legado cultural preservado',
+      category: 'Fundação'
+    },
+    {
+      type: 'image',
+      src: '/festiva.jpeg',
+      alt: 'Legado cultural preservado',
+      category: 'Fundação'
+    },
+    {
+      type: 'image',
+      src: '/luisa.jpeg',
+      alt: 'Legado cultural preservado',
+      category: 'Fundação'
+    },
+    {
+      type: 'image',
+      src: '/bairo.jpeg',
+      alt: 'Legado cultural preservado',
+      category: 'Fundação'
     }
   ]
 
