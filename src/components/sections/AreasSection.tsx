@@ -1,4 +1,4 @@
-import { Theater, Music, Palette, BookOpen, Film, Users, Lightbulb, Play, TreePine } from 'lucide-react'
+import { Theater, Music, Palette, BookOpen, Film, Users, Lightbulb, Play, TreePine, Zap } from 'lucide-react'
 
 export default function AreasSection() {
   return (
@@ -41,7 +41,7 @@ export default function AreasSection() {
                 </p>
               </div>
             </div>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <img src="/WhatsApp Image 2025-11-13 at 16.39.49.jpeg" alt="Teatro Elit'Arte" className="w-full h-48 object-cover rounded-lg shadow-md" />
               <img src="/WhatsApp Image 2025-11-13 at 16.39.49 (1).jpeg" alt="Teatro Elit'Arte" className="w-full h-48 object-cover rounded-lg shadow-md" />
             </div>
@@ -69,7 +69,7 @@ export default function AreasSection() {
                 </p>
               </div>
             </div>
-            <div className="lg:order-1 grid grid-cols-2 gap-4">
+            <div className="lg:order-1 grid grid-cols-1 sm:grid-cols-2 gap-4">
               <img src="/WhatsApp Image 2025-11-13 at 16.44.21.jpeg" alt="Música Elit'Arte" className="w-full h-48 object-cover rounded-lg shadow-md" />
               <img src="/WhatsApp Image 2025-11-13 at 16.44.22.jpeg" alt="Música Elit'Arte" className="w-full h-48 object-cover rounded-lg shadow-md" />
             </div>
@@ -82,7 +82,7 @@ export default function AreasSection() {
             <div>
               <div className="flex items-center mb-6">
                 <div className="w-16 h-16 bg-elit-green rounded-full flex items-center justify-center mr-4">
-                  <Users className="w-8 h-8 text-white" />
+                  <Zap className="w-8 h-8 text-elit-dark" />
                 </div>
                 <h3 className="text-3xl font-bold text-elit-dark">Dança</h3>
               </div>
@@ -96,7 +96,7 @@ export default function AreasSection() {
                 </p>
               </div>
             </div>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <img src="/WhatsApp Image 2025-11-13 at 16.44.23.jpeg" alt="Dança Elit'Arte" className="w-full h-48 object-cover rounded-lg shadow-md" />
               <img src="/WhatsApp Image 2025-11-13 at 16.44.24.jpeg" alt="Dança Elit'Arte" className="w-full h-48 object-cover rounded-lg shadow-md" />
             </div>
@@ -109,7 +109,7 @@ export default function AreasSection() {
             <div className="lg:order-2">
               <div className="flex items-center mb-6">
                 <div className="w-16 h-16 bg-elit-blue rounded-full flex items-center justify-center mr-4">
-                  <BookOpen className="w-8 h-8 text-white" />
+                  <BookOpen className="w-8 h-8 text-elit-dark" />
                 </div>
                 <h3 className="text-3xl font-bold text-elit-dark">Literatura e Poesia</h3>
               </div>
@@ -123,7 +123,7 @@ export default function AreasSection() {
                 </p>
               </div>
             </div>
-            <div className="lg:order-1 grid grid-cols-2 gap-4">
+            <div className="lg:order-1 grid grid-cols-1 sm:grid-cols-2 gap-4">
               <img src="/WhatsApp Image 2025-11-13 at 16.55.22.jpeg" alt="Literatura Elit'Arte" className="w-full h-48 object-cover rounded-lg shadow-md" />
               <img src="/WhatsApp Image 2025-11-13 at 16.55.36.jpeg" alt="Literatura Elit'Arte" className="w-full h-48 object-cover rounded-lg shadow-md" />
             </div>
@@ -150,7 +150,7 @@ export default function AreasSection() {
                 </p>
               </div>
             </div>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <img src="/WhatsApp Image 2025-11-13 at 16.55.57.jpeg" alt="Cinema Elit'Arte" className="w-full h-48 object-cover rounded-lg shadow-md" />
               <img src="/WhatsApp Image 2025-11-13 at 17.02.52 (1).jpeg" alt="Cinema Elit'Arte" className="w-full h-48 object-cover rounded-lg shadow-md" />
             </div>
@@ -177,7 +177,7 @@ export default function AreasSection() {
                 </p>
               </div>
             </div>
-            <div className="lg:order-1 grid grid-cols-2 gap-4">
+            <div className="lg:order-1 grid grid-cols-1 sm:grid-cols-2 gap-4">
               <img src="/WhatsApp Image 2025-11-13 at 17.02.51.jpeg" alt="Pintura Elit'Arte" className="w-full h-48 object-cover rounded-lg shadow-md" />
               <img src="/WhatsApp Image 2025-11-13 at 17.02.52.jpeg" alt="Pintura Elit'Arte" className="w-full h-48 object-cover rounded-lg shadow-md" />
             </div>
@@ -206,7 +206,7 @@ export default function AreasSection() {
                 </p>
               </div>
             </div>
-            <div className="lg:order-1 grid grid-cols-2 gap-4">
+            <div className="lg:order-1 grid grid-cols-1 sm:grid-cols-2 gap-4">
               <img src="/WhatsApp Image 2025-11-13 at 16.44.21.jpeg" alt="Música Elit'Arte" className="w-full h-48 object-cover rounded-lg shadow-md" />
               <img src="/WhatsApp Image 2025-11-13 at 16.44.22.jpeg" alt="Música Elit'Arte" className="w-full h-48 object-cover rounded-lg shadow-md" />
             </div>

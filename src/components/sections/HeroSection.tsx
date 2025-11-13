@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { ChevronLeft, ChevronRight, Play, Pause } from 'lucide-react'
+import { ChevronLeft, ChevronRight, Play, Pause, ChevronDown } from 'lucide-react'
 
 export default function HeroSection() {
   const [currentSlide, setCurrentSlide] = useState(0)
@@ -9,32 +9,32 @@ export default function HeroSection() {
 
   const slides = [
     {
-      image: '/lideres.jpeg',
+      image: '/WhatsApp Image 2025-11-13 at 16.39.48.jpeg',
       title: 'Liderança Artística',
       subtitle: 'Formando os líderes culturais de amanhã'
     },
     {
-      image: '/WhatsApp Image 2025-11-13 at 16.39.45.jpeg',
+      image: '/WhatsApp Image 2025-11-13 at 16.44.22 (1).jpeg',
       title: 'Teatro & Performance',
       subtitle: 'Expressão dramática que toca a alma'
     },
     {
-      image: '/WhatsApp Image 2025-11-13 at 16.39.47.jpeg',
+      image: '/WhatsApp Image 2025-11-13 at 16.44.22 (2).jpeg',
       title: 'Música & Dança',
       subtitle: 'Ritmos que celebram nossa identidade'
     },
     {
-      image: '/WhatsApp Image 2025-11-13 at 16.39.50.jpeg',
+      image: '/WhatsApp Image 2025-11-13 at 16.39.50 (2).jpeg',
       title: 'Arte Visual',
       subtitle: 'Cores e formas da cultura angolana'
     },
     {
-      image: '/WhatsApp Image 2025-11-13 at 16.39.49.jpeg',
+      image: '/WhatsApp Image 2025-11-13 at 16.39.49 (1).jpeg',
       title: 'Comunidade Artística',
       subtitle: 'Unidos pela paixão da arte'
     },
     {
-      image: '/ss.jpeg',
+      image: '/tr.jpeg',
       title: 'Tradição & Modernidade',
       subtitle: 'Preservando raízes, criando futuro'
     }
@@ -66,7 +66,7 @@ export default function HeroSection() {
   }
 
   return (
-    <section id="home" className="relative h-[95vh] flex items-center justify-center overflow-hidden">
+    <section id="home" className="relative h-[98vh] flex items-center justify-center overflow-hidden">
       {/* Carousel Background */}
       <div className="absolute inset-0">
         {slides.map((slide, index) => (
@@ -79,7 +79,7 @@ export default function HeroSection() {
             <div 
               className="absolute inset-0 bg-cover bg-center bg-no-repeat"
               style={{
-                backgroundImage: `linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.6)), url('${slide.image}')`,
+                backgroundImage: `linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('${slide.image}')`,
                 backgroundSize: 'cover',
                 backgroundPosition: 'center center'
               }}
@@ -97,7 +97,7 @@ export default function HeroSection() {
           </p>
           
           {/* Título Principal */}
-          <h1 className="text-5xl md:text-8xl font-bold mb-6 leading-tight">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-bold mb-6 leading-tight">
             <span className="block">
               <span className="text-elit-yellow">Elit</span>
               <span className="text-elit-gold">'</span>
@@ -110,30 +110,34 @@ export default function HeroSection() {
             celebrando nossa rica cultura através da fusão entre tradição e contemporaneidade.
           </p>
           
-          <div className="flex flex-col sm:flex-row gap-6 justify-center mb-12">
-            <button className="bg-gradient-to-r from-elit-red to-elit-brown text-white px-10 py-4 rounded-full font-semibold hover:shadow-2xl transition-all transform hover:scale-105 text-lg">
-              Explorar Portfólio
-            </button>
-            <button className="border-2 border-elit-gold text-elit-gold px-10 py-4 rounded-full font-semibold hover:bg-elit-gold hover:text-elit-dark transition-all text-lg">
+          <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center mb-8">
+            <button className="bg-gradient-to-r from-elit-red to-elit-brown text-white px-6 sm:px-10 py-3 sm:py-4 rounded-full font-semibold hover:shadow-2xl transition-all transform hover:scale-105 text-base sm:text-lg">
               Conhecer História
             </button>
+          </div>
+          
+          {/* Seta indicativa animada */}
+          <div className="flex justify-center mb-8">
+            <div className="animate-bounce">
+              <ChevronDown className="w-8 h-8 text-elit-gold opacity-80" />
+            </div>
           </div>
         </div>
       </div>
 
       {/* Navigation Controls */}
-      <div className="absolute inset-0 flex items-center justify-between px-4 z-20">
+      <div className="absolute inset-0 flex items-center justify-between px-2 sm:px-4 z-20">
         <button
           onClick={prevSlide}
-          className="bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white p-3 rounded-full transition-all hover:scale-110"
+          className="bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white p-2 sm:p-3 rounded-full transition-all hover:scale-110"
         >
-          <ChevronLeft size={24} />
+          <ChevronLeft size={20} className="sm:w-6 sm:h-6" />
         </button>
         <button
           onClick={nextSlide}
-          className="bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white p-3 rounded-full transition-all hover:scale-110"
+          className="bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white p-2 sm:p-3 rounded-full transition-all hover:scale-110"
         >
-          <ChevronRight size={24} />
+          <ChevronRight size={20} className="sm:w-6 sm:h-6" />
         </button>
       </div>
 
@@ -153,12 +157,12 @@ export default function HeroSection() {
       </div>
 
       {/* Auto-play Control */}
-      <div className="absolute top-8 right-8 z-20">
+      <div className="absolute top-4 right-4 sm:top-8 sm:right-8 z-20">
         <button
           onClick={() => setIsAutoPlaying(!isAutoPlaying)}
-          className="bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white p-3 rounded-full transition-all hover:scale-110"
+          className="bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white p-2 sm:p-3 rounded-full transition-all hover:scale-110"
         >
-          {isAutoPlaying ? <Pause size={20} /> : <Play size={20} />}
+          {isAutoPlaying ? <Pause size={16} className="sm:w-5 sm:h-5" /> : <Play size={16} className="sm:w-5 sm:h-5" />}
         </button>
       </div>
 

@@ -1,6 +1,6 @@
 export default function PresentationSection() {
   return (
-    <section id="apresentacao" className="py-20 bg-white">
+    <section id="sobre" className="py-20 bg-white">
       <div className="container mx-auto px-4">
         <div className="max-w-6xl mx-auto">
           {/* Frase-mestra */}
@@ -23,7 +23,7 @@ export default function PresentationSection() {
                 <h2 className="text-4xl font-bold text-elit-dark">
                   <span className="text-elit-red">Elit</span>
                   <span className="text-elit-yellow">'</span>
-                  <span className="text-elit-green">Arte</span>
+                  <span className="text-elit-brown">Arte</span>
                 </h2>
               </div>
 
@@ -36,7 +36,7 @@ export default function PresentationSection() {
                   com o objectivo de promover e celebrar a nossa rica cultura. 
                 </p>
                 <p className="text-lg text-gray-700 leading-relaxed mt-4">
-                  O nosso trabalho visa <span className="text-elit-green font-semibold">transformar, inspirar e conectar</span> a 
+                  O nosso trabalho visa <span className="text-elit-gold font-semibold">transformar, inspirar e conectar</span> a 
                   sociedade angolana com a arte que junta o tradicional ao contemporâneo.
                 </p>
               </div>

@@ -6,8 +6,11 @@ import {
   IdentitySection,
   HistorySection,
   AreasSection, 
-  ProjectsSection, 
-  ValuesSection 
+  TeamSection,
+  CommunitySection,
+  GallerySection,
+  ValuesSection,
+  ContactSection
 } from '@/components'
 
 export default function Home() {
@@ -19,8 +22,11 @@ export default function Home() {
       <IdentitySection />
       <HistorySection />
       <AreasSection />
-      <ProjectsSection />
+      <TeamSection />
+      <CommunitySection />
+      <GallerySection />
       <ValuesSection />
+      <ContactSection />
       <Footer />
     </div>
   )

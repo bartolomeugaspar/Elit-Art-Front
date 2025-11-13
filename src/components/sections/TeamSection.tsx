@@ -64,7 +64,7 @@ export default function TeamSection() {
     <section id="equipa" className="py-20 bg-gradient-to-br from-elit-light to-white">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
-          <p className="text-2xl md:text-3xl font-light text-elit-blue italic mb-8">
+          <p className="text-2xl md:text-3xl font-light text-elit-gold italic mb-8">
             "Grandes histórias são contadas por grandes equipas."
           </p>
           <h2 className="text-4xl md:text-5xl font-bold text-elit-dark mb-6">
@@ -86,7 +86,7 @@ export default function TeamSection() {
                   {leader.artisticName && (
                     <p className="text-elit-orange font-medium">({leader.artisticName})</p>
                   )}
-                  <p className="text-elit-blue font-semibold">{leader.role}</p>
+                  <p className="text-elit-gold font-semibold">{leader.role}</p>
                   <p className="text-gray-600">{leader.area}</p>
                 </div>
                 
@@ -102,7 +102,7 @@ export default function TeamSection() {
                     <span className="text-gray-600">{leader.email}</span>
                   </div>
                   <div className="flex items-center">
-                    <Phone className="w-4 h-4 text-elit-green mr-2" />
+                    <Phone className="w-4 h-4 text-elit-orange mr-2" />
                     <span className="text-gray-600">{leader.phone}</span>
                   </div>
                 </div>
@@ -126,7 +126,7 @@ export default function TeamSection() {
                     <p className="text-elit-orange text-sm">({artist.artisticName})</p>
                   )}
                   {artist.role && (
-                    <p className="text-elit-blue font-medium text-sm">{artist.role}</p>
+                    <p className="text-elit-gold font-medium text-sm">{artist.role}</p>
                   )}
                   <p className="text-gray-600 text-sm">{artist.area}</p>
                 </div>
@@ -139,22 +139,13 @@ export default function TeamSection() {
                     <span className="text-gray-600">{artist.email}</span>
                   </div>
                   <div className="flex items-center">
-                    <Phone className="w-3 h-3 text-elit-green mr-2" />
+                    <Phone className="w-3 h-3 text-elit-orange mr-2" />
                     <span className="text-gray-600">{artist.phone}</span>
                   </div>
                 </div>
               </div>
             ))}
           </div>
-        </div>
-
-        {/* Call to Action */}
-        <div className="text-center bg-gradient-to-r from-elit-red to-elit-yellow p-8 rounded-2xl text-white">
-          <h3 className="text-2xl font-bold mb-4">Junte-se ao Nosso Movimento</h3>
-          <p className="text-lg mb-6">Faça parte da transformação cultural de Angola</p>
-          <button className="bg-white text-elit-red px-8 py-3 rounded-full font-bold hover:bg-elit-light transition-colors">
-            Contacte-nos
-          </button>
         </div>
       </div>
     </section>

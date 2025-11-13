@@ -24,7 +24,7 @@ export default function Footer() {
               <div className="w-10 h-10 bg-elit-yellow rounded-full flex items-center justify-center hover:bg-elit-yellow/80 transition-colors cursor-pointer">
                 <span className="text-sm font-bold">@</span>
               </div>
-              <div className="w-10 h-10 bg-elit-green rounded-full flex items-center justify-center hover:bg-elit-green/80 transition-colors cursor-pointer">
+              <div className="w-10 h-10 bg-elit-orange rounded-full flex items-center justify-center hover:bg-elit-orange/80 transition-colors cursor-pointer">
                 <span className="text-sm font-bold">in</span>
               </div>
             </div>

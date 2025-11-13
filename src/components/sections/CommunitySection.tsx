@@ -88,7 +88,7 @@ export default function CommunitySection() {
         </div>
 
         {/* Propostas para Financiadores */}
-        <div className="bg-gradient-to-r from-elit-blue to-elit-green p-8 rounded-2xl text-white text-center">
+        <div className="bg-gradient-to-br from-orange/10 to-orange-50/10 p-8 rounded-2xl text-elit-dark text-center border border-black/10">
           <p className="text-xl font-light italic mb-4">
             "No Elit'arte, financiadores não apenas apoiam a arte, mas transformam vidas."
           </p>
@@ -102,7 +102,7 @@ export default function CommunitySection() {
           <div className="grid md:grid-cols-2 gap-8 mt-8">
             <div className="bg-white/10 p-6 rounded-xl">
               <h4 className="text-xl font-bold mb-4">Benefícios</h4>
-              <ul className="text-left space-y-2">
+              <ul className="text-elit-dark space-y-2">
                 <li>• Visibilidade da marca nos espectáculos</li>
                 <li>• Participação nas actividades culturais</li>
                 <li>• Acompanhamento escolar para filhos</li>
@@ -110,17 +110,13 @@ export default function CommunitySection() {
             </div>
             <div className="bg-white/10 p-6 rounded-xl">
               <h4 className="text-xl font-bold mb-4">Impacto Social</h4>
-              <ul className="text-left space-y-2">
+              <ul className="text-elit-dark space-y-2">
                 <li>• Orientação vocacional para jovens</li>
                 <li>• Desconstrução de mentalidades limitantes</li>
                 <li>• Desenvolvimento cultural sustentável</li>
               </ul>
             </div>
           </div>
-          
-          <button className="bg-white text-elit-blue px-8 py-3 rounded-full font-bold hover:bg-elit-light transition-colors mt-8">
-            Torne-se Nosso Parceiro
-          </button>
         </div>
       </div>
     </section>

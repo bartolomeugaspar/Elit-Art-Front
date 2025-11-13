@@ -10,16 +10,31 @@ export default function Header() {
     { label: 'Home', href: '#home' },
     { label: 'Sobre Nós', href: '#sobre' },
     { label: 'Áreas de Atuação', href: '#areas' },
-    { label: 'Projetos', href: '#projetos' },
-    { label: 'Equipa', href: '#equipa' },
-    { label: 'Contato', href: '#contacto' }
+    { label: 'Galeria', href: '#galeria' },
+    { label: 'Equipa', href: '#equipa' }
   ]
 
   const handleNavClick = (href: string) => {
     setIsMenuOpen(false)
-    const element = document.querySelector(href)
+    
+    // Remove # from href to get the element ID
+    const elementId = href.replace('#', '')
+    const element = document.getElementById(elementId)
+    
+    console.log('Navigating to:', elementId, 'Element found:', !!element)
+    
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth' })
+      // Calculate offset for fixed header (approximately 80px)
+      const headerOffset = 80
+      const elementPosition = element.getBoundingClientRect().top
+      const offsetPosition = elementPosition + window.pageYOffset - headerOffset
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      })
+    } else {
+      console.error('Element not found:', elementId)
     }
   }
 

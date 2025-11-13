@@ -7,7 +7,7 @@ export default function HistorySection() {
         <div className="max-w-6xl mx-auto">
           {/* Frase-mestra */}
           <div className="text-center mb-16">
-            <p className="text-2xl md:text-3xl font-light text-elit-blue italic mb-8">
+            <p className="text-2xl md:text-3xl font-light text-elit-gold italic mb-8">
               "A arte é a nossa linguagem universal; a cultura, a nossa assinatura."
             </p>
           </div>
@@ -15,7 +15,7 @@ export default function HistorySection() {
           {/* Timeline */}
           <div className="relative">
             {/* Linha central */}
-            <div className="absolute left-1/2 transform -translate-x-1/2 w-1 h-full bg-gradient-to-b from-elit-red via-elit-yellow to-elit-green"></div>
+            <div className="absolute left-1/2 transform -translate-x-1/2 w-1 bg-gradient-to-b from-elit-red via-elit-yellow to-elit-orange" style={{height: 'calc(100% - 260px)'}}></div>
 
             {/* Fundação */}
             <div className="relative mb-16">
@@ -47,7 +47,7 @@ export default function HistorySection() {
                 
                 <div className="relative">
                   <img 
-                    src="/WhatsApp Image 2025-11-13 at 16.39.47 (1).jpeg" 
+                    src="icon.jpeg" 
                     alt="Fundadores do Elit'Arte" 
                     className="w-full h-80 object-cover rounded-xl shadow-lg"
                   />
@@ -71,7 +71,7 @@ export default function HistorySection() {
                     alt="Membros fundadores" 
                     className="w-full h-80 object-cover rounded-xl shadow-lg"
                   />
-                  <div className="absolute -bottom-4 -left-4 w-20 h-20 bg-elit-green/30 rounded-full animate-pulse delay-1000"></div>
+                  <div className="absolute -bottom-4 -left-4 w-20 h-20 bg-elit-orange/30 rounded-full animate-pulse delay-1000"></div>
                 </div>
                 
                 <div className="lg:order-1">
@@ -85,7 +85,7 @@ export default function HistorySection() {
                     <p className="text-gray-700 leading-relaxed mt-4">
                       Posteriormente, endereçou-se o convite a vários fazedores de arte, nas disciplinas do teatro, 
                       música, cinema, pintura e literatura, maioritariamente alunos do 
-                      <strong className="text-elit-green"> Icra e do Marista</strong>, para fazerem parte das diferentes 
+                      <strong className="text-elit-orange"> Icra e do Marista</strong>, para fazerem parte das diferentes 
                       áreas artísticas que compõem o Elit'arte.
                     </p>
                   </div>
@@ -96,14 +96,14 @@ export default function HistorySection() {
             {/* Motivações */}
             <div className="relative">
               <div className="flex items-center justify-center mb-8">
-                <div className="w-16 h-16 bg-elit-green rounded-full flex items-center justify-center shadow-lg z-10">
+                <div className="w-16 h-16 bg-elit-orange rounded-full flex items-center justify-center shadow-lg z-10">
                   <Lightbulb className="w-8 h-8 text-white" />
                 </div>
               </div>
               
               <div className="text-center">
                 <h3 className="text-3xl font-bold text-elit-dark mb-6">Motivações</h3>
-                <div className="bg-gradient-to-r from-elit-red/10 via-elit-yellow/10 to-elit-green/10 p-8 rounded-2xl shadow-lg max-w-4xl mx-auto">
+                <div className="bg-gradient-to-r from-elit-red/10 via-elit-yellow/10 to-elit-orange/10 p-8 rounded-2xl shadow-lg max-w-4xl mx-auto">
                   <p className="text-xl text-gray-700 leading-relaxed italic">
                     "É saber que, a partir da arte, podemos construir nos nossos artistas e na nossa gente 
                     uma mentalidade cada vez mais séria, mais comprometida com o país e consigo mesmo."

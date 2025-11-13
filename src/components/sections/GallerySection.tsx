@@ -4,55 +4,175 @@ export default function GallerySection() {
   const galleryItems = [
     {
       type: 'image',
-      src: '/WhatsApp Image 2025-11-13 at 16.39.47 (1).jpeg',
-      alt: 'Fundadores do Elit\'Arte',
+      src: '/WhatsApp Image 2025-11-13 at 16.39.48 (1).jpeg',
+      alt: 'Momentos únicos do Elit\'Arte',
       category: 'Fundação'
     },
     {
       type: 'image',
-      src: '/WhatsApp Image 2025-11-13 at 16.39.48.jpeg',
-      alt: 'Membros fundadores',
+      src: '/WhatsApp Image 2025-11-13 at 16.39.48 (2).jpeg',
+      alt: 'Comunidade artística unida',
       category: 'Equipa'
     },
     {
       type: 'image',
-      src: '/WhatsApp Image 2025-11-13 at 16.39.49.jpeg',
-      alt: 'Teatro Elit\'Arte',
+      src: '/WhatsApp Image 2025-11-13 at 16.39.49 (2).jpeg',
+      alt: 'Expressão teatral autêntica',
       category: 'Teatro'
     },
     {
       type: 'image',
-      src: '/WhatsApp Image 2025-11-13 at 16.39.49 (1).jpeg',
-      alt: 'Teatro Elit\'Arte',
+      src: '/WhatsApp Image 2025-11-13 at 16.39.50 (1).jpeg',
+      alt: 'Arte em movimento',
       category: 'Teatro'
     },
     {
       type: 'image',
-      src: '/WhatsApp Image 2025-11-13 at 16.44.21.jpeg',
-      alt: 'Música Elit\'Arte',
+      src: '/WhatsApp Image 2025-11-13 at 16.39.50 (2).jpeg',
+      alt: 'Performance criativa',
+      category: 'Teatro'
+    },
+    {
+      type: 'image',
+      src: '/WhatsApp Image 2025-11-13 at 16.39.50 (3).jpeg',
+      alt: 'Talento em ação',
+      category: 'Teatro'
+    },
+    {
+      type: 'image',
+      src: '/WhatsApp Image 2025-11-13 at 16.39.51 (1).jpeg',
+      alt: 'Ritmos angolanos',
       category: 'Música'
     },
     {
       type: 'image',
-      src: '/WhatsApp Image 2025-11-13 at 16.44.22.jpeg',
-      alt: 'Música Elit\'Arte',
+      src: '/WhatsApp Image 2025-11-13 at 16.39.51 (2).jpeg',
+      alt: 'Música tradicional',
       category: 'Música'
     },
     {
       type: 'image',
-      src: '/WhatsApp Image 2025-11-13 at 17.02.51.jpeg',
-      alt: 'Pintura Elit\'Arte',
+      src: '/WhatsApp Image 2025-11-13 at 16.44.21 (1).jpeg',
+      alt: 'Dança contemporânea',
+      category: 'Música'
+    },
+    {
+      type: 'image',
+      src: '/WhatsApp Image 2025-11-13 at 16.44.22 (1).jpeg',
+      alt: 'Expressão musical',
+      category: 'Música'
+    },
+    {
+      type: 'image',
+      src: '/WhatsApp Image 2025-11-13 at 16.44.22 (2).jpeg',
+      alt: 'Harmonia cultural',
+      category: 'Música'
+    },
+    {
+      type: 'image',
+      src: '/WhatsApp Image 2025-11-13 at 16.44.23 (1).jpeg',
+      alt: 'Arte visual contemporânea',
       category: 'Pintura'
     },
     {
       type: 'image',
-      src: '/WhatsApp Image 2025-11-13 at 17.02.52.jpeg',
-      alt: 'Pintura Elit\'Arte',
+      src: '/WhatsApp Image 2025-11-13 at 16.44.24 (1).jpeg',
+      alt: 'Criação artística',
       category: 'Pintura'
-    }
+    },
+    {
+      type: 'image',
+      src: '/WhatsApp Image 2025-11-13 at 16.56.06.jpeg',
+      alt: 'Literatura angolana',
+      category: 'Literatura'
+    },
+    {
+      type: 'image',
+      src: '/WhatsApp Image 2025-11-13 at 16.56.17.jpeg',
+      alt: 'Escrita criativa',
+      category: 'Literatura'
+    },
+    {
+      type: 'image',
+      src: '/WhatsApp Image 2025-11-13 at 17.02.52 (2).jpeg',
+      alt: 'Produção audiovisual',
+      category: 'Cinema'
+    },
+    {
+      type: 'image',
+      src: '/WhatsApp Image 2025-11-13 at 17.41.21 (1).jpeg',
+      alt: 'Bastidores do cinema',
+      category: 'Cinema'
+    },
+    {
+      type: 'image',
+      src: '/WhatsApp Image 2025-11-13 at 17.41.21 (2).jpeg',
+      alt: 'Equipa criativa',
+      category: 'Equipa'
+    },
+    {
+      type: 'image',
+      src: '/WhatsApp Image 2025-11-13 at 17.41.22 (1).jpeg',
+      alt: 'Colaboração artística',
+      category: 'Equipa'
+    },
+    {
+      type: 'image',
+      src: '/WhatsApp Image 2025-11-13 at 17.41.22 (2).jpeg',
+      alt: 'Trabalho em equipa',
+      category: 'Equipa'
+    },
+    {
+      type: 'image',
+      src: '/WhatsApp Image 2025-11-13 at 17.41.24 (1).jpeg',
+      alt: 'Momentos especiais',
+      category: 'Fundação'
+    },
+    {
+      type: 'image',
+      src: '/WhatsApp Image 2025-11-13 at 17.41.25 (1).jpeg',
+      alt: 'História do movimento',
+      category: 'Fundação'
+    },
+    {
+      type: 'image',
+      src: '/WhatsApp Image 2025-11-13 at 17.41.25 (2).jpeg',
+      alt: 'Legado cultural',
+      category: 'Fundação'
+    },
+    {
+      type: 'image',
+      src: '/WhatsApp Image 2025-11-13 at 17.41.26.jpeg',
+      alt: 'Tradição preservada',
+      category: 'Fundação'
+    },
+    {
+      type: 'image',
+      src: '/S.jpeg',
+      alt: 'Arte contemporânea',
+      category: 'Pintura'
+    },
+    {
+      type: 'image',
+      src: '/Sem título.jpeg',
+      alt: 'Criação visual',
+      category: 'Pintura'
+    },
+    {
+      type: 'image',
+      src: '/Sem.jpeg',
+      alt: 'Expressão artística',
+      category: 'Pintura'
+    },
+    {
+      type: 'image',
+      src: '/tes.jpeg',
+      alt: 'Talento emergente',
+      category: 'Equipa'
+    },
   ]
 
-  const categories = ['Todos', 'Fundação', 'Teatro', 'Música', 'Pintura', 'Equipa']
+  const categories = ['Todos', 'Fundação', 'Teatro', 'Música', 'Pintura', 'Literatura', 'Cinema', 'Equipa']
 
   return (
     <section id="galeria" className="py-20 bg-gradient-to-br from-elit-dark to-gray-900 text-white">
@@ -113,12 +233,19 @@ export default function GallerySection() {
             <p className="text-elit-light">Assista aos nossos momentos mais marcantes</p>
           </div>
           
-          <div className="grid md:grid-cols-2 gap-8">
-            <div className="bg-gray-800 rounded-xl p-6 text-center">
-              <div className="w-full h-48 bg-gray-700 rounded-lg mb-4 flex items-center justify-center">
-                <Play className="w-16 h-16 text-elit-yellow" />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+            <div className="bg-gray-800 rounded-xl p-4 sm:p-6 text-center">
+              <div className="w-full h-48 sm:h-56 rounded-lg mb-4 overflow-hidden">
+                <video 
+                  className="w-full h-full object-cover"
+                  controls
+                  poster="/WhatsApp Image 2025-11-13 at 17.41.23 (2).jpeg"
+                >
+                  <source src="/WhatsApp Video 2025-11-13 at 17.02.50.mp4" type="video/mp4" />
+                  Seu navegador não suporta o elemento de vídeo.
+                </video>
               </div>
-              <h4 className="text-xl font-bold mb-2">Espetáculo "Octhali"</h4>
+              <h4 className="text-lg sm:text-xl font-bold mb-2">Espetáculo "Octhali"</h4>
               <p className="text-elit-light text-sm">O quanto custa a tua humanidade - 27 de setembro</p>
             </div>
             
@@ -146,8 +273,8 @@ export default function GallerySection() {
               <h4 className="text-xl font-bold mb-2">Bastidores</h4>
               <p className="text-elit-light">A magia por trás dos espetáculos</p>
             </div>
-            <div className="bg-elit-green/10 p-6 rounded-xl">
-              <Play className="w-12 h-12 text-elit-green mx-auto mb-4" />
+            <div className="bg-elit-orange/10 p-6 rounded-xl">
+              <Play className="w-12 h-12 text-elit-orange mx-auto mb-4" />
               <h4 className="text-xl font-bold mb-2">Apresentações</h4>
               <p className="text-elit-light">Os momentos mais marcantes no palco</p>
             </div>
