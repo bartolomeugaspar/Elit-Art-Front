@@ -7,6 +7,10 @@ module.exports = {
   ],
   theme: {
     extend: {
+      screens: {
+        'xs': '475px',
+        // Outros breakpoints padrão: sm: 640px, md: 768px, lg: 1024px, xl: 1280px, 2xl: 1536px
+      },
       colors: {
         // Cores idênticas ao logotipo Elit'Arte
         'elit-red': '#8B4513',      // Marrom/vermelho escuro do "arte"
