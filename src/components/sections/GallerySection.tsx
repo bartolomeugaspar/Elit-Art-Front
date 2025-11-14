@@ -76,13 +76,13 @@ export default function GallerySection() {
     },
     {
       type: 'image',
-      src: '/WhatsApp Image 2025-11-13 at 17.41.21 (1).jpeg',
+      src: '/1.jpeg',
       alt: 'Bastidores do cinema',
       category: 'Cinema'
     },
     {
       type: 'image',
-      src: '/WhatsApp Image 2025-11-13 at 17.41.21 (2).jpeg',
+      src: '/2.jpeg',
       alt: 'Equipa criativa',
       category: 'Equipa'
     },
@@ -112,7 +112,7 @@ export default function GallerySection() {
     },
     {
       type: 'image',
-      src: '/WhatsApp Image 2025-11-13 at 17.41.25 (2).jpeg',
+      src: '/3.jpeg',
       alt: 'Legado cultural',
       category: 'Fundação'
     },
@@ -184,13 +184,13 @@ export default function GallerySection() {
     },
     {
       type: 'image',
-      src: '/WhatsApp Image 2025-11-13 at 17.41.20.jpeg',
+      src: '/4.jpeg',
       alt: 'Bastidores cinematográficos',
       category: 'Cinema'
     },
     {
       type: 'image',
-      src: '/WhatsApp Image 2025-11-13 at 17.41.21.jpeg',
+      src: '/5.jpeg',
       alt: 'Produção audiovisual',
       category: 'Cinema'
     },
@@ -214,7 +214,7 @@ export default function GallerySection() {
     },
     {
       type: 'image',
-      src: '/WhatsApp Image 2025-11-13 at 17.41.25 (2).jpeg',
+      src: '/6.jpeg',
       alt: 'Legado cultural preservado',
       category: 'Fundação'
     },
