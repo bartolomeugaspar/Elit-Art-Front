@@ -113,37 +113,37 @@ export default function BackgroundMusic() {
         Seu navegador não suporta o elemento de áudio.
       </audio>
 
-      {/* Controles de Música */}
-      <div className="fixed bottom-3 right-3 xs:bottom-4 xs:right-4 z-50 bg-elit-dark/90 backdrop-blur-sm rounded-full p-1.5 xs:p-2 sm:p-3 shadow-lg border border-elit-yellow/20">
-        <div className="flex items-center space-x-1.5 xs:space-x-2 sm:space-x-3">
+      {/* Controles de Música - Versão Compacta */}
+      <div className="fixed bottom-4 right-4 z-50 bg-elit-dark/80 backdrop-blur-sm rounded-full p-1 shadow-md border border-elit-yellow/10">
+        <div className="flex items-center space-x-1">
           {/* Botão Play/Pause */}
           <button
             onClick={togglePlay}
-            className="w-7 h-7 xs:w-8 xs:h-8 sm:w-10 sm:h-10 bg-elit-red hover:bg-elit-red/80 rounded-full flex items-center justify-center transition-colors touch-manipulation"
+            className="w-6 h-6 bg-elit-red hover:bg-elit-red/80 rounded-full flex items-center justify-center transition-colors touch-manipulation"
             aria-label={isPlaying ? 'Pausar música' : 'Reproduzir música'}
           >
             {isPlaying ? (
-              <Pause className="w-3.5 h-3.5 xs:w-4 xs:h-4 sm:w-5 sm:h-5 text-white" />
+              <Pause className="w-3 h-3 text-white" />
             ) : (
-              <Play className="w-3.5 h-3.5 xs:w-4 xs:h-4 sm:w-5 sm:h-5 text-white ml-0.5" />
+              <Play className="w-3 h-3 text-white ml-0.5" />
             )}
           </button>
 
           {/* Botão Mute/Unmute */}
           <button
             onClick={toggleMute}
-            className="w-5 h-5 xs:w-6 xs:h-6 sm:w-8 sm:h-8 bg-elit-yellow hover:bg-elit-yellow/80 rounded-full flex items-center justify-center transition-colors touch-manipulation"
+            className="w-5 h-5 bg-elit-yellow hover:bg-elit-yellow/80 rounded-full flex items-center justify-center transition-colors touch-manipulation"
             aria-label={isMuted ? 'Ativar som' : 'Silenciar'}
           >
             {isMuted ? (
-              <VolumeX className="w-2.5 h-2.5 xs:w-3 xs:h-3 sm:w-4 sm:h-4 text-elit-dark" />
+              <VolumeX className="w-2.5 h-2.5 text-elit-dark" />
             ) : (
-              <Volume2 className="w-2.5 h-2.5 xs:w-3 xs:h-3 sm:w-4 sm:h-4 text-elit-dark" />
+              <Volume2 className="w-2.5 h-2.5 text-elit-dark" />
             )}
           </button>
 
-          {/* Controle de Volume - Desktop */}
-          <div className="hidden md:flex items-center space-x-2">
+          {/* Controle de Volume - Apenas Desktop */}
+          <div className="hidden lg:flex items-center">
             <input
               type="range"
               min="0"
@@ -151,7 +151,7 @@ export default function BackgroundMusic() {
               step="0.1"
               value={volume}
               onChange={handleVolumeChange}
-              className="w-16 lg:w-20 h-1 bg-elit-yellow/30 rounded-lg appearance-none cursor-pointer slider"
+              className="w-12 h-1 bg-elit-yellow/30 rounded-lg appearance-none cursor-pointer slider ml-1"
               style={{
                 background: `linear-gradient(to right, #F4A460 0%, #F4A460 ${volume * 100}%, rgba(244, 164, 96, 0.3) ${volume * 100}%, rgba(244, 164, 96, 0.3) 100%)`
               }}
@@ -159,25 +159,9 @@ export default function BackgroundMusic() {
           </div>
         </div>
 
-        {/* Controle de Volume Mobile - Expandido */}
-        <div className="md:hidden mt-2 px-1">
-          <input
-            type="range"
-            min="0"
-            max="1"
-            step="0.1"
-            value={volume}
-            onChange={handleVolumeChange}
-            className="w-full h-1 bg-elit-yellow/30 rounded-lg appearance-none cursor-pointer slider"
-            style={{
-              background: `linear-gradient(to right, #F4A460 0%, #F4A460 ${volume * 100}%, rgba(244, 164, 96, 0.3) ${volume * 100}%, rgba(244, 164, 96, 0.3) 100%)`
-            }}
-          />
-        </div>
-
         {/* Indicador de música tocando */}
         {isPlaying && (
-          <div className="absolute -top-0.5 -right-0.5 sm:-top-1 sm:-right-1 w-2 h-2 sm:w-3 sm:h-3 bg-green-500 rounded-full animate-pulse"></div>
+          <div className="absolute -top-0.5 -right-0.5 w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
         )}
       </div>
 
