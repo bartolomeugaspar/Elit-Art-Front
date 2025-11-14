@@ -110,11 +110,16 @@ export const useEvents = () => {
   }
 
   const searchEvents = (query: string): Event[] => {
+    if (!query.trim()) {
+      return events
+    }
+    
     const lowerQuery = query.toLowerCase()
     return events.filter(event =>
       event.title.toLowerCase().includes(lowerQuery) ||
       event.description.toLowerCase().includes(lowerQuery) ||
-      event.category.toLowerCase().includes(lowerQuery)
+      event.category.toLowerCase().includes(lowerQuery) ||
+      event.location.toLowerCase().includes(lowerQuery)
     )
   }
 
