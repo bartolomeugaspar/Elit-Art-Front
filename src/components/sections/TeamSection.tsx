@@ -25,6 +25,7 @@ export default function TeamSection() {
     },
     {
       name: "Luísa Gonçalves",
+       artisticName: "Mulher Rei",
       role: "Tesoureira",
       area: "Teatro e Cinema",
       description: "Tesoureira e fundadora. Actriz de teatro e cinema, estudante de pedagogia no Magistério Marista.",
