@@ -8,8 +8,8 @@ import { useState } from 'react'
 
 export default function EventDetailPage({ params }: { params: { id: string } }) {
   const { getEventById, getTestimonialsByEventId } = useEvents()
-  const event = getEventById(parseInt(params.id))
-  const testimonials = event ? getTestimonialsByEventId(event.id) : []
+  const event = getEventById(params.id)
+  const testimonials = event ? getTestimonialsByEventId(event.id as number) : []
   const [isLiked, setIsLiked] = useState(false)
   const [showShareMenu, setShowShareMenu] = useState(false)
 
