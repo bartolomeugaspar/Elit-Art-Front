@@ -40,21 +40,16 @@ export const useEvents = () => {
     const fetchData = async () => {
       try {
         setLoading(true)
-        const [eventsRes, testimonialsRes] = await Promise.all([
-          fetch(`${API_BASE_URL}/events`),
-          fetch(`${API_BASE_URL}/testimonials`)
-        ])
+        const eventsRes = await fetch(`${API_BASE_URL}/events`)
 
-        if (!eventsRes.ok || !testimonialsRes.ok) {
-          throw new Error('Falha ao buscar dados')
+        if (!eventsRes.ok) {
+          throw new Error('Falha ao buscar eventos')
         }
 
         const eventsData = await eventsRes.json()
-        const testimonialsData = await testimonialsRes.json()
 
         // Extract events array from API response
         const events = eventsData.events || eventsData || []
-        const testimonials = testimonialsData.testimonials || testimonialsData || []
 
         // Map API fields to Event interface
         const mappedEvents: Event[] = events.map((event: any) => ({
@@ -74,12 +69,10 @@ export const useEvents = () => {
         }))
 
         setEvents(mappedEvents)
-        setTestimonials(testimonials)
         setError(null)
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Erro desconhecido')
         setEvents([])
-        setTestimonials([])
       } finally {
         setLoading(false)
       }
