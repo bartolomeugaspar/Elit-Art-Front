@@ -7,7 +7,7 @@ export default function TeamSection() {
       artisticName: "Guido Alves",
       role: "Coordenador",
       area: "Literatura e Cinema",
-      description: "Coordenador do Elit'arte, director da área do cinema e fundador. Formação artística em teatro (15+ anos) e cinema.",
+      description: "Coordenador do Elit'arte, director da área do cinema e fundador. Formacção artística em teatro (15+ anos) e cinema.",
       quote: "Gosto tanto de escrever quanto gosto de comer, é uma necessidade vital para a minha alma.",
       email: "faustinodomingos83@hotmail.com",
       phone: "927935543",
@@ -39,14 +39,14 @@ export default function TeamSection() {
     {
       name: "Adelino Canganjo Vitorino Mateus",
       area: "Música (Piano)",
-      description: "Começou a cantar no coral da igreja, onde sentiu a vocação pelo piano.",
+      description: "Começou a cantar no coral da igreja, onde sentiu a vocacção pelo piano.",
       email: "deliano053@gmail.com",
       phone: "949437675"
     },
     {
       name: "Mariana Tabina Passagem Feitio",
       area: "Teatro e Cinema",
-      description: "A representação é uma forma de escape e ferramenta de transformação social.",
+      description: "A representacção é uma forma de escape e ferramenta de transformacção social.",
       email: "mariannafeitio0@gmail.com",
       phone: "931194171"
     },

@@ -24,7 +24,7 @@ export default function IdentitySection() {
               </div>
               <p className="text-gray-700 leading-relaxed">
                 Promover a arte nas suas múltiplas expressões (teatro, dança, música, pintura, cinema e literatura) 
-                como ferramentas de transformação da nossa sociedade e de desenvolvimento dos angolanos, 
+                como ferramentas de transformacção da nossa sociedade e de desenvolvimento dos angolanos, 
                 marcadamente com traços da nossa cultura angolana tradicional.
               </p>
             </div>
@@ -38,7 +38,7 @@ export default function IdentitySection() {
                 <h3 className="text-2xl font-bold text-elit-dark">Visão</h3>
               </div>
               <p className="text-gray-700 leading-relaxed">
-                Ser reconhecido como o maior movimento artístico de Angola, em inovação artística, 
+                Ser reconhecido como o maior movimento artístico de Angola, em inovacção artística, 
                 inspirando gerações e transformando vidas por meio da arte.
               </p>
             </div>
@@ -129,7 +129,7 @@ export default function IdentitySection() {
                 </div>
                 <h4 className="text-xl font-bold text-elit-dark mb-3">Excelência</h4>
                 <p className="text-gray-600 text-sm leading-relaxed">
-                  Buscamos sempre a perfeição em cada obra e apresentação artística.
+                  Buscamos sempre a perfeição em cada obra e apresentacção artística.
                 </p>
               </div>
             </div>

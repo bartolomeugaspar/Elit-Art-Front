@@ -6,7 +6,7 @@ export default function ContactSection() {
       icon: Mail,
       title: "Email",
       value: "faustinodomingos83@hotmail.com",
-      description: "Para comunicação formal"
+      description: "Para comunicacção formal"
     },
     {
       icon: Phone,
@@ -22,7 +22,7 @@ export default function ContactSection() {
     },
     {
       icon: MapPin,
-      title: "Localização",
+      title: "Localizacção",
       value: "Luanda, Angola",
       description: "Local de ensaios e sede"
     }
@@ -88,7 +88,7 @@ export default function ContactSection() {
                   <option value="">Selecione um assunto</option>
                   <option value="parceria">Parceria</option>
                   <option value="financiamento">Financiamento</option>
-                  <option value="participacao">Participação</option>
+                  <option value="participacao">Participacção</option>
                   <option value="informacoes">Informações Gerais</option>
                 </select>
               </div>

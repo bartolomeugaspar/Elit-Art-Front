@@ -9,7 +9,7 @@ export default function AreasSection() {
             "Multiplicamos vozes através da música, dança, literatura e teatro."
           </p>
           <h2 className="text-4xl md:text-5xl font-bold text-elit-dark mb-6">
-            Áreas de <span className="text-elit-red">Atuação</span>
+            Áreas de <span className="text-elit-red">actuacção</span>
           </h2>
         </div>
 
@@ -29,14 +29,14 @@ export default function AreasSection() {
                   de vanguarda, com temáticas sociais e culturais com traços marcantes da vivência do angolano.
                 </p>
                 <div className="mb-4">
-                  <h4 className="font-bold text-elit-red mb-2">Espetáculos de Destaque:</h4>
+                  <h4 className="font-bold text-elit-red mb-2">espectáculos de Destaque:</h4>
                   <ul className="text-gray-700 space-y-2">
                     <li>• <strong>"Octhali"</strong> - O quanto custa a tua humanidade (27 de setembro, Horizonte NJinga Mbandi)</li>
                     <li>• <strong>"O preço da ingratidão"</strong> (27 de Dezembro, LAASP)</li>
                   </ul>
                 </div>
                 <p className="text-gray-700 leading-relaxed">
-                  <strong>Linha de ação:</strong> Produção de espectáculos teatrais clássicos, contemporâneos e infantis; 
+                  <strong>Linha de acção:</strong> Produção de espectáculos teatrais clássicos, contemporâneos e infantis; 
                   engajamento comunitário (teatro social nas comunidades); e concursos teatrais.
                 </p>
               </div>
@@ -64,7 +64,7 @@ export default function AreasSection() {
                   canções angolanas, cujo conteúdo seja de vanguarda e numa fusão de estilos tradicionais com modernos.
                 </p>
                 <p className="text-gray-700 leading-relaxed">
-                  <strong>Linha de ação:</strong> Concursos, oficinas de canto, composição musical; instrumentalização; 
+                  <strong>Linha de acção:</strong> Concursos, oficinas de canto, composição musical; instrumentalizacção; 
                   palestras; produção de espectáculo musical.
                 </p>
               </div>
@@ -92,7 +92,7 @@ export default function AreasSection() {
                   de dança que celebram raízes angolanas, mas com um toque modernista.
                 </p>
                 <p className="text-gray-700 leading-relaxed">
-                  <strong>Linha de ação:</strong> Concursos, oficinas de dança; palestras e produção de espectáculo de dança.
+                  <strong>Linha de acção:</strong> Concursos, oficinas de dança; palestras e produção de espectáculo de dança.
                 </p>
               </div>
             </div>
@@ -119,7 +119,7 @@ export default function AreasSection() {
                   de vanguarda, nas modalidades do conto e poesia, com presença vincada dos nossos hábitos e costumes.
                 </p>
                 <p className="text-gray-700 leading-relaxed">
-                  <strong>Linha de ação:</strong> Bibliotecas de rua; alfabetização; oficinas literárias; concursos de redacção.
+                  <strong>Linha de acção:</strong> Bibliotecas de rua; alfabetizacção; oficinas literárias; concursos de redacção.
                 </p>
               </div>
             </div>
@@ -146,7 +146,7 @@ export default function AreasSection() {
                   com programas de debate sobre obras literárias angolanas.
                 </p>
                 <p className="text-gray-700 leading-relaxed">
-                  <strong>Linha de ação:</strong> Documentários; filmes de curta-metragem e vídeos de sensibilização social.
+                  <strong>Linha de acção:</strong> Documentários; filmes de curta-metragem e vídeos de sensibilizacção social.
                 </p>
               </div>
             </div>
@@ -173,7 +173,7 @@ export default function AreasSection() {
                   a identidade e a alma do povo angolano.
                 </p>
                 <p className="text-gray-700 leading-relaxed">
-                  <strong>Linha de ação:</strong> Oficinas de pinturas nas ruas, escolas, parques e eventos culturais.
+                  <strong>Linha de acção:</strong> Oficinas de pinturas nas ruas, escolas, parques e eventos culturais.
                 </p>
               </div>
             </div>

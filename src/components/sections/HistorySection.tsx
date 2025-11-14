@@ -17,7 +17,7 @@ export default function HistorySection() {
             {/* Linha central - Hidden on mobile */}
             <div className="hidden lg:block absolute left-1/2 transform -translate-x-1/2 w-1 bg-gradient-to-b from-elit-red via-elit-yellow to-elit-orange" style={{height: 'calc(100% - 260px)'}}></div>
 
-            {/* Fundação */}
+            {/* Fundacção */}
             <div className="relative mb-16">
               <div className="flex items-center justify-center mb-8">
                 <div className="w-16 h-16 bg-elit-red rounded-full flex items-center justify-center shadow-lg z-10">
@@ -27,7 +27,7 @@ export default function HistorySection() {
               
               <div className="grid lg:grid-cols-2 gap-12 items-center">
                 <div className="text-center lg:text-right">
-                  <h3 className="text-3xl font-bold text-elit-dark mb-4">Fundação</h3>
+                  <h3 className="text-3xl font-bold text-elit-dark mb-4">Fundacção</h3>
                   <div className="bg-white p-6 rounded-xl shadow-lg">
                     <p className="text-lg text-gray-700 leading-relaxed mb-4">
                       <strong className="text-elit-red">13 de Fevereiro de 2024</strong>
@@ -35,11 +35,11 @@ export default function HistorySection() {
                     <p className="text-gray-700 leading-relaxed">
                       O Elit'arte, fundado no pretérito 13 de Fevereiro de 2024, é um Movimento artístico que nasceu da 
                       paixão pela arte de dois jovens, <strong>Faustino Domingos</strong> e <strong>Luísa Gonçalves</strong>, 
-                      como forma de transformação pessoal, social, cultural e espiritual.
+                      como forma de transformacção pessoal, social, cultural e espiritual.
                     </p>
                     <p className="text-gray-700 leading-relaxed mt-4">
                       O Movimento congrega várias expressões artísticas num só lugar (teatro, dança, música, literatura, 
-                      pintura e cinema), a fim de promover um espaço de criação, expressão, promoção e reflexão, 
+                      pintura e cinema), a fim de promover um espaço de criacção, expressão, promoção e reflexão, 
                       sempre com forte conexão com a nossa identidade cultural.
                     </p>
                   </div>

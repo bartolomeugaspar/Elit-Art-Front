@@ -16,7 +16,7 @@ export default function Footer() {
               <span className="text-2xl sm:text-3xl font-bold">Elit'Arte</span>
             </div>
             <p className="text-gray-300 text-sm sm:text-base leading-relaxed mb-4 sm:mb-6 max-w-md mx-auto sm:mx-0">
-              Movimento artístico dedicado à preservação e celebração da rica cultura angolana, 
+              Movimento artístico dedicado à preservacção e celebracção da rica cultura angolana, 
               conectando tradições ancestrais com expressões contemporâneas.
             </p>
             <div className="flex justify-center sm:justify-start space-x-3 sm:space-x-4">
@@ -40,11 +40,11 @@ export default function Footer() {
 
           {/* Links Rápidos */}
           <div className="text-center sm:text-left">
-            <h3 className="text-lg sm:text-xl font-bold mb-4 sm:mb-6">Navegação</h3>
+            <h3 className="text-lg sm:text-xl font-bold mb-4 sm:mb-6">Navegacção</h3>
             <ul className="space-y-2 sm:space-y-3">
               <li><a href="#home" className="text-gray-300 hover:text-elit-yellow transition-colors text-sm sm:text-base">Home</a></li>
               <li><a href="#sobre" className="text-gray-300 hover:text-elit-yellow transition-colors text-sm sm:text-base">Sobre Nós</a></li>
-              <li><a href="#areas" className="text-gray-300 hover:text-elit-yellow transition-colors text-sm sm:text-base">Áreas de Atuação</a></li>
+              <li><a href="#areas" className="text-gray-300 hover:text-elit-yellow transition-colors text-sm sm:text-base">Áreas de actuacção</a></li>
               <li><a href="#galeria" className="text-gray-300 hover:text-elit-yellow transition-colors text-sm sm:text-base">Galeria</a></li>
               <li><a href="#equipa" className="text-gray-300 hover:text-elit-yellow transition-colors text-sm sm:text-base">Equipa</a></li>
             </ul>

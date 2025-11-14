@@ -6,7 +6,7 @@ export default function GallerySection() {
       type: 'image',
       src: '/WhatsApp Image 2025-11-13 at 16.39.48 (1).jpeg',
       alt: 'Momentos únicos do Elit\'Arte',
-      category: 'Fundação'
+      category: 'Fundacção'
     },
     {
       type: 'image',
@@ -29,7 +29,7 @@ export default function GallerySection() {
     {
       type: 'image',
       src: '/WhatsApp Image 2025-11-13 at 16.39.50 (3).jpeg',
-      alt: 'Talento em ação',
+      alt: 'Talento em acção',
       category: 'Teatro'
     },
     {
@@ -65,7 +65,7 @@ export default function GallerySection() {
     {
       type: 'image',
       src: '/WhatsApp Image 2025-11-13 at 16.44.24 (1).jpeg',
-      alt: 'Criação artística',
+      alt: 'Criacção artística',
       category: 'Pintura'
     },
     {
@@ -89,7 +89,7 @@ export default function GallerySection() {
     {
       type: 'image',
       src: '/WhatsApp Image 2025-11-13 at 17.41.22 (1).jpeg',
-      alt: 'Colaboração artística',
+      alt: 'Colaboracção artística',
       category: 'Equipa'
     },
     {
@@ -102,25 +102,25 @@ export default function GallerySection() {
       type: 'image',
       src: '/WhatsApp Image 2025-11-13 at 17.41.24 (1).jpeg',
       alt: 'Momentos especiais',
-      category: 'Fundação'
+      category: 'Fundacção'
     },
     {
       type: 'image',
       src: '/WhatsApp Image 2025-11-13 at 17.41.25 (1).jpeg',
       alt: 'História do movimento',
-      category: 'Fundação'
+      category: 'Fundacção'
     },
     {
       type: 'image',
       src: '/3.jpeg',
       alt: 'Legado cultural',
-      category: 'Fundação'
+      category: 'Fundacção'
     },
     {
       type: 'image',
       src: '/WhatsApp Image 2025-11-13 at 17.41.26.jpeg',
       alt: 'Tradição preservada',
-      category: 'Fundação'
+      category: 'Fundacção'
     },
     {
       type: 'image',
@@ -131,7 +131,7 @@ export default function GallerySection() {
     {
       type: 'image',
       src: '/Sem título.jpeg',
-      alt: 'Criação visual',
+      alt: 'Criacção visual',
       category: 'Pintura'
     },
     {
@@ -150,7 +150,7 @@ export default function GallerySection() {
       type: 'image',
       src: '/WhatsApp Image 2025-11-13 at 16.39.45.jpeg',
       alt: 'Momentos artísticos únicos',
-      category: 'Fundação'
+      category: 'Fundacção'
     },
     {
       type: 'image',
@@ -203,76 +203,76 @@ export default function GallerySection() {
     {
       type: 'image',
       src: '/uniao.jpeg',
-      alt: 'União e colaboração artística',
-      category: 'Fundação'
+      alt: 'União e colaboracção artística',
+      category: 'Fundacção'
     },
     {
       type: 'image',
       src: '/WhatsApp Image 2025-11-13 at 17.41.25 (1).jpeg',
       alt: 'História do movimento',
-      category: 'Fundação'
+      category: 'Fundacção'
     },
     {
       type: 'image',
       src: '/6.jpeg',
       alt: 'Legado cultural preservado',
-      category: 'Fundação'
+      category: 'Fundacção'
     },
     {
       type: 'image',
       src: '/meninas.jpeg',
       alt: 'Legado cultural preservado',
-      category: 'Fundação'
+      category: 'Fundacção'
     },
     {
       type: 'image',
       src: '/festiva.jpeg',
       alt: 'Legado cultural preservado',
-      category: 'Fundação'
+      category: 'Fundacção'
     },
     {
       type: 'image',
       src: '/luisa.jpeg',
       alt: 'Legado cultural preservado',
-      category: 'Fundação'
+      category: 'Fundacção'
     },
     {
       type: 'image',
       src: '/bairo.jpeg',
       alt: 'Legado cultural preservado',
-      category: 'Fundação'
+      category: 'Fundacção'
     },
     {
       type: 'image',
       src: '/maos.jpeg',
       alt: 'Legado cultural preservado',
-      category: 'Fundação'
+      category: 'Fundacção'
     }
     ,
     {
       type: 'image',
       src: '/WhatsApp Image 2025-11-13 at 17.02.52 (1).jpeg',
       alt: 'Legado cultural preservado',
-      category: 'Fundação'
+      category: 'Fundacção'
     }
     ,
     {
       type: 'image',
       src: '/preta.jpeg',
       alt: 'Legado cultural preservado',
-      category: 'Fundação'
+      category: 'Fundacção'
     }
     ,
     {
       type: 'image',
       src: '/WhatsApp Image 2025-11-13 at 17.02.51.jpeg',
       alt: 'Legado cultural preservado',
-      category: 'Fundação'
+      category: 'Fundacção'
     }
     
   ]
 
-  const categories = ['Todos', 'Fundação', 'Teatro', 'Música', 'Pintura', 'Literatura', 'Cinema', 'Equipa']
+  const categories = ['Todos', 'Fundacção', 'Teatro', 'Música', 'Pintura', 'Literatura', 'Cinema', 'Equipa']
 
   return (
     <section id="galeria" className="py-20 bg-gradient-to-br from-elit-dark to-gray-900 text-white">
@@ -345,7 +345,7 @@ export default function GallerySection() {
                   Seu navegador não suporta o elemento de vídeo.
                 </video>
               </div>
-              <h4 className="text-lg sm:text-xl font-bold mb-2">Espetáculo "Octhali"</h4>
+              <h4 className="text-lg sm:text-xl font-bold mb-2">espectáculo "Octhali"</h4>
               <p className="text-elit-light text-sm">O quanto custa a tua humanidade - 27 de setembro</p>
             </div>
             
@@ -361,7 +361,7 @@ export default function GallerySection() {
                 </video>
               </div>
               <h4 className="text-lg sm:text-xl font-bold mb-2">"O preço da ingratidão"</h4>
-              <p className="text-elit-light text-sm">Apresentação no LAASP - 27 de Dezembro</p>
+              <p className="text-elit-light text-sm">Apresentacção no LAASP - 27 de Dezembro</p>
             </div>
 
             <div className="bg-gray-800 rounded-xl p-4 sm:p-6 text-center">
@@ -375,7 +375,7 @@ export default function GallerySection() {
                   Seu navegador não suporta o elemento de vídeo.
                 </video>
               </div>
-              <h4 className="text-lg sm:text-xl font-bold mb-2">Apresentação Especial</h4>
+              <h4 className="text-lg sm:text-xl font-bold mb-2">Apresentacção Especial</h4>
               <p className="text-elit-light text-sm">Momento artístico do Elit'Arte</p>
             </div>
 
@@ -403,12 +403,12 @@ export default function GallerySection() {
             <div className="bg-elit-red/10 p-6 rounded-xl">
               <Camera className="w-12 h-12 text-elit-red mx-auto mb-4" />
               <h4 className="text-xl font-bold mb-2">Ensaios</h4>
-              <p className="text-elit-light">Momentos de preparação e dedicação</p>
+              <p className="text-elit-light">Momentos de preparacção e dedicacção</p>
             </div>
             <div className="bg-elit-yellow/10 p-6 rounded-xl">
               <ImageIcon className="w-12 h-12 text-elit-yellow mx-auto mb-4" />
               <h4 className="text-xl font-bold mb-2">Bastidores</h4>
-              <p className="text-elit-light">A magia por trás dos espetáculos</p>
+              <p className="text-elit-light">A magia por trás dos espectáculos</p>
             </div>
             <div className="bg-elit-orange/10 p-6 rounded-xl">
               <Play className="w-12 h-12 text-elit-orange mx-auto mb-4" />

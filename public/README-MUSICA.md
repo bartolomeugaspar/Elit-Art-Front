@@ -17,7 +17,7 @@ Para que a música de fundo funcione, você precisa adicionar os seguintes arqui
 
 ### 🎯 Recomendações:
 
-- **Duração**: 2-5 minutos (será reproduzida em loop)
+- **Duracção**: 2-5 minutos (será reproduzida em loop)
 - **Volume**: Música ambiente, não muito alta
 - **Estilo**: Música angolana tradicional ou instrumental
 - **Qualidade**: 128kbps é suficiente para web

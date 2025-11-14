@@ -1,6 +1,6 @@
 # 🎭 Elit'Arte - Website Oficial
 
-> **Movimento artístico angolano dedicado à preservação e celebração da rica cultura angolana**
+> **Movimento artístico angolano dedicado à preservacção e celebracção da rica cultura angolana**
 
 ## 🌐 **[🚀 ACESSE O SITE ONLINE](https://elit-arte.vercel.app/)**
 
@@ -15,16 +15,16 @@
 O **Elit'Arte** é um movimento artístico angolano fundado em **13 de Fevereiro de 2024** que une **teatro, música, dança, literatura, pintura e cinema**, com o objetivo de promover e celebrar nossa rica cultura através da fusão entre tradição e contemporaneidade.
 
 ### 🎯 Nossa Missão
-Promover a arte nas suas múltiplas expressões como ferramentas de transformação da nossa sociedade e de desenvolvimento dos angolanos, marcadamente com traços da nossa cultura angolana tradicional.
+Promover a arte nas suas múltiplas expressões como ferramentas de transformacção da nossa sociedade e de desenvolvimento dos angolanos, marcadamente com traços da nossa cultura angolana tradicional.
 
 ### 👁️ Nossa Visão
-Ser reconhecido como o maior movimento artístico de Angola, em inovação artística, inspirando gerações e transformando vidas por meio da arte.
+Ser reconhecido como o maior movimento artístico de Angola, em inovacção artística, inspirando gerações e transformando vidas por meio da arte.
 
 ## 🚀 Tecnologias Utilizadas
 
 - **Framework**: Next.js 14 com App Router
 - **Linguagem**: TypeScript
-- **Estilização**: Tailwind CSS
+- **Estilizacção**: Tailwind CSS
 - **Ícones**: Lucide React
 - **Responsividade**: Mobile-first design
 - **Performance**: Otimizado para todos os dispositivos
@@ -39,11 +39,11 @@ src/
 │   └── page.tsx        # Página inicial
 ├── components/
 │   ├── layout/         # Componentes de layout
-│   │   ├── Header.tsx  # Navegação responsiva
+│   │   ├── Header.tsx  # Navegacção responsiva
 │   │   └── Footer.tsx  # Rodapé com informações
 │   ├── sections/       # Seções da página
 │   │   ├── HeroSection.tsx        # Carousel principal
-│   │   ├── PresentationSection.tsx # Apresentação
+│   │   ├── PresentationSection.tsx # Apresentacção
 │   │   ├── IdentitySection.tsx    # Missão, Visão, Valores
 │   │   ├── HistorySection.tsx     # História do movimento
 │   │   ├── AreasSection.tsx       # Áreas artísticas
@@ -55,19 +55,19 @@ src/
 │   └── index.ts        # Exportações centralizadas
 ├── public/             # Recursos estáticos
 │   ├── images/         # Imagens organizadas
-│   └── videos/         # Vídeos dos espetáculos
-└── tailwind.config.js  # Configuração do Tailwind
+│   └── videos/         # Vídeos dos espectáculos
+└── tailwind.config.js  # Configuracção do Tailwind
 ```
 
 ## 🎨 Áreas Artísticas
 
 ### 🎭 **Teatro**
-- Dramatização de peças teatrais de vanguarda
+- Dramatizacção de peças teatrais de vanguarda
 - Temáticas sociais e culturais angolanas
-- Espetáculos: "Octhali", "O preço da ingratidão"
+- espectáculos: "Octhali", "O preço da ingratidão"
 
 ### 🎵 **Música**
-- Interpretação e produção de canções angolanas
+- Interpretacção e produção de canções angolanas
 - Fusão de estilos tradicionais com modernos
 - Concursos e oficinas de canto
 
@@ -89,7 +89,7 @@ src/
 ### 🎨 **Pintura**
 - Arte visual angolana
 - Exposições e workshops
-- Preservação da arte tradicional
+- Preservacção da arte tradicional
 
 ## 📱 Funcionalidades
 
@@ -101,7 +101,7 @@ src/
 ### 🎪 **Carousel Interativo**
 - 🖼️ **6 slides** com imagens das atividades
 - ⏯️ **Auto-play** com controle manual
-- 🎯 **Indicadores** de navegação
+- 🎯 **Indicadores** de navegacção
 - 📱 **Touch-friendly** para dispositivos móveis
 
 ### 🖼️ **Galeria Dinâmica**
@@ -149,7 +149,7 @@ src/
 - Node.js 18+ 
 - npm ou yarn
 
-### Instalação
+### Instalacção
 ```bash
 # Clone o repositório
 git clone https://github.com/bartolomeugaspar/Elit-Art-Front.git
@@ -196,7 +196,7 @@ Mais de 20 artistas nas diversas áreas: teatro, música, dança, literatura, ci
 - **📧 Email**: faustinodomingos83@hotmail.com
 - **📱 Telefone**: +244 927 935 543
 - **💬 WhatsApp**: +244 950 291 335
-- **📍 Localização**: Luanda, Angola
+- **📍 Localizacção**: Luanda, Angola
 
 ## 🤝 Como Contribuir
 
