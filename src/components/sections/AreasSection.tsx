@@ -42,8 +42,8 @@ export default function AreasSection() {
               </div>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <img src="/teatro1.jpeg" alt="Teatro Elit'Arte" className="w-full h-48 object-cover rounded-lg shadow-md" />
-              <img src="/teatro2.jpeg" alt="Teatro Elit'Arte" className="w-full h-48 object-cover rounded-lg shadow-md" />
+              <img src="/U.jpeg" alt="Teatro Elit'Arte" className="w-full h-48 object-cover rounded-lg shadow-md" />
+              <img src="/O.jpeg" alt="Teatro Elit'Arte" className="w-full h-48 object-cover rounded-lg shadow-md" />
             </div>
           </div>
         </div>

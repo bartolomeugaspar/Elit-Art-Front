@@ -29,7 +29,7 @@ export default function HeroSection() {
       subtitle: 'Cores e formas da cultura angolana'
     },
     {
-      image: '/WhatsApp Image 2025-11-13 at 20.43.20 (1).jpeg',
+      image: '/nova.jpeg',
       title: 'Comunidade Artística',
       subtitle: 'Unidos pela paixão da arte'
     },

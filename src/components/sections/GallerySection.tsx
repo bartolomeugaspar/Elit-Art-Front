@@ -136,7 +136,7 @@ export default function GallerySection() {
     },
     {
       type: 'image',
-      src: '/Sem.jpeg',
+      src: '/carimbo.jpeg',
       alt: 'Expressão artística',
       category: 'Pintura'
     },
@@ -202,8 +202,8 @@ export default function GallerySection() {
     },
     {
       type: 'image',
-      src: '/WhatsApp Image 2025-11-13 at 17.41.24 (1).jpeg',
-      alt: 'Momentos especiais da fundação',
+      src: '/uniao.jpeg',
+      alt: 'União e colaboração artística',
       category: 'Fundação'
     },
     {
@@ -241,7 +241,35 @@ export default function GallerySection() {
       src: '/bairo.jpeg',
       alt: 'Legado cultural preservado',
       category: 'Fundação'
+    },
+    {
+      type: 'image',
+      src: '/maos.jpeg',
+      alt: 'Legado cultural preservado',
+      category: 'Fundação'
     }
+    ,
+    {
+      type: 'image',
+      src: '/WhatsApp Image 2025-11-13 at 17.02.52 (1).jpeg',
+      alt: 'Legado cultural preservado',
+      category: 'Fundação'
+    }
+    ,
+    {
+      type: 'image',
+      src: '/preta.jpeg',
+      alt: 'Legado cultural preservado',
+      category: 'Fundação'
+    }
+    ,
+    {
+      type: 'image',
+      src: '/WhatsApp Image 2025-11-13 at 17.02.51.jpeg',
+      alt: 'Legado cultural preservado',
+      category: 'Fundação'
+    }
+    
   ]
 
   const categories = ['Todos', 'Fundação', 'Teatro', 'Música', 'Pintura', 'Literatura', 'Cinema', 'Equipa']

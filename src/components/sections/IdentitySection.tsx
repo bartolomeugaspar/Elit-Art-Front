@@ -118,7 +118,7 @@ export default function IdentitySection() {
                 </div>
                 <h4 className="text-xl font-bold text-elit-dark mb-3">Espírito de Família</h4>
                 <p className="text-gray-600 text-sm leading-relaxed">
-                  Todo mundo deve ver no outro o seu irmã.
+                  Todo mundo deve ver no outro o seu irmão.
                 </p>
               </div>
 
