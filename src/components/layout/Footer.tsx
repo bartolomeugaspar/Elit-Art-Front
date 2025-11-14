@@ -71,7 +71,7 @@ export default function Footer() {
         </div>
 
         <div className="border-t border-gray-700 mt-8 sm:mt-12 pt-6 sm:pt-8 text-center text-gray-400">
-          <p className="text-sm sm:text-base">&copy; 2024 Elit'arte. Todos os direitos reservados.</p>
+          <p className="text-sm sm:text-base">&copy; 2025 Elit'arte. Todos os direitos reservados.</p>
         </div>
       </div>
     </footer>

@@ -19,7 +19,7 @@ module.exports = {
         'elit-brown': '#654321',    // Marrom escuro para contraste
         'elit-gold': '#DAA520',     // Dourado mais vibrante
         'elit-dark': '#2D1810',     // Marrom muito escuro para textos
-        'elit-light': '#F5F5DC',    // Bege claro para backgrounds
+        'elit-light': '#fafaebff',    // Bege claro para backgrounds
         
         // Cores originais mantidas para compatibilidade
         background: 'hsl(var(--background))',

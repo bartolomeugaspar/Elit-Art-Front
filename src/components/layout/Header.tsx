@@ -11,11 +11,18 @@ export default function Header() {
     { label: 'Sobre Nós', href: '#sobre' },
     { label: 'Áreas de actuacção', href: '#areas' },
     { label: 'Galeria', href: '#galeria' },
-    { label: 'Equipa', href: '#equipa' }
+    { label: 'Equipa', href: '#equipa' },
+    { label: 'Eventos', href: '/eventos' }
   ]
 
   const handleNavClick = (href: string) => {
     setIsMenuOpen(false)
+    
+    // Check if it's an external page link
+    if (href.startsWith('/')) {
+      window.location.href = href
+      return
+    }
     
     // Remove # from href to get the element ID
     const elementId = href.replace('#', '')
@@ -34,7 +41,12 @@ export default function Header() {
         behavior: 'smooth'
       })
     } else {
-      console.error('Element not found:', elementId)
+      // If element not found and we're not on home page, redirect to home with anchor
+      if (window.location.pathname !== '/') {
+        window.location.href = `/${href}`
+      } else {
+        console.error('Element not found:', elementId)
+      }
     }
   }
 
