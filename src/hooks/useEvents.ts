@@ -52,8 +52,29 @@ export const useEvents = () => {
         const eventsData = await eventsRes.json()
         const testimonialsData = await testimonialsRes.json()
 
-        setEvents(eventsData || [])
-        setTestimonials(testimonialsData || [])
+        // Extract events array from API response
+        const events = eventsData.events || eventsData || []
+        const testimonials = testimonialsData.testimonials || testimonialsData || []
+
+        // Map API fields to Event interface
+        const mappedEvents: Event[] = events.map((event: any) => ({
+          id: event.id,
+          title: event.title,
+          date: event.date,
+          time: event.time,
+          location: event.location,
+          description: event.description,
+          category: event.category,
+          image: event.image,
+          attendees: event.attendees,
+          availableSpots: event.available_spots,
+          fullDescription: event.full_description,
+          images: event.images,
+          isPast: event.status === 'completed'
+        }))
+
+        setEvents(mappedEvents)
+        setTestimonials(testimonials)
         setError(null)
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Erro desconhecido')
