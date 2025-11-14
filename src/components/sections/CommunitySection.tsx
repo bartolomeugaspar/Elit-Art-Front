@@ -116,7 +116,12 @@ export default function CommunitySection() {
                 <li>• Desenvolvimento cultural sustentável</li>
               </ul>
             </div>
-          </div>
+          </div> <a 
+            href="#contacto" 
+            className="inline-flex items-center justify-center px-8 py-3 sm:px-10 sm:py-4 text-base sm:text-lg font-medium rounded-full bg-elit-red text-white hover:bg-red-600 transition-colors duration-300"
+          >
+            Solicitar Proposta
+          </a>
         </div>
       </div>
     </section>

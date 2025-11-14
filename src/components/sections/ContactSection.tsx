@@ -11,7 +11,7 @@ export default function ContactSection() {
     {
       icon: Phone,
       title: "Telefone",
-      value: "+244 927 935 543",
+      value: "+244 950 281 335",
       description: "Para ligações diretas"
     },
     {
@@ -41,7 +41,6 @@ export default function ContactSection() {
             Apoie o Elit'arte e partilhe a nossa paixão pela arte.
           </p>
         </div>
-
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 mb-12 sm:mb-16">
           {/* Contact Information */}
           <div>
