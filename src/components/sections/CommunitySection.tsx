@@ -4,7 +4,7 @@ export default function CommunitySection() {
   const impacts = [
     {
       icon: BookOpen,
-      title: "Fomento da Leitura",
+      title: "Momento da Leitura",
       description: "Projectos virados para o livro e a pintura, especialmente no seio infantil, atacando as insuficiências escritas e leitoras."
     },
     {
