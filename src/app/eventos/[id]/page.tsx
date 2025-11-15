@@ -1,11 +1,11 @@
 'use client'
 
 import { Header, Footer } from '@/components'
-import EventRegistrationModal from '@/components/EventRegistrationModal'
 import { useEvents } from '@/hooks'
 import { Calendar, MapPin, Clock, Share2, Heart, Users, Star, ArrowLeft } from 'lucide-react'
 import Link from 'next/link'
 import { useState } from 'react'
+import EventRegistrationModal from '@/components/EventRegistrationModal'
 
 export default function EventDetailPage({ params }: { params: { id: string } }) {
   const { getEventById, getTestimonialsByEventId } = useEvents()
@@ -23,6 +23,7 @@ export default function EventDetailPage({ params }: { params: { id: string } }) 
   const handleRegistrationSuccess = () => {
     setShowRegistrationModal(false)
     setRegistrationMessage({ type: 'success', text: 'Inscrição realizada com sucesso!' })
+    // Atualizar a página após 2 segundos
     setTimeout(() => window.location.reload(), 2000)
   }
 
@@ -266,19 +267,18 @@ export default function EventDetailPage({ params }: { params: { id: string } }) 
         </div>
       </section>
 
+      <Footer />
+
       {/* Registration Modal */}
       {showRegistrationModal && event && (
         <EventRegistrationModal
           eventId={event.id as string}
           eventTitle={event.title}
-          eventPrice={event.price || 0}
           isFree={event.isFree || false}
           onClose={() => setShowRegistrationModal(false)}
           onSuccess={handleRegistrationSuccess}
         />
       )}
-
-      <Footer />
     </div>
   )
 }

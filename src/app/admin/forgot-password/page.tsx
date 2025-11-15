@@ -201,7 +201,7 @@ export default function ForgotPassword() {
 
           {/* Footer Info */}
           <p className="text-center text-xs sm:text-xs text-gray-500 mt-4 sm:mt-6">
-            Painel Administrativo Elit'Art v1.0.0
+            Painel Administrativo Elit'Arte v1.0.0
           </p>
         </div>
       </div>

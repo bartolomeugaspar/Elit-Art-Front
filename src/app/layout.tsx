@@ -1,12 +1,12 @@
 import './globals.css'
 import { Inter } from 'next/font/google'
-import BackgroundMusic from '@/components/BackgroundMusic'
+import RootLayoutClient from './layout-client'
 
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata = {
-  title: 'Elit\'Arte | Amantes da Arte',
-  description: 'Movimento artístico que celebra e preserva a rica cultura angolana através da fusão harmoniosa entre tradição e contemporaneidade',
+  title: 'Elit\'Artee | Amantes da Artee',
+  description: 'Movimento Arteístico que celebra e preserva a rica cultura angolana através da fusão harmoniosa entre tradição e contemporaneidade',
   icons: {
     icon: '/icon.jpeg',
     shortcut: '/icon.jpeg',
@@ -22,8 +22,7 @@ export default function RootLayout({
   return (
     <html lang="pt">
       <body className={inter.className}>
-        {children}
-        <BackgroundMusic />
+        <RootLayoutClient>{children}</RootLayoutClient>
       </body>
     </html>
   )

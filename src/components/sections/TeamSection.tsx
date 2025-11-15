@@ -4,10 +4,10 @@ export default function TeamSection() {
   const leaders = [
     {
       name: "Faustino Domingos",
-      artisticName: "Guido Alves",
+      ArteisticName: "Guido Alves",
       role: "Coordenador",
       area: "Literatura e Cinema",
-      description: "Coordenador do Elit'arte, director da área do cinema e fundador. Formacção artística em teatro (15+ anos) e cinema.",
+      description: "Coordenador do Elit'Arte, director da área do cinema e fundador. Formacção Arteística em teatro (15+ anos) e cinema.",
       quote: "Gosto tanto de escrever quanto gosto de comer, é uma necessidade vital para a minha alma.",
       email: "faustinodomingos83@hotmail.com",
       phone: "927935543",
@@ -15,17 +15,17 @@ export default function TeamSection() {
     },
     {
       name: "Josemara Comongo",
-      artisticName: "Maíris de Jesus",
+      ArteisticName: "Maíris de Jesus",
       role: "Porta-voz",
       area: "Literatura",
       description: "Porta-voz, directora da área da literatura e fundadora. Vencedora do Concurso Literário 'Quem me dera ser onda' 2019.",
-      quote: "Aceitei ser fundadora deste Movimento para ressuscitar a artista que estava encubada em mim.",
+      quote: "Aceitei ser fundadora deste Movimento para ressuscitar a Arteista que estava encubada em mim.",
       email: "mairisdejesus.mj@gmail.com",
       phone: "936346918"
     },
     {
       name: "Luísa Gonçalves",
-       artisticName: "Mulher Rei",
+       ArteisticName: "Mulher Rei",
       role: "Tesoureira",
       area: "Teatro e Cinema",
       description: "Tesoureira e fundadora. Actriz de teatro e cinema, estudante de pedagogia no Magistério Marista.",
@@ -35,7 +35,7 @@ export default function TeamSection() {
     }
   ]
 
-  const artists = [
+  const Arteists = [
     {
       name: "Adelino Canganjo Vitorino Mateus",
       area: "Música (Piano)",
@@ -52,10 +52,10 @@ export default function TeamSection() {
     },
     {
       name: "Abiú José Duas Horas Gabriel",
-      artisticName: "Abiú",
+      ArteisticName: "Abiú",
       role: "Director da área de desenho",
       area: "Desenho e Pintura",
-      description: "Artista comprometido e apaixonado pelo desenho e pintura.",
+      description: "Arteista comprometido e apaixonado pelo desenho e pintura.",
       email: "abiugabrielduashoras@gmail.com",
       phone: "937051439"
     }
@@ -69,7 +69,7 @@ export default function TeamSection() {
             "Grandes histórias são contadas por grandes equipas."
           </p>
           <h2 className="text-4xl md:text-5xl font-bold text-elit-dark mb-6">
-            Equipa <span className="text-elit-red">Administrativa</span>, Artística e Técnica
+            Equipa <span className="text-elit-red">Administrativa</span>, Arteística e Técnica
           </h2>
         </div>
 
@@ -110,8 +110,8 @@ export default function TeamSection() {
                     </div>
                   )}
                   <h4 className="text-xl font-bold text-elit-dark">{leader.name}</h4>
-                  {leader.artisticName && (
-                    <p className="text-elit-orange font-medium">({leader.artisticName})</p>
+                  {leader.ArteisticName && (
+                    <p className="text-elit-orange font-medium">({leader.ArteisticName})</p>
                   )}
                   <p className="text-elit-gold font-semibold">{leader.role}</p>
                   <p className="text-gray-600">{leader.area}</p>
@@ -124,7 +124,7 @@ export default function TeamSection() {
                 </blockquote>
                 
                 <div className="space-y-2 text-sm">
-                  <div className="flex items-start">
+                  <div className="flex items-stArte">
                     <Mail className="w-4 h-4 text-elit-red mr-2 mt-0.5 flex-shrink-0" />
                     <span className="text-gray-600 break-all">{leader.email}</span>
                   </div>
@@ -138,36 +138,36 @@ export default function TeamSection() {
           </div>
         </div>
 
-        {/* Artistas */}
+        {/* Arteistas */}
         <div className="mb-20">
-          <h3 className="text-3xl font-bold text-elit-dark mb-12 text-center">Artistas do Movimento</h3>
+          <h3 className="text-3xl font-bold text-elit-dark mb-12 text-center">Arteistas do Movimento</h3>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {artists.map((artist, index) => (
+            {Arteists.map((Arteist, index) => (
               <div key={index} className="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition-shadow">
                 <div className="text-center mb-4">
                   <div className="w-16 h-16 bg-elit-yellow rounded-full mx-auto mb-3 flex items-center justify-center">
                     <Users className="w-8 h-8 text-white" />
                   </div>
-                  <h4 className="font-bold text-elit-dark">{artist.name}</h4>
-                  {artist.artisticName && (
-                    <p className="text-elit-orange text-sm">({artist.artisticName})</p>
+                  <h4 className="font-bold text-elit-dark">{Arteist.name}</h4>
+                  {Arteist.ArteisticName && (
+                    <p className="text-elit-orange text-sm">({Arteist.ArteisticName})</p>
                   )}
-                  {artist.role && (
-                    <p className="text-elit-gold font-medium text-sm">{artist.role}</p>
+                  {Arteist.role && (
+                    <p className="text-elit-gold font-medium text-sm">{Arteist.role}</p>
                   )}
-                  <p className="text-gray-600 text-sm">{artist.area}</p>
+                  <p className="text-gray-600 text-sm">{Arteist.area}</p>
                 </div>
                 
-                <p className="text-gray-700 text-sm mb-4">{artist.description}</p>
+                <p className="text-gray-700 text-sm mb-4">{Arteist.description}</p>
                 
                 <div className="space-y-1 text-xs">
-                  <div className="flex items-start">
+                  <div className="flex items-stArte">
                     <Mail className="w-3 h-3 text-elit-red mr-2 mt-0.5 flex-shrink-0" />
-                    <span className="text-gray-600 break-all">{artist.email}</span>
+                    <span className="text-gray-600 break-all">{Arteist.email}</span>
                   </div>
                   <div className="flex items-center">
                     <Phone className="w-3 h-3 text-elit-orange mr-2 flex-shrink-0" />
-                    <span className="text-gray-600">{artist.phone}</span>
+                    <span className="text-gray-600">{Arteist.phone}</span>
                   </div>
                 </div>
               </div>

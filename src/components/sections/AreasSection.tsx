@@ -25,7 +25,7 @@ export default function AreasSection() {
               </div>
               <div className="bg-white p-6 rounded-xl shadow-lg">
                 <p className="text-gray-700 leading-relaxed mb-4">
-                  A área do teatro do Elit'arte, formada por não mais de 10 actores, procura dramatizar peças teatrais 
+                  A área do teatro do Elit'Arte, formada por não mais de 10 actores, procura dramatizar peças teatrais 
                   de vanguarda, com temáticas sociais e culturais com traços marcantes da vivência do angolano.
                 </p>
                 <div className="mb-4">
@@ -60,7 +60,7 @@ export default function AreasSection() {
               </div>
               <div className="bg-white p-6 rounded-xl shadow-lg">
                 <p className="text-gray-700 leading-relaxed mb-4">
-                  A área da música do Elit'arte, formada por não mais de 06 artistas, procura interpretar e produzir 
+                  A área da música do Elit'Arte, formada por não mais de 06 Arteistas, procura interpretar e produzir 
                   canções angolanas, cujo conteúdo seja de vanguarda e numa fusão de estilos tradicionais com modernos.
                 </p>
                 <p className="text-gray-700 leading-relaxed">
@@ -88,7 +88,7 @@ export default function AreasSection() {
               </div>
               <div className="bg-white p-6 rounded-xl shadow-lg">
                 <p className="text-gray-700 leading-relaxed mb-4">
-                  A área da dança do Elit'arte, formada por não mais de 08 artistas, procura produzir estilos 
+                  A área da dança do Elit'Arte, formada por não mais de 08 Arteistas, procura produzir estilos 
                   de dança que celebram raízes angolanas, mas com um toque modernista.
                 </p>
                 <p className="text-gray-700 leading-relaxed">
@@ -115,7 +115,7 @@ export default function AreasSection() {
               </div>
               <div className="bg-white p-6 rounded-xl shadow-lg">
                 <p className="text-gray-700 leading-relaxed mb-4">
-                  A área da literatura, formada por não mais de 06 artistas, procura produzir textos literários 
+                  A área da literatura, formada por não mais de 06 Arteistas, procura produzir textos literários 
                   de vanguarda, nas modalidades do conto e poesia, com presença vincada dos nossos hábitos e costumes.
                 </p>
                 <p className="text-gray-700 leading-relaxed">
@@ -142,7 +142,7 @@ export default function AreasSection() {
               </div>
               <div className="bg-white p-6 rounded-xl shadow-lg">
                 <p className="text-gray-700 leading-relaxed mb-4">
-                  A área do cinema do Elit'arte, formada por não mais de 10 integrantes, produz conteúdo audiovisual 
+                  A área do cinema do Elit'Arte, formada por não mais de 10 integrantes, produz conteúdo audiovisual 
                   com programas de debate sobre obras literárias angolanas.
                 </p>
                 <p className="text-gray-700 leading-relaxed">
@@ -169,7 +169,7 @@ export default function AreasSection() {
               </div>
               <div className="bg-white p-6 rounded-xl shadow-lg">
                 <p className="text-gray-700 leading-relaxed mb-4">
-                  A área de pintura do Elit'arte, formada por 06 artistas, procura produzir obras que retratam 
+                  A área de pintura do Elit'Arte, formada por 06 Arteistas, procura produzir obras que retratam 
                   a identidade e a alma do povo angolano.
                 </p>
                 <p className="text-gray-700 leading-relaxed">

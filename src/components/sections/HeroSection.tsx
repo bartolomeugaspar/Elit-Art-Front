@@ -10,7 +10,7 @@ export default function HeroSection() {
   const slides = [
     {
       image: '/WhatsApp Image 2025-11-13 at 20.43.02.jpeg',
-      title: 'Liderança Artística',
+      title: 'Liderança Arteística',
       subtitle: 'Formando os líderes culturais de amanhã'
     },
     {
@@ -25,13 +25,13 @@ export default function HeroSection() {
     },
     {
       image: '/WhatsApp Image 2025-11-13 at 16.39.50 (2).jpeg',
-      title: 'Arte Visual',
+      title: 'Artee Visual',
       subtitle: 'Cores e formas da cultura angolana'
     },
     {
       image: '/nova.jpeg',
-      title: 'Comunidade Artística',
-      subtitle: 'Unidos pela paixão da arte'
+      title: 'Comunidade Arteística',
+      subtitle: 'Unidos pela paixão da Artee'
     },
     {
       image: '/WhatsApp Image 2025-11-13 at 20.43.23 (1).jpeg',
@@ -93,7 +93,7 @@ export default function HeroSection() {
         <div className="max-w-7xl mx-auto py-8 sm:py-12">
           {/* Frase-mestra */}
           <p className="text-base sm:text-lg md:text-xl lg:text-2xl font-light mb-6 sm:mb-8 text-elit-yellow italic animate-fade-in px-4">
-            "Elit'arte: Onde a essência angolana encontra a expressão artística."
+            "Elit'Arte: Onde a essência angolana encontra a expressão Arteística."
           </p>
           
           {/* Título Principal */}
@@ -101,12 +101,12 @@ export default function HeroSection() {
             <span className="block">
               <span className="text-elit-yellow">Elit</span>
               <span className="text-elit-gold">'</span>
-              <span className="text-elit-red">Arte</span>
+              <span className="text-elit-red">Artee</span>
             </span>
           </h1>
           
           <p className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-200 mb-8 sm:mb-12 max-w-xs sm:max-w-2xl lg:max-w-4xl mx-auto leading-relaxed px-2 sm:px-4">
-            Movimento artístico angolano que une teatro, música, dança, literatura, pintura e cinema, 
+            Movimento Arteístico angolano que une teatro, música, dança, literatura, pintura e cinema, 
             celebrando nossa rica cultura através da fusão entre tradição e contemporaneidade.
           </p>
           

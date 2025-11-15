@@ -12,6 +12,7 @@ interface NewsletterSubscriber {
 
 export default function AdminNewsletter() {
   const [subscribers, setSubscribers] = useState<NewsletterSubscriber[]>([]);
+  const [totalUsers, setTotalUsers] = useState(0);
   const [loading, setLoading] = useState(true);
   const [showEmailForm, setShowEmailForm] = useState(false);
   const [emailData, setEmailData] = useState({
@@ -22,16 +23,28 @@ export default function AdminNewsletter() {
   const fetchSubscribers = useCallback(async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`${API_URL}/newsletter`, {
+      
+      // Buscar inscritos da newsletter
+      const newsletterRes = await fetch(`${API_URL}/newsletter`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
-      if (response.ok) {
-        const data = await response.json();
+      // Buscar total de usuários
+      const usersRes = await fetch(`${API_URL}/users`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      if (newsletterRes.ok) {
+        const data = await newsletterRes.json();
         setSubscribers(data.subscribers || []);
       }
+
+      if (usersRes.ok) {
+        const usersData = await usersRes.json();
+        setTotalUsers(usersData.users?.length || 0);
+      }
     } catch (error) {
-      console.error('Failed to fetch subscribers:', error);
+      console.error('Failed to fetch data:', error);
     } finally {
       setLoading(false);
     }
@@ -118,10 +131,12 @@ export default function AdminNewsletter() {
           <div className="w-full bg-slate-200 rounded-full h-3">
             <div
               className="bg-gradient-to-r from-orange-500 to-orange-600 h-3 rounded-full transition-all duration-500"
-              style={{ width: '65%' }}
+              style={{ width: `${totalUsers > 0 ? (subscribers.length / totalUsers) * 100 : 0}%` }}
             />
           </div>
-          <p className="text-sm text-slate-600 mt-3">65% da base de usuários</p>
+          <p className="text-sm text-slate-600 mt-3">
+            {totalUsers > 0 ? `${((subscribers.length / totalUsers) * 100).toFixed(1)}%` : '0%'} da base de usuários ({subscribers.length} de {totalUsers})
+          </p>
         </div>
       </div>
 

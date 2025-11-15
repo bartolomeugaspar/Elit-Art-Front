@@ -32,13 +32,13 @@ export default function ContactSection() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12 sm:mb-16">
           <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-light text-elit-yellow italic mb-6 sm:mb-8 px-4">
-            "Junte-se ao Movimento artístico que vai mudar Angola."
+            "Junte-se ao Movimento Arteístico que vai mudar Angola."
           </p>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 sm:mb-6 px-2">
             Contacto e <span className="text-elit-red">Redes Sociais</span>
           </h2>
           <p className="text-base sm:text-lg lg:text-xl text-elit-light px-4">
-            Apoie o Elit'arte e partilhe a nossa paixão pela arte.
+            Apoie o Elit'Arte e pArteilhe a nossa paixão pela Artee.
           </p>
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 mb-12 sm:mb-16">
@@ -47,7 +47,7 @@ export default function ContactSection() {
             <h3 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8 text-center lg:text-left">Entre em Contacto</h3>
             <div className="space-y-4 sm:space-y-6">
               {contactInfo.map((contact, index) => (
-                <div key={index} className="flex items-start space-x-3 sm:space-x-4 p-3 sm:p-4 bg-white/5 rounded-xl hover:bg-white/10 transition-colors">
+                <div key={index} className="flex items-stArte space-x-3 sm:space-x-4 p-3 sm:p-4 bg-white/5 rounded-xl hover:bg-white/10 transition-colors">
                   <div className="w-10 h-10 sm:w-12 sm:h-12 bg-elit-red rounded-full flex items-center justify-center flex-shrink-0">
                     <contact.icon className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
                   </div>
@@ -87,7 +87,7 @@ export default function ContactSection() {
                   <option value="">Selecione um assunto</option>
                   <option value="parceria">Parceria</option>
                   <option value="financiamento">Financiamento</option>
-                  <option value="participacao">Participacção</option>
+                  <option value="pArteicipacao">PArteicipacção</option>
                   <option value="informacoes">Informações Gerais</option>
                 </select>
               </div>

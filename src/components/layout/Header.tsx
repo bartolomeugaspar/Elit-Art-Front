@@ -84,8 +84,14 @@ export default function Header() {
             ))}
           </nav>
 
-          {/* CTA Button */}
-          <div className="hidden md:block">
+          {/* CTA Buttons */}
+          <div className="hidden md:flex items-center space-x-4">
+            <button
+              onClick={() => window.location.href = '/admin/login'}
+              className="bg-gray-200 hover:bg-gray-300 text-gray-900 px-6 py-2 rounded-full text-sm font-semibold transition-all duration-300 hover:scale-105"
+            >
+              Login
+            </button>
             <button
               onClick={() => handleNavClick('#contacto')}
               className="bg-elit-red hover:bg-elit-red/90 text-white px-6 py-2 rounded-full text-sm font-semibold transition-all duration-300 hover:scale-105 shadow-lg"
@@ -116,7 +122,13 @@ export default function Header() {
                   {item.label}
                 </button>
               ))}
-              <div className="pt-4 border-t border-gray-100">
+              <div className="pt-4 border-t border-gray-100 space-y-3">
+                <button
+                  onClick={() => window.location.href = '/admin/login'}
+                  className="w-full bg-gray-200 hover:bg-gray-300 text-gray-900 py-3 rounded-xl font-semibold transition-colors"
+                >
+                  Login
+                </button>
                 <button
                   onClick={() => handleNavClick('#contacto')}
                   className="w-full bg-elit-red hover:bg-elit-red/90 text-white py-3 rounded-xl font-semibold transition-colors"

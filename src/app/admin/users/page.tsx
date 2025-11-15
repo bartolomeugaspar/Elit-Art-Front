@@ -9,7 +9,7 @@ interface User {
   id: string;
   email: string;
   name: string;
-  role: 'admin' | 'artist' | 'user';
+  role: 'admin' | 'Arteist' | 'user';
   is_active: boolean;
   created_at: string;
 }
@@ -23,7 +23,7 @@ export default function AdminUsers() {
     name: '',
     email: '',
     password: '',
-    role: 'user' as 'admin' | 'artist' | 'user',
+    role: 'user' as 'admin' | 'Arteist' | 'user',
   });
   
   const [isEditing, setIsEditing] = useState(false);
@@ -209,7 +209,7 @@ export default function AdminUsers() {
   return (
     <div className="space-y-6">
       {/* Barra de pesquisa, contador e botão de novo usuário */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 w-full">
+      <div className="flex flex-col sm:flex-row items-stArte sm:items-center justify-between gap-4 w-full">
         {/* Campo de busca */}
         <div className="relative flex-1 max-w-2xl">
           <input
@@ -311,11 +311,11 @@ export default function AdminUsers() {
                   <label className="block text-sm font-medium text-slate-700">Função</label>
                   <select
                     value={formData.role}
-                    onChange={(e) => setFormData({ ...formData, role: e.target.value as 'admin' | 'artist' | 'user' })}
+                    onChange={(e) => setFormData({ ...formData, role: e.target.value as 'admin' | 'Arteist' | 'user' })}
                     className="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
                   >
                     <option value="user">Usuário</option>
-                    <option value="artist">Artista</option>
+                    <option value="Arteist">Arteista</option>
                     <option value="admin">Admin</option>
                   </select>
                 </div>
@@ -382,12 +382,12 @@ export default function AdminUsers() {
                         className={`px-3 py-1 rounded-full text-xs font-bold ${
                           user.role === 'admin'
                             ? 'bg-blue-100 text-blue-700'
-                            : user.role === 'artist'
+                            : user.role === 'Arteist'
                             ? 'bg-purple-100 text-purple-700'
                             : 'bg-slate-100 text-slate-700'
                         }`}
                       >
-                        {user.role === 'admin' ? 'Admin' : user.role === 'artist' ? 'Artista' : 'Usuário'}
+                        {user.role === 'admin' ? 'Admin' : user.role === 'Arteist' ? 'Arteista' : 'Usuário'}
                       </span>
                     </td>
                     <td className="px-6 py-4">
@@ -504,7 +504,7 @@ export default function AdminUsers() {
                   <span className="text-sm font-medium text-slate-500">Função</span>
                   <span className="text-sm text-slate-900 font-medium capitalize">
                     {selectedUser.role === 'admin' ? 'Administrador' : 
-                     selectedUser.role === 'artist' ? 'Artista' : 'Usuário'}
+                     selectedUser.role === 'Arteist' ? 'Arteista' : 'Usuário'}
                   </span>
                 </div>
                 <div className="flex justify-between py-2 border-b border-slate-100">

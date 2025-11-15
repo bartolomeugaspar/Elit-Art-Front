@@ -17,7 +17,6 @@ export interface Event {
   fullDescription?: string
   images?: string[]
   isPast?: boolean
-  price?: number
   isFree?: boolean
   capacity?: number
 }
@@ -69,10 +68,7 @@ export const useEvents = () => {
           availableSpots: event.available_spots,
           fullDescription: event.full_description,
           images: event.images,
-          isPast: event.status === 'completed',
-          price: event.price,
-          isFree: event.is_free,
-          capacity: event.capacity
+          isPast: event.status === 'completed'
         }))
 
         setEvents(mappedEvents)

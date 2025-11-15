@@ -106,7 +106,7 @@ export default function AdminLogin() {
               className="w-14 h-14 md:w-16 md:h-16 rounded-lg object-cover shadow-md"
             />
             <h1 className="text-2xl md:text-3xl font-bold text-gray-900">
-              Elit'Art
+              Elit'Arte
             </h1>
             <p className="text-gray-500 text-sm">Painel Administrativo</p>
           </div>
@@ -205,7 +205,7 @@ export default function AdminLogin() {
           </form>
           {/* Footer Info */}
           <p className="text-center text-xs sm:text-xs text-gray-500 mt-4 sm:mt-6">
-            Painel Administrativo Elit'Art v1.0.0
+            Painel Administrativo Elit'Arte v1.0.0
           </p>
         </div>
       </div>

@@ -1,4 +1,4 @@
-# 🚀 Guia de Início Rápido - Painel Admin Elit'Art
+# 🚀 Guia de Início Rápido - Painel Admin Elit'Arte
 
 ## Pré-requisitos
 
@@ -9,7 +9,7 @@
 ## 1️⃣ Iniciar o Backend
 
 ```bash
-cd /home/kali/Documentos/Elit-Art-Back
+cd /home/kali/Documentos/Elit-Arte-Back
 npm run dev
 ```
 
@@ -23,7 +23,7 @@ Você deve ver:
 ## 2️⃣ Iniciar o Frontend
 
 ```bash
-cd /home/kali/Documentos/Elit-Art-Front
+cd /home/kali/Documentos/Elit-Arte-Front
 npm run dev
 ```
 
@@ -42,7 +42,7 @@ Você deve ver:
 ## 4️⃣ Fazer Login
 
 **Credenciais de Teste:**
-- **Email:** admin@elit-arte.com
+- **Email:** admin@elit-Artee.com
 - **Senha:** admin123
 
 Clique em "Entrar" e você será redirecionado para o dashboard.
@@ -60,7 +60,7 @@ Clique em "Entrar" e você será redirecionado para o dashboard.
 - **Criar** novo usuário (nome, email, senha, função)
 - **Editar** informações do usuário
 - **Deletar** usuário
-- Filtrar por função (Admin, Artista, Usuário)
+- Filtrar por função (Admin, Arteista, Usuário)
 - Ver status (Ativo/Inativo)
 
 ### Eventos (`/admin/events`)

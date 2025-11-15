@@ -158,8 +158,6 @@ export default function AdminDashboard() {
 
   return (
     <div className="space-y-8">
-    
-
       {/* KPI Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         {/* Usuários */}
@@ -244,7 +242,7 @@ export default function AdminDashboard() {
                 <YAxis tick={{ fontSize: 11 }} width={30} />
                 <Tooltip 
                   contentStyle={{ backgroundColor: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: '6px', fontSize: '12px' }}
-                  formatter={(value) => `${value}`}
+                  formatter={(value: any) => `${value}`}
                 />
                 <Bar dataKey="value" fill="#3b82f6" radius={[6, 6, 0, 0]} />
               </BarChart>
@@ -275,7 +273,7 @@ export default function AdminDashboard() {
                 <YAxis tick={{ fontSize: 11 }} width={30} />
                 <Tooltip 
                   contentStyle={{ backgroundColor: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: '6px', fontSize: '12px' }}
-                  formatter={(value) => `${value}`}
+                  formatter={(value: any) => `${value}`}
                 />
                 <Line 
                   type="monotone" 
@@ -312,7 +310,7 @@ export default function AdminDashboard() {
                 cx="50%"
                 cy="50%"
                 labelLine={false}
-                label={({ name, value }) => `${name}: ${value}`}
+                label={({ name, value }: any) => `${name}: ${value}`}
                 outerRadius={70}
                 fill="#10b981"
                 dataKey="value"
@@ -321,7 +319,7 @@ export default function AdminDashboard() {
                   <Cell key={`cell-${index}`} fill={COLORS[(index + 4) % COLORS.length]} />
                 ))}
               </Pie>
-              <Tooltip formatter={(value) => `${value}`} contentStyle={{ fontSize: '12px' }} />
+              <Tooltip formatter={(value: any) => `${value}`} contentStyle={{ fontSize: '12px' }} />
             </RechartsPieChart>
           </ResponsiveContainer>
         </div>

@@ -23,7 +23,7 @@ export default function IdentitySection() {
                 <h3 className="text-2xl font-bold text-elit-dark">Missão</h3>
               </div>
               <p className="text-gray-700 leading-relaxed">
-                Promover a arte nas suas múltiplas expressões (teatro, dança, música, pintura, cinema e literatura) 
+                Promover a Artee nas suas múltiplas expressões (teatro, dança, música, pintura, cinema e literatura) 
                 como ferramentas de transformacção da nossa sociedade e de desenvolvimento dos angolanos, 
                 marcadamente com traços da nossa cultura angolana tradicional.
               </p>
@@ -38,8 +38,8 @@ export default function IdentitySection() {
                 <h3 className="text-2xl font-bold text-elit-dark">Visão</h3>
               </div>
               <p className="text-gray-700 leading-relaxed">
-                Ser reconhecido como o maior movimento artístico de Angola, em inovacção artística, 
-                inspirando gerações e transformando vidas por meio da arte.
+                Ser reconhecido como o maior movimento Arteístico de Angola, em inovacção Arteística, 
+                inspirando gerações e transformando vidas por meio da Artee.
               </p>
             </div>
 
@@ -52,7 +52,7 @@ export default function IdentitySection() {
                 <h3 className="text-2xl font-bold text-elit-dark">Linha Orientadora</h3>
               </div>
               <p className="text-gray-700 leading-relaxed">
-                A Nossa linha orientadora está voltada para a produção de conteúdos artísticos de vanguarda, 
+                A Nossa linha orientadora está voltada para a produção de conteúdos Arteísticos de vanguarda, 
                 focados, unicamente, nos hábitos, costumes, vivências, indumentária, linguagem do angolano.
               </p>
             </div>
@@ -73,8 +73,8 @@ export default function IdentitySection() {
                 </div>
                 <h4 className="text-xl font-bold text-elit-dark mb-3">Liderança</h4>
                 <p className="text-gray-600 text-sm leading-relaxed">
-                  Todo Elit'arteano dentro do movimento deve ter uma mentalidade de líder, 
-                  sem depender do seu director ou coordenador para agir em prol do Elit'arte.
+                  Todo Elit'Arteano dentro do movimento deve ter uma mentalidade de líder, 
+                  sem depender do seu director ou coordenador para agir em prol do Elit'Arte.
                 </p>
               </div>
 
@@ -129,7 +129,7 @@ export default function IdentitySection() {
                 </div>
                 <h4 className="text-xl font-bold text-elit-dark mb-3">Excelência</h4>
                 <p className="text-gray-600 text-sm leading-relaxed">
-                  Buscamos sempre a perfeição em cada obra e apresentacção artística.
+                  Buscamos sempre a perfeição em cada obra e apresentacção Arteística.
                 </p>
               </div>
             </div>

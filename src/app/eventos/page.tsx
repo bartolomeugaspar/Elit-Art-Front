@@ -209,7 +209,7 @@ export default function EventosPage() {
                     <div className="mb-2 sm:mb-3 pb-2 sm:pb-3 border-b border-elit-orange/30">
                       {event.attendees && (
                         <p className="text-xs text-elit-dark">
-                          <span className="font-semibold text-elit-orange">{event.attendees}</span> participantes
+                          <span className="font-semibold text-elit-orange">{event.attendees}</span> pArteicipantes
                         </p>
                       )}
                     </div>

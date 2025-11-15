@@ -5,13 +5,13 @@ export default function GallerySection() {
     {
       type: 'image',
       src: '/WhatsApp Image 2025-11-13 at 16.39.48 (1).jpeg',
-      alt: 'Momentos únicos do Elit\'Arte',
+      alt: 'Momentos únicos do Elit\'Artee',
       category: 'Fundacção'
     },
     {
       type: 'image',
       src: '/WhatsApp Image 2025-11-13 at 16.39.48 (2).jpeg',
-      alt: 'Comunidade artística unida',
+      alt: 'Comunidade Arteística unida',
       category: 'Equipa'
     },
     {
@@ -23,7 +23,7 @@ export default function GallerySection() {
     {
       type: 'image',
       src: '/WhatsApp Image 2025-11-13 at 16.39.50 (1).jpeg',
-      alt: 'Arte em movimento',
+      alt: 'Artee em movimento',
       category: 'Teatro'
     },
     {
@@ -59,13 +59,13 @@ export default function GallerySection() {
     {
       type: 'image',
       src: '/WhatsApp Image 2025-11-13 at 16.44.23 (1).jpeg',
-      alt: 'Arte visual contemporânea',
+      alt: 'Artee visual contemporânea',
       category: 'Pintura'
     },
     {
       type: 'image',
       src: '/WhatsApp Image 2025-11-13 at 16.44.24 (1).jpeg',
-      alt: 'Criacção artística',
+      alt: 'Criacção Arteística',
       category: 'Pintura'
     },
     {
@@ -89,7 +89,7 @@ export default function GallerySection() {
     {
       type: 'image',
       src: '/WhatsApp Image 2025-11-13 at 17.41.22 (1).jpeg',
-      alt: 'Colaboracção artística',
+      alt: 'Colaboracção Arteística',
       category: 'Equipa'
     },
     {
@@ -125,7 +125,7 @@ export default function GallerySection() {
     {
       type: 'image',
       src: '/S.jpeg',
-      alt: 'Arte contemporânea',
+      alt: 'Artee contemporânea',
       category: 'Pintura'
     },
     {
@@ -137,7 +137,7 @@ export default function GallerySection() {
     {
       type: 'image',
       src: '/carimbo.jpeg',
-      alt: 'Expressão artística',
+      alt: 'Expressão Arteística',
       category: 'Pintura'
     },
     {
@@ -149,7 +149,7 @@ export default function GallerySection() {
     {
       type: 'image',
       src: '/WhatsApp Image 2025-11-13 at 16.39.45.jpeg',
-      alt: 'Momentos artísticos únicos',
+      alt: 'Momentos Arteísticos únicos',
       category: 'Fundacção'
     },
     {
@@ -167,7 +167,7 @@ export default function GallerySection() {
     {
       type: 'image',
       src: '/WhatsApp Image 2025-11-13 at 16.39.48.jpeg',
-      alt: 'Arte em movimento',
+      alt: 'Artee em movimento',
       category: 'Teatro'
     },
     {
@@ -203,7 +203,7 @@ export default function GallerySection() {
     {
       type: 'image',
       src: '/uniao.jpeg',
-      alt: 'União e colaboracção artística',
+      alt: 'União e colaboracção Arteística',
       category: 'Fundacção'
     },
     {
@@ -376,7 +376,7 @@ export default function GallerySection() {
                 </video>
               </div>
               <h4 className="text-lg sm:text-xl font-bold mb-2">Apresentacção Especial</h4>
-              <p className="text-elit-light text-sm">Momento artístico do Elit'Arte</p>
+              <p className="text-elit-light text-sm">Momento Arteístico do Elit'Arte</p>
             </div>
 
             <div className="bg-gray-800 rounded-xl p-4 sm:p-6 text-center">
@@ -390,7 +390,7 @@ export default function GallerySection() {
                   Seu navegador não suporta o elemento de vídeo.
                 </video>
               </div>
-              <h4 className="text-lg sm:text-xl font-bold mb-2">Performance Artística</h4>
+              <h4 className="text-lg sm:text-xl font-bold mb-2">Performance Arteística</h4>
               <p className="text-elit-light text-sm">Expressão cultural angolana</p>
             </div>
           </div>

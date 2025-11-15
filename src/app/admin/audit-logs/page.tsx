@@ -321,7 +321,7 @@ export default function AuditLogsPage() {
                     <td className="px-6 py-4 whitespace-nowrap">
                       <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
                         log.user?.role === 'admin' ? 'bg-red-100 text-red-800' :
-                        log.user?.role === 'artist' ? 'bg-purple-100 text-purple-800' :
+                        log.user?.role === 'Arteist' ? 'bg-purple-100 text-purple-800' :
                         'bg-blue-100 text-blue-800'
                       }`}>
                         {log.user?.role ? log.user.role.charAt(0).toUpperCase() + log.user.role.slice(1) : 'N/A'}

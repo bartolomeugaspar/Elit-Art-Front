@@ -226,7 +226,7 @@ export default function AdminEvents() {
   return (
     <div className="space-y-6">
       {/* Header with search and add button */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+      <div className="flex flex-col sm:flex-row justify-between items-stArte sm:items-center gap-4">
         <div className="relative w-full sm:w-96">
           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
             <svg className="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -423,7 +423,7 @@ export default function AdminEvents() {
             )}
             
             <div className="p-6">
-              <div className="flex justify-between items-start">
+              <div className="flex justify-between items-stArte">
                 <div>
                   <div className="flex items-center gap-3">
                     <h3 className="text-2xl font-bold text-slate-900">{selectedEvent.title}</h3>
@@ -447,7 +447,7 @@ export default function AdminEvents() {
               </div>
               
               <div className="mt-6 space-y-4">
-                <div className="flex items-start">
+                <div className="flex items-stArte">
                   <Calendar className="h-5 w-5 text-slate-400 mt-0.5 mr-3 flex-shrink-0" />
                   <div>
                     <p className="text-sm text-slate-500">Data e Hora</p>
@@ -457,7 +457,7 @@ export default function AdminEvents() {
                   </div>
                 </div>
                 
-                <div className="flex items-start">
+                <div className="flex items-stArte">
                   <MapPin className="h-5 w-5 text-slate-400 mt-0.5 mr-3 flex-shrink-0" />
                   <div>
                     <p className="text-sm text-slate-500">Local</p>
@@ -465,7 +465,7 @@ export default function AdminEvents() {
                   </div>
                 </div>
                 
-                <div className="flex items-start">
+                <div className="flex items-stArte">
                   <Users className="h-5 w-5 text-slate-400 mt-0.5 mr-3 flex-shrink-0" />
                   <div className="w-full">
                     <div className="flex justify-between mb-1">
@@ -549,7 +549,7 @@ export default function AdminEvents() {
               <div className="mt-5 sm:mt-6 space-y-3 sm:space-y-0 sm:grid sm:grid-cols-2 sm:gap-3 sm:grid-flow-row-dense">
                 <button
                   type="button"
-                  className="w-full inline-flex justify-center rounded-md border border-slate-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-slate-700 hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 sm:col-start-2 sm:text-sm"
+                  className="w-full inline-flex justify-center rounded-md border border-slate-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-slate-700 hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 sm:col-stArte-2 sm:text-sm"
                   onClick={() => {
                     setShowDeleteModal(false);
                     setEventToDelete(null);
@@ -559,7 +559,7 @@ export default function AdminEvents() {
                 </button>
                 <button
                   type="button"
-                  className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:col-start-1 sm:text-sm"
+                  className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:col-stArte-1 sm:text-sm"
                   onClick={handleDeleteEvent}
                   ref={deleteButtonRef}
                 >

@@ -1,14 +1,13 @@
 'use client'
 
 import { useState } from 'react'
-import { X, Upload, FileText, Image as ImageIcon } from 'lucide-react'
+import { X, Upload, CheckCircle } from 'lucide-react'
 import toast from 'react-hot-toast'
 import { API_URL } from '@/lib/api'
 
 interface EventRegistrationModalProps {
   eventId: string
   eventTitle: string
-  eventPrice: number
   isFree: boolean
   onClose: () => void
   onSuccess: () => void
@@ -17,22 +16,23 @@ interface EventRegistrationModalProps {
 export default function EventRegistrationModal({
   eventId,
   eventTitle,
-  eventPrice,
   isFree,
   onClose,
   onSuccess,
 }: EventRegistrationModalProps) {
   const [fullName, setFullName] = useState('')
-  const [paymentMethod, setPaymentMethod] = useState<'mpesa' | 'transfer' | ''>('')
-  const [proofFile, setProofFile] = useState<File | null>(null)
-  const [proofPreview, setProofPreview] = useState<string | null>(null)
+  const [email, setEmail] = useState('')
+  const [paymentMethod, setPaymentMethod] = useState('')
+  const [paymentProofFile, setPaymentProofFile] = useState<File | null>(null)
+  const [paymentProofPreview, setPaymentProofPreview] = useState<string | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isUploadingProof, setIsUploadingProof] = useState(false)
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleProofUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (!file) return
 
-    // Validar tipo de arquivo
+    // Validar tipo de arquivo (imagem ou PDF)
     const allowedTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'application/pdf']
     if (!allowedTypes.includes(file.type)) {
       toast.error('Apenas imagens (JPEG, PNG, WebP, GIF) ou PDF são permitidos')
@@ -45,36 +45,85 @@ export default function EventRegistrationModal({
       return
     }
 
-    setProofFile(file)
+    setPaymentProofFile(file)
 
     // Criar preview para imagens
     if (file.type.startsWith('image/')) {
       const reader = new FileReader()
       reader.onload = (e) => {
-        setProofPreview(e.target?.result as string)
+        setPaymentProofPreview(e.target?.result as string)
       }
       reader.readAsDataURL(file)
     } else {
-      setProofPreview(null)
+      setPaymentProofPreview(`📄 ${file.name}`)
+    }
+  }
+
+  const uploadProof = async (): Promise<string | null> => {
+    if (!paymentProofFile) return null
+
+    setIsUploadingProof(true)
+    const uploadToast = toast.loading('Enviando comprovativo...')
+
+    try {
+      const token = localStorage.getItem('token')
+      const formData = new FormData()
+      formData.append('image', paymentProofFile)
+
+      const response = await fetch(`${API_URL}/upload/image`, {
+        method: 'POST',
+        headers: token ? { Authorization: `Bearer ${token}` } : {},
+        body: formData,
+      })
+
+      const data = await response.json()
+
+      if (response.ok && data.imageUrl) {
+        toast.success('Comprovativo enviado!', { id: uploadToast })
+        return data.imageUrl
+      } else {
+        throw new Error(data.message || 'Erro ao enviar comprovativo')
+      }
+    } catch (error) {
+      console.error('Failed to upload proof:', error)
+      toast.error(
+        error instanceof Error ? error.message : 'Erro ao enviar comprovativo',
+        { id: uploadToast }
+      )
+      return null
+    } finally {
+      setIsUploadingProof(false)
     }
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
-    // Validações
+    // Validar nome completo
     if (!fullName.trim()) {
       toast.error('Nome completo é obrigatório')
       return
     }
 
+    // Validar e-mail
+    if (!email.trim()) {
+      toast.error('E-mail é obrigatório')
+      return
+    }
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      toast.error('Por favor, insira um e-mail válido')
+      return
+    }
+
+    // Validar pagamento para eventos pagos
     if (!isFree) {
       if (!paymentMethod) {
-        toast.error('Selecione um método de pagamento')
+        toast.error('Método de pagamento é obrigatório')
         return
       }
 
-      if (!proofFile) {
+      if (!paymentProofFile) {
         toast.error('Comprovativo de pagamento é obrigatório')
         return
       }
@@ -84,70 +133,72 @@ export default function EventRegistrationModal({
     const loadingToast = toast.loading('Processando inscrição...')
 
     try {
+      let proofUrl = null
+
+      // Upload proof if provided
+      if (paymentProofFile) {
+        proofUrl = await uploadProof()
+        if (!proofUrl) {
+          throw new Error('Falha ao enviar comprovativo')
+        }
+      }
+
       const token = localStorage.getItem('token')
       const headers: HeadersInit = {
-        Authorization: token ? `Bearer ${token}` : '',
+        'Content-Type': 'application/json',
       }
 
-      // Se for evento pago, fazer upload do comprovativo primeiro
-      let proofUrl = ''
-      if (!isFree && proofFile) {
-        const formData = new FormData()
-        formData.append('file', proofFile)
-
-        const uploadResponse = await fetch(`${API_URL}/upload/proof`, {
-          method: 'POST',
-          headers: {
-            Authorization: token ? `Bearer ${token}` : '',
-          },
-          body: formData,
-        })
-
-        if (!uploadResponse.ok) {
-          throw new Error('Erro ao enviar comprovativo')
-        }
-
-        const uploadData = await uploadResponse.json()
-        proofUrl = uploadData.fileUrl
+      if (token) {
+        headers['Authorization'] = `Bearer ${token}`
       }
 
-      // Fazer inscrição
-      const registrationResponse = await fetch(`${API_URL}/events/${eventId}/register`, {
+      const response = await fetch(`${API_URL}/events/${eventId}/register`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          ...headers,
-        },
+        headers,
         body: JSON.stringify({
-          fullName: fullName.trim(),
-          paymentMethod: isFree ? null : paymentMethod,
-          proofUrl: isFree ? null : proofUrl,
+          full_name: fullName.trim(),
+          email: email.trim(),
+          payment_method: isFree ? null : paymentMethod,
+          proof_url: proofUrl,
         }),
       })
 
-      if (!registrationResponse.ok) {
-        const error = await registrationResponse.json()
+      if (!response.ok) {
+        const error = await response.json()
         throw new Error(error.message || 'Erro ao se inscrever')
       }
 
-      toast.success(
-        isFree
-          ? 'Inscrição realizada com sucesso!'
-          : 'Inscrição enviada! Aguarde confirmação do pagamento.',
-        {
-          id: loadingToast,
-          duration: 3000,
-        }
-      )
+      toast.success('Inscrição realizada com sucesso!', {
+        id: loadingToast,
+        icon: <CheckCircle className="text-green-500" />,
+        style: {
+          background: '#f0fdf4',
+          color: '#15803d',
+          border: '1px solid #bbf7d0',
+        },
+      })
+
+      // Disparar evento de notificação para o header
+      console.log('[EventRegistrationModal] Disparando evento de nova inscrição:', { fullName, email, eventTitle });
+      
+      // Disparar evento com pequeno delay para garantir que o listener está pronto
+      setTimeout(() => {
+        window.dispatchEvent(new CustomEvent('newRegistration', {
+          detail: {
+            name: fullName,
+            email: email,
+            eventTitle: eventTitle
+          }
+        }));
+        console.log('[EventRegistrationModal] Evento disparado com sucesso');
+      }, 100);
 
       onSuccess()
     } catch (error) {
-      console.error('Registration error:', error)
+      console.error('Failed to register:', error)
       toast.error(
         error instanceof Error ? error.message : 'Erro ao se inscrever',
-        {
-          id: loadingToast,
-        }
+        { id: loadingToast }
       )
     } finally {
       setIsSubmitting(false)
@@ -160,44 +211,27 @@ export default function EventRegistrationModal({
       onClick={onClose}
     >
       <div
-        className="bg-white rounded-xl max-w-sm w-full max-h-[95vh] overflow-y-auto shadow-2xl"
+        className="bg-elit-light rounded-xl max-w-md w-full max-h-[70vh] overflow-y-auto"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Header with gradient */}
-        <div className="bg-gradient-to-r from-elit-orange to-elit-gold p-4 text-white">
-          <div className="flex justify-between items-start gap-2">
-            <div className="flex-1">
-              <h2 className="text-xl font-bold">Inscrição</h2>
-              <p className="text-elit-light/90 mt-0.5 text-xs line-clamp-2">{eventTitle}</p>
+        <div className="p-6">
+          <div className="flex justify-between items-start mb-6">
+            <div>
+              <h2 className="text-2xl font-bold text-elit-dark">Inscrição</h2>
+              <p className="text-elit-dark/70 mt-1 text-sm">{eventTitle}</p>
             </div>
             <button
               onClick={onClose}
-              className="text-elit-light hover:text-white transition-colors flex-shrink-0"
+              className="text-elit-dark/40 hover:text-elit-dark/60 transition-colors"
             >
-              <X size={20} />
+              <X size={24} />
             </button>
           </div>
-        </div>
 
-        <div className="p-4">
-          {!isFree && (
-            <div className="mb-4 p-3 bg-gradient-to-br from-elit-orange/10 to-elit-gold/10 border border-elit-orange/30 rounded-lg">
-              <p className="text-xs text-elit-dark font-semibold">
-                Valor:
-              </p>
-              <p className="text-2xl font-bold text-elit-orange mt-1">
-                {eventPrice.toLocaleString('pt-BR', {
-                  style: 'currency',
-                  currency: 'MZN',
-                })}
-              </p>
-            </div>
-          )}
-
-          <form onSubmit={handleSubmit} className="space-y-3">
-            {/* Nome Completo */}
+          <form onSubmit={handleSubmit} className="space-y-4">
+            {/* Full Name */}
             <div>
-              <label htmlFor="fullName" className="block text-xs font-medium text-elit-dark mb-1">
+              <label htmlFor="fullName" className="block text-sm font-medium text-elit-dark mb-1">
                 Nome Completo *
               </label>
               <input
@@ -206,141 +240,140 @@ export default function EventRegistrationModal({
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
                 placeholder="Ex: João Silva"
-                className="w-full px-3 py-2 bg-elit-light border-2 border-elit-light rounded-lg text-sm text-elit-dark placeholder-elit-dark/50 focus:outline-none focus:border-elit-orange focus:ring-2 focus:ring-elit-orange/20 transition"
+                className="w-full px-4 py-2 bg-white border border-elit-dark/20 rounded-lg text-elit-dark placeholder-elit-dark/40 focus:outline-none focus:border-elit-orange focus:ring-2 focus:ring-elit-orange/20 transition"
                 required
               />
             </div>
 
-            {/* Método de Pagamento (apenas para eventos pagos) */}
+            {/* Email */}
+            <div>
+              <label htmlFor="email" className="block text-sm font-medium text-elit-dark mb-1">
+                E-mail *
+              </label>
+              <input
+                type="email"
+                id="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="exemplo@email.com"
+                className="w-full px-4 py-2 bg-white border border-elit-dark/20 rounded-lg text-elit-dark placeholder-elit-dark/40 focus:outline-none focus:border-elit-orange focus:ring-2 focus:ring-elit-orange/20 transition"
+                required
+              />
+            </div>
+
+            {/* Payment Section (only for paid events) */}
             {!isFree && (
-              <div>
-                <label className="block text-xs font-medium text-elit-dark mb-2">
-                  Método de Pagamento *
-                </label>
-                <div className="space-y-1.5">
-                  <label className="flex items-center p-2 border-2 border-elit-light rounded-lg cursor-pointer hover:bg-elit-light/50 transition">
-                    <input
-                      type="radio"
-                      name="paymentMethod"
-                      value="mpesa"
-                      checked={paymentMethod === 'mpesa'}
-                      onChange={(e) => setPaymentMethod(e.target.value as 'mpesa')}
-                      className="w-3 h-3 text-elit-orange"
-                    />
-                    <span className="ml-2 text-xs font-medium text-elit-dark">
-                      M-Pesa
-                    </span>
-                  </label>
-                  <label className="flex items-center p-2 border-2 border-elit-light rounded-lg cursor-pointer hover:bg-elit-light/50 transition">
-                    <input
-                      type="radio"
-                      name="paymentMethod"
-                      value="transfer"
-                      checked={paymentMethod === 'transfer'}
-                      onChange={(e) => setPaymentMethod(e.target.value as 'transfer')}
-                      className="w-3 h-3 text-elit-orange"
-                    />
-                    <span className="ml-2 text-xs font-medium text-elit-dark">
-                      Transferência Bancária
-                    </span>
-                  </label>
-                </div>
-              </div>
-            )}
+              <>
+                <div className="pt-4 border-t border-elit-dark/10">
+                  <h3 className="font-semibold text-elit-dark mb-4">Informações de Pagamento</h3>
 
-            {/* Comprovativo de Pagamento (apenas para eventos pagos) */}
-            {!isFree && (
-              <div>
-                <label className="block text-xs font-medium text-elit-dark mb-1">
-                  Comprovativo *
-                </label>
-
-                {proofPreview && (
-                  <div className="mb-2 relative">
-                    <img
-                      src={proofPreview}
-                      alt="Preview"
-                      className="w-full h-24 object-cover rounded-lg border-2 border-elit-orange"
-                    />
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setProofFile(null)
-                        setProofPreview(null)
-                      }}
-                      className="absolute top-1 right-1 bg-elit-red hover:bg-elit-red/80 text-white p-1 rounded-full transition"
-                      title="Remover"
+                  {/* Payment Method */}
+                  <div className="mb-4">
+                    <label htmlFor="paymentMethod" className="block text-sm font-medium text-elit-dark mb-1">
+                      Método de Pagamento *
+                    </label>
+                    <select
+                      id="paymentMethod"
+                      value={paymentMethod}
+                      onChange={(e) => setPaymentMethod(e.target.value)}
+                      className="w-full px-4 py-2 bg-white border border-elit-dark/20 rounded-lg text-elit-dark focus:outline-none focus:border-elit-orange focus:ring-2 focus:ring-elit-orange/20 transition"
+                      required
                     >
-                      <X size={14} />
-                    </button>
+                      <option value="">Selecione um método</option>
+                      <option value="M-Pesa">M-Pesa</option>
+                      <option value="Bank Transfer">Transferência Bancária</option>
+                      <option value="Other">Outro</option>
+                    </select>
                   </div>
-                )}
 
-                {proofFile && !proofPreview && (
-                  <div className="mb-2 p-2 bg-elit-light border-2 border-elit-orange rounded-lg flex items-center gap-2">
-                    <FileText size={16} className="text-elit-orange flex-shrink-0" />
-                    <div className="flex-1 min-w-0">
-                      <p className="text-xs font-medium text-elit-dark truncate">
-                        {proofFile.name}
-                      </p>
-                    </div>
-                    <button
-                      type="button"
-                      onClick={() => setProofFile(null)}
-                      className="text-elit-red hover:text-elit-red/80 flex-shrink-0"
-                    >
-                      <X size={14} />
-                    </button>
-                  </div>
-                )}
+                  {/* Payment Proof */}
+                  <div>
+                    <label className="block text-sm font-medium text-elit-dark mb-2">
+                      Comprovativo de Pagamento *
+                    </label>
+                    <p className="text-xs text-elit-dark/60 mb-3">
+                      Envie uma imagem ou PDF do comprovativo (recibo, screenshot, etc.)
+                    </p>
 
-                <label className="flex flex-col items-center justify-center w-full p-3 border-2 border-dashed border-elit-orange/30 rounded-lg cursor-pointer hover:border-elit-orange hover:bg-elit-orange/5 transition">
-                  <div className="flex flex-col items-center justify-center">
-                    {proofFile ? (
-                      <>
-                        <FileText className="w-5 h-5 text-elit-orange mb-1" />
-                        <p className="text-xs text-elit-dark text-center">
-                          <span className="font-semibold">Alterar</span>
-                        </p>
-                      </>
-                    ) : (
-                      <>
-                        <Upload className="w-5 h-5 text-elit-orange/60 mb-1" />
-                        <p className="text-xs text-elit-dark text-center">
-                          <span className="font-semibold">Enviar</span> comprovativo
-                        </p>
-                      </>
+                    {paymentProofPreview && (
+                      <div className="mb-3">
+                        {typeof paymentProofPreview === 'string' && paymentProofPreview.startsWith('data:') ? (
+                          <img
+                            src={paymentProofPreview}
+                            alt="Preview"
+                            className="w-full h-32 object-cover rounded-lg border border-elit-dark/20"
+                          />
+                        ) : (
+                          <div className="w-full h-32 bg-elit-light rounded-lg border border-elit-dark/20 flex items-center justify-center">
+                            <p className="text-elit-dark/60 text-sm">{paymentProofPreview}</p>
+                          </div>
+                        )}
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setPaymentProofFile(null)
+                            setPaymentProofPreview(null)
+                          }}
+                          className="mt-2 text-sm text-elit-red hover:text-elit-red/80 font-medium"
+                        >
+                          Remover arquivo
+                        </button>
+                      </div>
                     )}
+
+                    <label className="flex flex-col items-center justify-center w-full p-4 border-2 border-dashed border-elit-dark/20 rounded-lg cursor-pointer hover:border-elit-orange hover:bg-elit-orange/5 transition">
+                      <div className="flex flex-col items-center justify-center">
+                        {isUploadingProof ? (
+                          <>
+                            <div className="w-6 h-6 border-3 border-elit-orange border-t-transparent rounded-full animate-spin mb-2"></div>
+                            <p className="text-xs text-elit-dark/60">Enviando...</p>
+                          </>
+                        ) : (
+                          <>
+                            <Upload className="w-6 h-6 text-elit-dark/40 mb-2" />
+                            <p className="text-xs text-elit-dark/60 text-center">
+                              <span className="font-semibold">Clique</span> ou arraste o arquivo
+                            </p>
+                          </>
+                        )}
+                      </div>
+                      <input
+                        type="file"
+                        accept="image/jpeg,image/png,image/webp,image/gif,application/pdf"
+                        onChange={handleProofUpload}
+                        disabled={isUploadingProof}
+                        className="hidden"
+                      />
+                    </label>
                   </div>
-                  <input
-                    type="file"
-                    accept="image/jpeg,image/png,image/webp,image/gif,application/pdf"
-                    onChange={handleFileChange}
-                    disabled={isSubmitting}
-                    className="hidden"
-                  />
-                </label>
-              </div>
+                </div>
+              </>
             )}
 
-            {/* Botões */}
-            <div className="flex gap-2 pt-3 border-t border-elit-light">
+            {/* Buttons */}
+            <div className="flex gap-2 pt-3">
               <button
                 type="submit"
-                disabled={isSubmitting}
-                className="flex-1 bg-gradient-to-r from-elit-orange to-elit-gold hover:from-elit-gold hover:to-elit-orange disabled:from-elit-orange/50 disabled:to-elit-gold/50 disabled:cursor-not-allowed text-white px-4 py-2 rounded-lg transition duration-200 font-medium text-sm shadow-md hover:shadow-lg"
+                disabled={isSubmitting || isUploadingProof}
+                className="flex-1 bg-gradient-to-r from-elit-orange to-elit-gold hover:from-elit-orange/90 hover:to-elit-gold/90 disabled:from-elit-orange/50 disabled:to-elit-gold/50 disabled:cursor-not-allowed text-elit-light px-4 py-1.5 rounded-lg transition duration-200 font-medium text-sm"
               >
                 {isSubmitting ? 'Processando...' : 'Confirmar'}
               </button>
               <button
                 type="button"
                 onClick={onClose}
-                disabled={isSubmitting}
-                className="flex-1 bg-elit-light hover:bg-elit-light/80 disabled:bg-elit-light/50 disabled:cursor-not-allowed text-elit-dark px-4 py-2 rounded-lg transition duration-200 font-medium text-sm border border-elit-light"
+                disabled={isSubmitting || isUploadingProof}
+                className="flex-1 bg-elit-dark/10 hover:bg-elit-dark/20 disabled:bg-elit-dark/5 disabled:cursor-not-allowed text-elit-dark px-4 py-1.5 rounded-lg transition duration-200 font-medium text-sm"
               >
                 Cancelar
               </button>
             </div>
+
+            {!isFree && (
+              <p className="text-xs text-elit-dark/60 text-center pt-2">
+                Seu comprovativo será verificado. Você receberá confirmação em breve.
+              </p>
+            )}
           </form>
         </div>
       </div>

@@ -155,7 +155,7 @@ export default function EventGalleryModal({
         onClick={(e) => e.stopPropagation()}
       >
         <div className="p-6">
-          <div className="flex justify-between items-start mb-6">
+          <div className="flex justify-between items-stArte mb-6">
             <div>
               <h2 className="text-2xl font-bold text-slate-900">Galeria de Fotos</h2>
               <p className="text-slate-600 mt-1">{eventTitle}</p>

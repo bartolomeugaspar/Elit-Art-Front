@@ -10,7 +10,7 @@ export default function CommunitySection() {
     {
       icon: Users,
       title: "Transformacção Social",
-      description: "Promoção das artes e ofícios como ferramentas de transformacção pessoal e social nas periferias de Luanda."
+      description: "Promoção das Artees e ofícios como ferramentas de transformacção pessoal e social nas periferias de Luanda."
     },
     {
       icon: GraduationCap,
@@ -23,7 +23,7 @@ export default function CommunitySection() {
     {
       icon: Heart,
       title: "Fundacção de Caridade",
-      description: "Área dedicada a prestar ajuda académica, artística e de ofícios, incluindo bolsas para crianças carenciadas."
+      description: "Área dedicada a prestar ajuda académica, Arteística e de ofícios, incluindo bolsas para crianças carenciadas."
     },
     {
       icon: Target,
@@ -69,7 +69,7 @@ export default function CommunitySection() {
         <div className="mb-20">
           <div className="text-center mb-12">
             <p className="text-xl font-light text-elit-orange italic mb-4">
-              "Mais do que arte, somos inspiracção para uma Angola melhor."
+              "Mais do que Artee, somos inspiracção para uma Angola melhor."
             </p>
             <h3 className="text-3xl font-bold text-elit-dark">Diferenciais</h3>
           </div>
@@ -90,12 +90,12 @@ export default function CommunitySection() {
         {/* Propostas para Financiadores */}
         <div className="bg-gradient-to-br from-orange/10 to-orange-50/10 p-8 rounded-2xl text-elit-dark text-center border border-black/10">
           <p className="text-xl font-light italic mb-4">
-            "No Elit'arte, financiadores não apenas apoiam a arte, mas transformam vidas."
+            "No Elit'Arte, financiadores não apenas apoiam a Artee, mas transformam vidas."
           </p>
           <h3 className="text-3xl font-bold mb-6">Propostas para Financiadores</h3>
           <p className="text-lg mb-8 max-w-4xl mx-auto">
-            Buscamos parceiros que compartilham da nossa paixão pela arte, cultura e pelo amor ao nosso país. 
-            Com estes apoios poderemos expandir ainda mais o nosso impacto, levando a nossa arte angolana 
+            Buscamos parceiros que compartilham da nossa paixão pela Artee, cultura e pelo amor ao nosso país. 
+            Com estes apoios poderemos expandir ainda mais o nosso impacto, levando a nossa Artee angolana 
             para mais pessoas e comunidades.
           </p>
           
@@ -104,7 +104,7 @@ export default function CommunitySection() {
               <h4 className="text-xl font-bold mb-4">Benefícios</h4>
               <ul className="text-elit-dark space-y-2">
                 <li>• Visibilidade da marca nos espectáculos</li>
-                <li>• Participacção nas actividades culturais</li>
+                <li>• PArteicipacção nas actividades culturais</li>
                 <li>• Acompanhamento escolar para filhos</li>
               </ul>
             </div>

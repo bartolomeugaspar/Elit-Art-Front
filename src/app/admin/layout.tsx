@@ -13,7 +13,12 @@ export default function RootLayout({
   
   // Don't apply AdminLayout to login and forgot-password pages
   if (pathname === '/admin/login' || pathname === '/admin/forgot-password') {
-    return children;
+    return (
+      <>
+        {children}
+        <Toaster position="top-right" />
+      </>
+    );
   }
   
   return (

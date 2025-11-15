@@ -7,7 +7,7 @@ export default function ProjectsSection() {
         <div className="text-center mb-16">
           <h2 className="text-4xl font-bold text-gray-800 mb-4">Projetos em Destaque</h2>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Iniciativas que marcaram nossa jornada artística e cultural
+            Iniciativas que marcaram nossa jornada Arteística e cultural
           </p>
         </div>
 
@@ -31,17 +31,17 @@ export default function ProjectsSection() {
             </div>
           </div>
 
-          {/* Pincel Artístico */}
+          {/* Pincel Arteístico */}
           <div className="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all transform hover:scale-105">
             <div className="h-64 bg-gradient-to-br from-green-400 to-blue-400 flex items-center justify-center">
               <div className="text-center text-white">
                 <TreePine className="w-16 h-16 mx-auto mb-4" />
-                <h3 className="text-2xl font-bold">Pincel Artístico</h3>
+                <h3 className="text-2xl font-bold">Pincel Arteístico</h3>
               </div>
             </div>
             <div className="p-8">
               <p className="text-gray-600 leading-relaxed mb-6">
-                Oficinas de artes visuais que conectam artistas emergentes com mestres tradicionais, 
+                Oficinas de Artees visuais que conectam Arteistas emergentes com mestres tradicionais, 
                 preservando técnicas ancestrais através da expressão contemporânea.
               </p>
               <button className="text-green-600 font-semibold hover:text-green-700 transition-colors">

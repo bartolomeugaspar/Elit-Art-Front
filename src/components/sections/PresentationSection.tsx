@@ -23,7 +23,7 @@ export default function PresentationSection() {
                 <h2 className="text-4xl font-bold text-elit-dark">
                   <span className="text-elit-red">Elit</span>
                   <span className="text-elit-yellow">'</span>
-                  <span className="text-elit-brown">Arte</span>
+                  <span className="text-elit-brown">Artee</span>
                 </h2>
               </div>
 
@@ -31,13 +31,13 @@ export default function PresentationSection() {
               <div className="bg-gradient-to-r from-elit-light to-white p-8 rounded-2xl shadow-lg">
                 <h3 className="text-2xl font-bold text-elit-dark mb-6">Mensagem de Boas-Vindas</h3>
                 <p className="text-lg text-gray-700 leading-relaxed">
-                  Somos o <strong className="text-elit-red">Elit'arte</strong>, um Movimento artístico angolano que une 
+                  Somos o <strong className="text-elit-red">Elit'Arte</strong>, um Movimento Arteístico angolano que une 
                   <span className="text-elit-orange font-semibold"> teatro, música, dança, literatura, pintura e cinema</span>, 
                   com o objectivo de promover e celebrar a nossa rica cultura. 
                 </p>
                 <p className="text-lg text-gray-700 leading-relaxed mt-4">
                   O nosso trabalho visa <span className="text-elit-gold font-semibold">transformar, inspirar e conectar</span> a 
-                  sociedade angolana com a arte que junta o tradicional ao contemporâneo.
+                  sociedade angolana com a Artee que junta o tradicional ao contemporâneo.
                 </p>
               </div>
             </div>

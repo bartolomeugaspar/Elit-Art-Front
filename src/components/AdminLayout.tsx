@@ -27,8 +27,73 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const pathname = usePathname();
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [hasNewRegistration, setHasNewRegistration] = useState(false);
+  const [notificationCount, setNotificationCount] = useState(0);
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
+
+  console.log('[AdminLayout] Renderizado com notificationCount:', notificationCount);
+
+  // Buscar inscrições com status "registered" ao montar o componente
+  useEffect(() => {
+    const fetchRegisteredCount = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        if (!token) return;
+
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/registrations`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          const registrations = data.registrations || [];
+          const registeredCount = registrations.filter((reg: any) => reg.status === 'registered').length;
+          console.log('[AdminLayout] Inscrições com status "registered":', registeredCount);
+          setNotificationCount(registeredCount);
+        }
+      } catch (error) {
+        console.error('[AdminLayout] Erro ao buscar inscrições:', error);
+      }
+    };
+
+    fetchRegisteredCount();
+  }, []);
+
+  // Escutar notificações de inscrições
+  useEffect(() => {
+    const handleNewRegistration = (event: Event) => {
+      const customEvent = event as CustomEvent;
+      const { name, email, eventTitle } = customEvent.detail;
+      console.log('[AdminLayout] Nova inscrição recebida:', customEvent.detail);
+      
+      setHasNewRegistration(true);
+      setNotificationCount(prev => {
+        const newCount = prev + 1;
+        console.log('[AdminLayout] Contagem atualizada:', newCount);
+        return newCount;
+      });
+      
+      // Mostrar toast de notificação
+      showToast(`Nova inscrição: ${name} em ${eventTitle}`, 'success');
+      
+      // Auto-remover notificação após 5 segundos
+      setTimeout(() => {
+        setHasNewRegistration(false);
+      }, 5000);
+    }
+
+    window.addEventListener('newRegistration', handleNewRegistration);
+    console.log('[AdminLayout] Listener de notificações adicionado');
+    return () => {
+      window.removeEventListener('newRegistration', handleNewRegistration);
+      console.log('[AdminLayout] Listener de notificações removido');
+    };
+  }, []);
 
   const logout = () => {
+    setIsLoggingOut(true);
     showToast('Saindo do sistema...', 'info');
     setTimeout(() => {
       logoutFromAuth();
@@ -36,12 +101,12 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
   };
 
   useEffect(() => {
-    console.log('[AdminLayout] Estado:', { loading, user: user?.email, role: user?.role });
-    if (!loading && (!user || user.role !== 'admin')) {
+    console.log('[AdminLayout] Estado:', { loading, user: user?.email, role: user?.role, isLoggingOut });
+    if (!loading && (!user || user.role !== 'admin') && !isLoggingOut) {
       console.log('[AdminLayout] Redirecionando para login');
       router.push('/admin/login');
     }
-  }, [user, loading, router]);
+  }, [user, loading, router, isLoggingOut]);
 
   if (loading) {
     return (
@@ -105,11 +170,11 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
             <div className="flex items-center gap-3">
               <img 
                 src="/icon.jpeg" 
-                alt="Elit'Art" 
+                alt="Elit'Arte" 
                 className="w-8 h-8 rounded-lg object-cover"
               />
               <h1 className="text-lg font-bold text-slate-900">
-                Elit'Art
+                Elit'Arte
               </h1>
             </div>
           )}
@@ -202,10 +267,30 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
               {/* Right Section */}
               <div className="flex items-center space-x-4">
                 {/* Notifications */}
-                <button className="p-2.5 rounded-full text-gray-500 hover:text-gray-600 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200">
+                <button 
+                  onClick={async () => {
+                    router.push('/admin/registrations');
+                    // Resetar contador após navegar
+                    setTimeout(() => {
+                      setNotificationCount(0);
+                    }, 500);
+                  }}
+                  className={`p-2.5 rounded-full transition-all duration-300 ${
+                    hasNewRegistration 
+                      ? 'bg-red-100 text-red-600 animate-pulse' 
+                      : notificationCount > 0
+                      ? 'bg-red-50 text-red-600 hover:bg-red-100'
+                      : 'text-gray-500 hover:text-gray-600 hover:bg-gray-50'
+                  } focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500`}
+                  title={`${notificationCount} nova(s) inscrição(ões)`}
+                >
                   <div className="relative">
-                    <Bell size={24} className="text-gray-600" />
-                    <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-white text-[10px] font-medium rounded-full flex items-center justify-center">3</span>
+                    <Bell size={24} />
+                    {notificationCount > 0 && (
+                      <span className="absolute -top-2 -right-2 w-6 h-6 bg-red-600 text-white text-xs font-bold rounded-full flex items-center justify-center shadow-lg">
+                        {notificationCount > 99 ? '99+' : notificationCount}
+                      </span>
+                    )}
                   </div>
                 </button>
 

@@ -1,8 +1,8 @@
-# 📊 Painel Administrativo Elit'Art
+# 📊 Painel Administrativo Elit'Arte
 
 ## Visão Geral
 
-O painel administrativo é uma interface completa para gerenciar todos os aspectos da plataforma Elit'Art. Ele permite que administradores gerenciem usuários, eventos, inscrições e newsletter.
+O painel administrativo é uma interface completa para gerenciar todos os aspectos da plataforma Elit'Arte. Ele permite que administradores gerenciem usuários, eventos, inscrições e newsletter.
 
 ## 🚀 Acesso
 
@@ -13,7 +13,7 @@ http://localhost:3000/admin
 
 ### Credenciais de Teste
 ```
-Email: admin@elit-arte.com
+Email: admin@elit-Artee.com
 Senha: admin123
 ```
 
@@ -34,7 +34,7 @@ Senha: admin123
   - Nome
   - Email
   - Senha
-  - Função (Admin, Artista, Usuário)
+  - Função (Admin, Arteista, Usuário)
 - **Editar** informações do usuário
 - **Deletar** usuário
 - Visualizar status (Ativo/Inativo)
@@ -88,7 +88,7 @@ Senha: admin123
 ### Componentes
 - Tabelas com dados
 - Formulários para criação/edição
-- Cartões de estatísticas
+- CArteões de estatísticas
 - Botões de ação
 - Ícones do Lucide React
 

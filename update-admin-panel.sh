@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Diretório base do projeto
-BASE_DIR="/home/kali/Documentos/Elit-Art-Front/src/app/admin"
+BASE_DIR="/home/kali/Documentos/Elit-Arte-Front/src/app/admin"
 
 # Criar backup dos arquivos atuais
 echo "Criando backup dos arquivos atuais..."

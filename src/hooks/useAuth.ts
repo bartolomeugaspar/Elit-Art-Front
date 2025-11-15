@@ -6,7 +6,7 @@ export interface User {
   id: string;
   email: string;
   name: string;
-  role: 'admin' | 'artist' | 'user';
+  role: 'admin' | 'Arteist' | 'user';
 }
 
 export function useAuth(onLogout?: (message: string) => void) {
@@ -164,7 +164,7 @@ export function useAuth(onLogout?: (message: string) => void) {
       if (onLogout) {
         onLogout('Você foi desconectado com sucesso!');
       }
-      router.push('/admin/login');
+      router.push('/');
     }
   };
 
