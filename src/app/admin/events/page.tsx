@@ -1,10 +1,11 @@
 'use client';
 
 import { useEffect, useState, useCallback, useRef } from 'react';
-import { Trash2, Edit2, Plus, CheckCircle, X, Calendar, MapPin, Users } from 'lucide-react';
+import { Trash2, Edit2, Plus, CheckCircle, X, Calendar, MapPin, Users, Image as ImageIcon } from 'lucide-react';
 import { API_URL } from '@/lib/api';
 import toast from 'react-hot-toast';
 import EventForm from '@/components/admin/EventForm';
+import EventGalleryModal from '@/components/admin/EventGalleryModal';
 
 interface Event {
   id: string;
@@ -17,6 +18,8 @@ interface Event {
   available_spots: number;
   created_at: string;
   image: string;
+  images?: string[];
+  status?: 'upcoming' | 'ongoing' | 'completed' | 'cancelled';
 }
 
 const formatDate = (dateString: string | null | undefined) => {
@@ -103,6 +106,7 @@ export default function AdminEvents() {
   const [isEditing, setIsEditing] = useState(false);
   const [showDetailsModal, setShowDetailsModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [showGalleryModal, setShowGalleryModal] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
   const [eventToDelete, setEventToDelete] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
@@ -313,7 +317,14 @@ export default function AdminEvents() {
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center">
                         <div>
-                          <div className="text-sm font-medium text-slate-900">{event.title}</div>
+                          <div className="flex items-center gap-2">
+                            <div className="text-sm font-medium text-slate-900">{event.title}</div>
+                            {event.status === 'completed' && (
+                              <span className="px-2 py-0.5 text-xs font-semibold rounded-full bg-gray-200 text-gray-700">
+                                Passado
+                              </span>
+                            )}
+                          </div>
                           <div className="text-xs text-slate-500">{event.category}</div>
                         </div>
                       </div>
@@ -414,7 +425,14 @@ export default function AdminEvents() {
             <div className="p-6">
               <div className="flex justify-between items-start">
                 <div>
-                  <h3 className="text-2xl font-bold text-slate-900">{selectedEvent.title}</h3>
+                  <div className="flex items-center gap-3">
+                    <h3 className="text-2xl font-bold text-slate-900">{selectedEvent.title}</h3>
+                    {selectedEvent.status === 'completed' && (
+                      <span className="px-3 py-1 text-sm font-semibold rounded-full bg-gray-200 text-gray-700">
+                        Evento Passado
+                      </span>
+                    )}
+                  </div>
                   <p className="text-purple-600 font-medium mt-1">{selectedEvent.category}</p>
                 </div>
                 {!selectedEvent.image && (
@@ -482,6 +500,14 @@ export default function AdminEvents() {
               <div className="mt-8 flex justify-end space-x-3">
                 <button
                   type="button"
+                  onClick={() => setShowGalleryModal(true)}
+                  className="px-4 py-2 border border-purple-300 text-purple-700 rounded-lg hover:bg-purple-50 transition-colors font-medium flex items-center gap-2"
+                >
+                  <ImageIcon size={18} />
+                  Galeria de Fotos
+                </button>
+                <button
+                  type="button"
                   onClick={() => {
                     setSelectedEvent(null);
                     handleEditEvent(selectedEvent);
@@ -543,6 +569,20 @@ export default function AdminEvents() {
             </div>
           </div>
         </div>
+      )}
+
+      {/* Event Gallery Modal */}
+      {showGalleryModal && selectedEvent && (
+        <EventGalleryModal
+          eventId={selectedEvent.id}
+          eventTitle={selectedEvent.title}
+          images={selectedEvent.images || []}
+          onClose={() => setShowGalleryModal(false)}
+          onImagesUpdated={(images) => {
+            setSelectedEvent(prev => prev ? { ...prev, images } : null);
+            setEvents(prev => prev.map(e => e.id === selectedEvent.id ? { ...e, images } : e));
+          }}
+        />
       )}
     </div>
   );
