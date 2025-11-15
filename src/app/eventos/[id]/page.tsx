@@ -1,6 +1,7 @@
 'use client'
 
 import { Header, Footer } from '@/components'
+import EventRegistrationModal from '@/components/EventRegistrationModal'
 import { useEvents } from '@/hooks'
 import { Calendar, MapPin, Clock, Share2, Heart, Users, Star, ArrowLeft } from 'lucide-react'
 import Link from 'next/link'
@@ -12,44 +13,17 @@ export default function EventDetailPage({ params }: { params: { id: string } }) 
   const testimonials = event ? getTestimonialsByEventId(event.id as number) : []
   const [isLiked, setIsLiked] = useState(false)
   const [showShareMenu, setShowShareMenu] = useState(false)
-  const [isRegistering, setIsRegistering] = useState(false)
+  const [showRegistrationModal, setShowRegistrationModal] = useState(false)
   const [registrationMessage, setRegistrationMessage] = useState<{ type: 'success' | 'error', text: string } | null>(null)
 
-  const handleRegister = async () => {
-    if (!event) return
+  const handleRegisterClick = () => {
+    setShowRegistrationModal(true)
+  }
 
-    setIsRegistering(true)
-    try {
-      const token = localStorage.getItem('token')
-      const headers: HeadersInit = {
-        'Content-Type': 'application/json',
-      }
-      
-      if (token) {
-        headers['Authorization'] = `Bearer ${token}`
-      }
-
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/events/${event.id}/register`, {
-        method: 'POST',
-        headers,
-      })
-
-      if (!response.ok) {
-        const error = await response.json()
-        throw new Error(error.message || 'Erro ao se inscrever')
-      }
-
-      setRegistrationMessage({ type: 'success', text: 'Inscrição realizada com sucesso!' })
-      // Atualizar a página após 2 segundos
-      setTimeout(() => window.location.reload(), 2000)
-    } catch (error) {
-      setRegistrationMessage({ 
-        type: 'error', 
-        text: error instanceof Error ? error.message : 'Erro ao se inscrever'
-      })
-    } finally {
-      setIsRegistering(false)
-    }
+  const handleRegistrationSuccess = () => {
+    setShowRegistrationModal(false)
+    setRegistrationMessage({ type: 'success', text: 'Inscrição realizada com sucesso!' })
+    setTimeout(() => window.location.reload(), 2000)
   }
 
   if (!event) {
@@ -216,17 +190,15 @@ export default function EventDetailPage({ params }: { params: { id: string } }) 
                   </div>
                 )}
                 <button 
-                  onClick={handleRegister}
-                  disabled={isRegistering || event.availableSpots === 0}
+                  onClick={handleRegisterClick}
+                  disabled={event.availableSpots === 0}
                   className={`w-full py-2.5 md:py-3 rounded-lg font-semibold text-sm md:text-base transition-all duration-300 ${
                     event.availableSpots === 0
                       ? 'bg-gray-400 text-white cursor-not-allowed'
-                      : isRegistering
-                      ? 'bg-elit-orange/50 text-elit-light'
                       : 'bg-elit-orange hover:bg-elit-gold text-elit-light'
                   }`}
                 >
-                  {isRegistering ? 'Inscrevendo...' : event.availableSpots === 0 ? 'Evento Lotado' : 'Inscrever-se'}
+                  {event.availableSpots === 0 ? 'Evento Lotado' : 'Inscrever-se'}
                 </button>
 
                 <button
@@ -293,6 +265,18 @@ export default function EventDetailPage({ params }: { params: { id: string } }) 
           </div>
         </div>
       </section>
+
+      {/* Registration Modal */}
+      {showRegistrationModal && event && (
+        <EventRegistrationModal
+          eventId={event.id as string}
+          eventTitle={event.title}
+          eventPrice={event.price || 0}
+          isFree={event.isFree || false}
+          onClose={() => setShowRegistrationModal(false)}
+          onSuccess={handleRegistrationSuccess}
+        />
+      )}
 
       <Footer />
     </div>
