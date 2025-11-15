@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { CheckCircle, X, Upload, Image as ImageIcon } from 'lucide-react';
+import { CheckCircle, X, Upload, Image as ImageIcon, Link as LinkIcon } from 'lucide-react';
 import { API_URL } from '@/lib/api';
 import toast from 'react-hot-toast';
 
@@ -52,6 +52,8 @@ export default function EventForm({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [imagePreview, setImagePreview] = useState<string | null>(initialData?.image || null);
   const [isUploadingImage, setIsUploadingImage] = useState(false);
+  const [uploadMode, setUploadMode] = useState<'file' | 'url'>('file');
+  const [imageUrl, setImageUrl] = useState('');
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -120,6 +122,73 @@ export default function EventForm({
       }
     } catch (error) {
       console.error('Failed to upload image:', error);
+      toast.error(
+        error instanceof Error ? error.message : 'Erro ao enviar imagem',
+        {
+          id: uploadToast,
+          icon: <X className="text-red-500" />,
+          style: {
+            background: '#fef2f2',
+            color: '#b91c1c',
+            border: '1px solid #fecaca',
+          },
+        }
+      );
+    } finally {
+      setIsUploadingImage(false);
+    }
+  };
+
+  const handleImageUrlUpload = async () => {
+    if (!imageUrl.trim()) {
+      toast.error('Por favor, insira uma URL válida');
+      return;
+    }
+
+    setIsUploadingImage(true);
+    const uploadToast = toast.loading('Enviando imagem da URL...');
+
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        throw new Error('Token não encontrado');
+      }
+
+      const formDataUpload = new FormData();
+      formDataUpload.append('imageUrl', imageUrl.trim());
+
+      const response = await fetch(`${API_URL}/upload/image`, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: formDataUpload,
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.imageUrl) {
+        setFormData(prev => ({
+          ...prev,
+          image: data.imageUrl,
+        }));
+        setImagePreview(data.imageUrl);
+        setImageUrl('');
+        toast.success('Imagem enviada com sucesso!', {
+          id: uploadToast,
+          icon: <CheckCircle className="text-green-500" />,
+          style: {
+            background: '#f0fdf4',
+            color: '#15803d',
+            border: '1px solid #bbf7d0',
+          },
+          duration: 2000,
+        });
+      } else {
+        throw new Error(data.message || 'Erro ao enviar imagem');
+      }
+    } catch (error) {
+      console.error('Failed to upload image from URL:', error);
       toast.error(
         error instanceof Error ? error.message : 'Erro ao enviar imagem',
         {
@@ -347,7 +416,7 @@ export default function EventForm({
 
         {/* Imagem */}
         <div>
-          <label htmlFor="image" className="block text-sm font-medium text-slate-700 mb-3">
+          <label className="block text-sm font-medium text-slate-700 mb-3">
             Imagem do Evento *
           </label>
           
@@ -373,36 +442,101 @@ export default function EventForm({
             </div>
           )}
 
-          {/* Upload area */}
-          <label className="flex flex-col items-center justify-center w-full p-6 border-2 border-dashed border-slate-300 rounded-lg cursor-pointer hover:border-purple-500 hover:bg-purple-50 transition">
-            <div className="flex flex-col items-center justify-center pt-5 pb-6">
-              {isUploadingImage ? (
-                <>
-                  <div className="w-8 h-8 border-4 border-purple-500 border-t-transparent rounded-full animate-spin mb-2"></div>
-                  <p className="text-sm text-slate-600">Enviando imagem...</p>
-                </>
-              ) : (
-                <>
-                  <Upload className="w-8 h-8 text-slate-400 mb-2" />
-                  <p className="text-sm text-slate-600">
-                    <span className="font-semibold">Clique para enviar</span> ou arraste uma imagem
-                  </p>
-                  <p className="text-xs text-slate-500 mt-1">
-                    PNG, JPG, WebP ou GIF (máx. 5MB)
-                  </p>
-                </>
-              )}
+          {/* Abas de upload */}
+          <div className="flex gap-2 mb-4 border-b border-slate-300">
+            <button
+              type="button"
+              onClick={() => setUploadMode('file')}
+              className={`flex items-center gap-2 px-4 py-2 font-medium transition ${
+                uploadMode === 'file'
+                  ? 'text-purple-600 border-b-2 border-purple-600'
+                  : 'text-slate-600 hover:text-slate-900'
+              }`}
+            >
+              <Upload size={18} />
+              Arquivo
+            </button>
+            <button
+              type="button"
+              onClick={() => setUploadMode('url')}
+              className={`flex items-center gap-2 px-4 py-2 font-medium transition ${
+                uploadMode === 'url'
+                  ? 'text-purple-600 border-b-2 border-purple-600'
+                  : 'text-slate-600 hover:text-slate-900'
+              }`}
+            >
+              <LinkIcon size={18} />
+              URL
+            </button>
+          </div>
+
+          {/* Upload por Arquivo */}
+          {uploadMode === 'file' && (
+            <label className="flex flex-col items-center justify-center w-full p-6 border-2 border-dashed border-slate-300 rounded-lg cursor-pointer hover:border-purple-500 hover:bg-purple-50 transition">
+              <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                {isUploadingImage ? (
+                  <>
+                    <div className="w-8 h-8 border-4 border-purple-500 border-t-transparent rounded-full animate-spin mb-2"></div>
+                    <p className="text-sm text-slate-600">Enviando imagem...</p>
+                  </>
+                ) : (
+                  <>
+                    <Upload className="w-8 h-8 text-slate-400 mb-2" />
+                    <p className="text-sm text-slate-600">
+                      <span className="font-semibold">Clique para enviar</span> ou arraste uma imagem
+                    </p>
+                    <p className="text-xs text-slate-500 mt-1">
+                      PNG, JPG, WebP ou GIF (máx. 5MB)
+                    </p>
+                  </>
+                )}
+              </div>
+              <input
+                type="file"
+                id="image"
+                name="image"
+                accept="image/jpeg,image/png,image/webp,image/gif"
+                onChange={handleImageUpload}
+                disabled={isUploadingImage}
+                className="hidden"
+              />
+            </label>
+          )}
+
+          {/* Upload por URL */}
+          {uploadMode === 'url' && (
+            <div className="space-y-3">
+              <input
+                type="url"
+                placeholder="https://exemplo.com/imagem.jpg"
+                value={imageUrl}
+                onChange={(e) => setImageUrl(e.target.value)}
+                disabled={isUploadingImage}
+                className="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 placeholder-slate-500 focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 transition"
+              />
+              <button
+                type="button"
+                onClick={handleImageUrlUpload}
+                disabled={isUploadingImage || !imageUrl.trim()}
+                className="w-full bg-purple-600 hover:bg-purple-700 disabled:bg-purple-400 disabled:cursor-not-allowed text-white px-4 py-3 rounded-lg transition font-medium flex items-center justify-center gap-2"
+              >
+                {isUploadingImage ? (
+                  <>
+                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                    Enviando...
+                  </>
+                ) : (
+                  <>
+                    <LinkIcon size={18} />
+                    Enviar da URL
+                  </>
+                )}
+              </button>
+              <p className="text-xs text-slate-500">
+                Insira a URL completa da imagem (JPEG, PNG, WebP ou GIF)
+              </p>
             </div>
-            <input
-              type="file"
-              id="image"
-              name="image"
-              accept="image/jpeg,image/png,image/webp,image/gif"
-              onChange={handleImageUpload}
-              disabled={isUploadingImage}
-              className="hidden"
-            />
-          </label>
+          )}
         </div>
 
         {/* Descrição */}
