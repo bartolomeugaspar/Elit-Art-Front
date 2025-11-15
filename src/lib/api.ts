@@ -1,4 +1,4 @@
-export const API_URL = (process.env.NEXT_PUBLIC_API_URL || 'https://elit-arte-back.vercel.app').replace(/\/$/, '');
+export const API_URL = (process.env.NEXT_PUBLIC_API_URL || 'https://elit-arte-back.vercel.app/api/').replace(/\/$/, '');
 
 export const apiCall = async (endpoint: string, options?: RequestInit) => {
   const url = `${API_URL}/${endpoint}`;
