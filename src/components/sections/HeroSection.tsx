@@ -101,7 +101,7 @@ export default function HeroSection() {
             <span className="block">
               <span className="text-elit-yellow">Elit</span>
               <span className="text-elit-gold">'</span>
-              <span className="text-elit-red">Artee</span>
+              <span className="text-elit-red">Arte</span>
             </span>
           </h1>
           
