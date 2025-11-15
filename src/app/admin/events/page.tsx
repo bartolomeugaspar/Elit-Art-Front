@@ -16,6 +16,7 @@ interface Event {
   capacity: number;
   available_spots: number;
   created_at: string;
+  image: string;
 }
 
 const formatDate = (dateString: string | null | undefined) => {
@@ -255,9 +256,10 @@ export default function AdminEvents() {
             title: editingEvent.title,
             description: editingEvent.description,
             category: editingEvent.category,
-            date: editingEvent.date.split('T')[0],
+            date: editingEvent.date,
             location: editingEvent.location,
             capacity: editingEvent.capacity.toString(),
+            image: editingEvent.image,
           } : undefined}
           isEditing={isEditing}
         />
@@ -383,20 +385,47 @@ export default function AdminEvents() {
 
       {/* Event Details Modal */}
       {selectedEvent && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+        <div 
+          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50"
+          onClick={() => setSelectedEvent(null)}
+        >
+          <div 
+            className="bg-white rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Imagem do evento */}
+            {selectedEvent.image && (
+              <div className="relative w-full h-64 bg-slate-200">
+                <img
+                  src={selectedEvent.image}
+                  alt={selectedEvent.title}
+                  className="w-full h-full object-cover"
+                />
+                <button
+                  onClick={() => setSelectedEvent(null)}
+                  className="absolute top-3 right-3 bg-black bg-opacity-50 hover:bg-opacity-70 text-white p-2 rounded-full transition-all"
+                  title="Fechar"
+                >
+                  <X size={24} />
+                </button>
+              </div>
+            )}
+            
             <div className="p-6">
               <div className="flex justify-between items-start">
                 <div>
                   <h3 className="text-2xl font-bold text-slate-900">{selectedEvent.title}</h3>
                   <p className="text-purple-600 font-medium mt-1">{selectedEvent.category}</p>
                 </div>
-                <button
-                  onClick={() => setShowDetailsModal(false)}
-                  className="text-slate-400 hover:text-slate-500 transition-colors"
-                >
-                  <X size={24} />
-                </button>
+                {!selectedEvent.image && (
+                  <button
+                    onClick={() => setSelectedEvent(null)}
+                    className="text-slate-400 hover:text-slate-500 transition-colors"
+                    title="Fechar"
+                  >
+                    <X size={24} />
+                  </button>
+                )}
               </div>
               
               <div className="mt-6 space-y-4">
@@ -454,7 +483,7 @@ export default function AdminEvents() {
                 <button
                   type="button"
                   onClick={() => {
-                    setShowDetailsModal(false);
+                    setSelectedEvent(null);
                     handleEditEvent(selectedEvent);
                   }}
                   className="px-4 py-2 border border-slate-300 rounded-lg text-slate-700 hover:bg-slate-50 transition-colors font-medium"
@@ -464,7 +493,7 @@ export default function AdminEvents() {
                 <button
                   type="button"
                   onClick={() => {
-                    setShowDetailsModal(false);
+                    setSelectedEvent(null);
                     handleDeleteClick(selectedEvent.id);
                   }}
                   className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-medium"
