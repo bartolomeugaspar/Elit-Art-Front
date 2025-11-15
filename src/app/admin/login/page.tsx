@@ -56,6 +56,13 @@ export default function AdminLogin() {
       console.log('[Login] Chamando função login');
       const data = await login(email, password);
       console.log('[Login] Resposta da API:', data);
+      
+      // Verifica se o usuário foi retornado corretamente
+      if (!data || !data.user) {
+        console.error('[Login] Dados do usuário não encontrados na resposta');
+        throw new Error('Falha ao obter dados do usuário. Tente novamente.');
+      }
+      
       console.log('[Login] Verificando permissões do usuário');
       if (data.user.role !== 'admin') {
         setError('Acesso negado. Apenas administradores podem acessar.');
@@ -68,20 +75,15 @@ export default function AdminLogin() {
       console.log('[Login]', welcomeMessage);
       setSuccess(welcomeMessage);
       
-      // Redirect after 1.5 seconds
-      console.log('[Login] Redirecionando para o dashboard em 1.5s');
-      setTimeout(() => {
-        console.log('[Login] Iniciando redirecionamento para /admin/dashboard');
-        try {
-          router.push('/admin/dashboard');
-          console.log('[Login] Redirecionamento iniciado');
-        } catch (err: any) {
-          console.error('[Login] Erro ao redirecionar:', err);
-        }
-      }, 1500);
-    } catch (err) {
+      // Redirect immediately after successful login
+      console.log('[Login] Redirecionando para o dashboard');
+      router.push('/admin/dashboard');
+    } catch (err: any) {
       console.error('[Login] Erro durante o login:', err);
-      setError('Email ou senha incorretos');
+      setError(err.message || 'Email ou senha incorretos');
+      
+      // Limpar token em caso de erro
+      localStorage.removeItem('token');
     } finally {
       setLoading(false);
     }

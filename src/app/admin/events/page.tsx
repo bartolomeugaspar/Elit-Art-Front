@@ -1,8 +1,10 @@
 'use client';
 
-import { useEffect, useState, useCallback } from 'react';
-import { Trash2, Edit2, Plus } from 'lucide-react';
+import { useEffect, useState, useCallback, useRef } from 'react';
+import { Trash2, Edit2, Plus, CheckCircle, X, Calendar, MapPin, Users } from 'lucide-react';
 import { API_URL } from '@/lib/api';
+import toast from 'react-hot-toast';
+import EventForm from '@/components/admin/EventForm';
 
 interface Event {
   id: string;
@@ -16,18 +18,103 @@ interface Event {
   created_at: string;
 }
 
+const formatDate = (dateString: string | null | undefined) => {
+  if (!dateString) {
+    return 'Data não informada';
+  }
+
+  try {
+    console.log('[formatDate] Input:', dateString);
+    
+    // Tenta múltiplos formatos
+    let date: Date | null = null;
+
+    // Formato português: "10 de Janeiro, 2025"
+    if (dateString.includes(' de ')) {
+      const meses: { [key: string]: number } = {
+        'janeiro': 0, 'fevereiro': 1, 'março': 2, 'abril': 3,
+        'maio': 4, 'junho': 5, 'julho': 6, 'agosto': 7,
+        'setembro': 8, 'outubro': 9, 'novembro': 10, 'dezembro': 11
+      };
+      
+      // Regex para capturar: "10 de Janeiro, 2025"
+      const match = dateString.match(/(\d+)\s+de\s+([a-záéíóúãõç]+),?\s+(\d{4})/i);
+      console.log('[formatDate] Regex match:', match);
+      
+      if (match) {
+        const day = parseInt(match[1]);
+        const monthName = match[2].toLowerCase();
+        const year = parseInt(match[3]);
+        const month = meses[monthName];
+        
+        console.log('[formatDate] Parsed:', { day, monthName, year, month });
+        
+        if (month !== undefined && !isNaN(day) && !isNaN(year) && year > 0) {
+          date = new Date(year, month, day);
+          console.log('[formatDate] Date criada:', date, 'Valid:', !isNaN(date.getTime()));
+        } else {
+          console.log('[formatDate] Validation failed:', { monthUndefined: month === undefined, dayNaN: isNaN(day), yearNaN: isNaN(year), yearZero: year <= 0 });
+        }
+      } else {
+        console.log('[formatDate] Regex did not match');
+      }
+    }
+    // Tenta formato ISO (2024-01-15T10:30:00)
+    else if (dateString.includes('T') || dateString.includes('-')) {
+      date = new Date(dateString);
+      console.log('[formatDate] ISO format:', date);
+    }
+    // Tenta formato DD/MM/YYYY
+    else if (dateString.includes('/')) {
+      const [day, month, year] = dateString.split('/');
+      date = new Date(`${year}-${month}-${day}`);
+      console.log('[formatDate] DD/MM/YYYY format:', date);
+    }
+    // Tenta formato YYYY-MM-DD
+    else if (dateString.match(/^\d{4}-\d{2}-\d{2}$/)) {
+      date = new Date(dateString);
+      console.log('[formatDate] YYYY-MM-DD format:', date);
+    }
+
+    if (!date || isNaN(date.getTime())) {
+      console.error('[formatDate] Data inválida após parsing:', dateString, date);
+      return 'Data inválida';
+    }
+
+    const formatted = date.toLocaleDateString('pt-BR', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+    });
+    
+    console.log('[formatDate] Output:', formatted);
+    return formatted;
+  } catch (error) {
+    console.error('Erro ao formatar data:', dateString, error);
+    return 'Data inválida';
+  }
+};
+
 export default function AdminEvents() {
   const [events, setEvents] = useState<Event[]>([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
-  const [formData, setFormData] = useState({
-    title: '',
-    description: '',
-    category: '',
-    date: '',
-    location: '',
-    capacity: '',
-  });
+  const [isEditing, setIsEditing] = useState(false);
+  const [showDetailsModal, setShowDetailsModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
+  const [eventToDelete, setEventToDelete] = useState<string | null>(null);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [editingEvent, setEditingEvent] = useState<Event | null>(null);
+  const deleteButtonRef = useRef<HTMLButtonElement>(null);
+
+  // Filtrar eventos com base no termo de busca
+  const filteredEvents = events.filter(event => 
+    event.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    event.category.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    event.location.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    formatDate(event.date).toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   const fetchEvents = useCallback(async () => {
     try {
@@ -51,207 +138,236 @@ export default function AdminEvents() {
     fetchEvents();
   }, [fetchEvents]);
 
-  const handleCreateEvent = async (e: React.FormEvent) => {
-    e.preventDefault();
-    try {
-      const token = localStorage.getItem('token');
-      const response = await fetch(`${API_URL}/events`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          ...formData,
-          capacity: parseInt(formData.capacity),
-        }),
-      });
-
-      if (response.ok) {
-        setFormData({
-          title: '',
-          description: '',
-          category: '',
-          date: '',
-          location: '',
-          capacity: '',
-        });
-        setShowForm(false);
-        fetchEvents();
-      }
-    } catch (error) {
-      console.error('Failed to create event:', error);
-    }
+  const handleFormSuccess = () => {
+    setShowForm(false);
+    setEditingEvent(null);
+    setIsEditing(false);
+    fetchEvents();
   };
 
-  const handleDeleteEvent = async (eventId: string) => {
-    if (!confirm('Tem certeza que deseja deletar este evento?')) return;
+  const handleFormCancel = () => {
+    setShowForm(false);
+    setEditingEvent(null);
+    setIsEditing(false);
+  };
+  
+  const handleViewDetails = (event: Event) => {
+    setSelectedEvent(event);
+    setShowDetailsModal(true);
+  };
+  
+  const handleEditEvent = (event: Event) => {
+    setEditingEvent(event);
+    setIsEditing(true);
+    setShowForm(true);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+  
+  const handleNewEventClick = () => {
+    setEditingEvent(null);
+    setIsEditing(false);
+    setShowForm(!showForm);
+  };
 
+  const handleDeleteClick = (eventId: string) => {
+    setEventToDelete(eventId);
+    setShowDeleteModal(true);
+  };
+
+  const handleDeleteEvent = async () => {
+    if (!eventToDelete) return;
+    
+    const loadingToast = toast.loading('Excluindo evento...');
+    
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`${API_URL}/events/${eventId}`, {
+      const response = await fetch(`${API_URL}/events/${eventToDelete}`, {
         method: 'DELETE',
         headers: { Authorization: `Bearer ${token}` },
       });
 
       if (response.ok) {
+        toast.success('Evento excluído com sucesso!', {
+          id: loadingToast,
+          icon: <CheckCircle className="text-green-500" />,
+          style: {
+            background: '#f0fdf4',
+            color: '#15803d',
+            border: '1px solid #bbf7d0',
+          },
+          duration: 3000,
+        });
         fetchEvents();
+      } else {
+        throw new Error('Falha ao excluir evento');
       }
     } catch (error) {
       console.error('Failed to delete event:', error);
+      toast.error('Erro ao excluir evento', {
+        id: loadingToast,
+        icon: <X className="text-red-500" />,
+        style: {
+          background: '#fef2f2',
+          color: '#b91c1c',
+          border: '1px solid #fecaca',
+        },
+      });
+    } finally {
+      setShowDeleteModal(false);
+      setEventToDelete(null);
     }
   };
 
   return (
     <div className="space-y-6">
-      {/* Header */}
-      <div className="flex justify-between items-center">
-        <div>
-          <h1 className="text-3xl font-bold text-slate-900">Gerenciamento de Eventos</h1>
-          <p className="text-slate-600 mt-1">Total de {events.length} eventos cadastrados</p>
+      {/* Header with search and add button */}
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div className="relative w-full sm:w-96">
+          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <svg className="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+          </div>
+          <input
+            type="text"
+            placeholder="Buscar eventos..."
+            className="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-lg bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent text-gray-900"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
         </div>
         <button
-          onClick={() => setShowForm(!showForm)}
-          className="flex items-center gap-2 bg-gradient-to-r from-purple-600 to-purple-500 hover:from-purple-700 hover:to-purple-600 text-white px-6 py-3 rounded-lg transition duration-200 font-medium shadow-lg hover:shadow-xl"
+          onClick={handleNewEventClick}
+          className="flex items-center gap-2 bg-gradient-to-r from-purple-600 to-purple-500 hover:from-purple-700 hover:to-purple-600 text-white px-6 py-2.5 rounded-lg transition duration-200 font-medium shadow-md hover:shadow-lg w-full sm:w-auto justify-center"
         >
-          <Plus size={20} />
-          Novo Evento
+          <Plus size={18} />
+          {isEditing ? 'Editar Evento' : 'Novo Evento'}
         </button>
       </div>
 
-      {/* Create Form */}
+      {/* Create/Edit Form */}
       {showForm && (
-        <div className="bg-white rounded-xl p-6 border border-slate-200 shadow-lg">
-          <h2 className="text-xl font-bold text-slate-900 mb-6">Criar Novo Evento</h2>
-          <form onSubmit={handleCreateEvent} className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <input
-                type="text"
-                placeholder="Título"
-                value={formData.title}
-                onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                className="px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 placeholder-slate-500 focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 transition"
-                required
-              />
-              <input
-                type="text"
-                placeholder="Categoria"
-                value={formData.category}
-                onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                className="px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 placeholder-slate-500 focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 transition"
-                required
-              />
-              <input
-                type="datetime-local"
-                value={formData.date}
-                onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-                className="px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 placeholder-slate-500 focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 transition"
-                required
-              />
-              <input
-                type="text"
-                placeholder="Local"
-                value={formData.location}
-                onChange={(e) => setFormData({ ...formData, location: e.target.value })}
-                className="px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 placeholder-slate-500 focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 transition"
-                required
-              />
-              <input
-                type="number"
-                placeholder="Capacidade"
-                value={formData.capacity}
-                onChange={(e) => setFormData({ ...formData, capacity: e.target.value })}
-                className="px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 placeholder-slate-500 focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 transition"
-                required
-              />
-            </div>
-            <textarea
-              placeholder="Descrição"
-              value={formData.description}
-              onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-              className="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 placeholder-slate-500 focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 transition"
-              rows={4}
-              required
-            />
-            <div className="flex gap-3 pt-4">
-              <button
-                type="submit"
-                className="bg-gradient-to-r from-green-600 to-green-500 hover:from-green-700 hover:to-green-600 text-white px-6 py-3 rounded-lg transition duration-200 font-medium shadow-md hover:shadow-lg"
-              >
-                Criar Evento
-              </button>
-              <button
-                type="button"
-                onClick={() => setShowForm(false)}
-                className="bg-slate-200 hover:bg-slate-300 text-slate-900 px-6 py-3 rounded-lg transition duration-200 font-medium"
-              >
-                Cancelar
-              </button>
-            </div>
-          </form>
-        </div>
+        <EventForm
+          onSuccess={handleFormSuccess}
+          onCancel={handleFormCancel}
+          initialData={editingEvent ? {
+            id: editingEvent.id,
+            title: editingEvent.title,
+            description: editingEvent.description,
+            category: editingEvent.category,
+            date: editingEvent.date.split('T')[0],
+            location: editingEvent.location,
+            capacity: editingEvent.capacity.toString(),
+          } : undefined}
+          isEditing={isEditing}
+        />
       )}
 
       {/* Events Table */}
       <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead className="bg-gradient-to-r from-slate-50 to-slate-100 border-b border-slate-200">
+          <table className="min-w-full divide-y divide-slate-200">
+            <thead className="bg-slate-50">
               <tr>
-                <th className="px-6 py-4 text-left text-sm font-bold text-slate-900">Título</th>
-                <th className="px-6 py-4 text-left text-sm font-bold text-slate-900">Categoria</th>
-                <th className="px-6 py-4 text-left text-sm font-bold text-slate-900">Data</th>
-                <th className="px-6 py-4 text-left text-sm font-bold text-slate-900">Local</th>
-                <th className="px-6 py-4 text-left text-sm font-bold text-slate-900">Capacidade</th>
-                <th className="px-6 py-4 text-left text-sm font-bold text-slate-900">Vagas Livres</th>
-                <th className="px-6 py-4 text-left text-sm font-bold text-slate-900">Ações</th>
+                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
+                  Título
+                </th>
+                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
+                  Categoria
+                </th>
+                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
+                  Data
+                </th>
+                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
+                  Local
+                </th>
+                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
+                  Vagas
+                </th>
+                <th scope="col" className="px-6 py-3 text-right text-xs font-medium text-slate-500 uppercase tracking-wider">
+                  Ações
+                </th>
               </tr>
             </thead>
-            <tbody>
+            <tbody className="bg-white divide-y divide-slate-200">
               {loading ? (
                 <tr>
-                  <td colSpan={7} className="px-6 py-8 text-center text-slate-500">
+                  <td colSpan={6} className="px-6 py-8 text-center text-slate-500">
                     <div className="flex items-center justify-center gap-2">
-                      <div className="w-4 h-4 border-2 border-purple-500 border-t-transparent rounded-full animate-spin"></div>
-                      Carregando...
+                      <div className="w-5 h-5 border-2 border-purple-500 border-t-transparent rounded-full animate-spin"></div>
+                      Carregando eventos...
                     </div>
                   </td>
                 </tr>
-              ) : events.length === 0 ? (
+              ) : filteredEvents.length === 0 ? (
                 <tr>
-                  <td colSpan={7} className="px-6 py-8 text-center text-slate-500">
-                    Nenhum evento encontrado
+                  <td colSpan={6} className="px-6 py-8 text-center text-slate-500">
+                    {searchTerm ? 'Nenhum evento encontrado para a busca' : 'Nenhum evento cadastrado'}
                   </td>
                 </tr>
               ) : (
-                events.map((event) => (
-                  <tr key={event.id} className="border-b border-slate-200 hover:bg-slate-50 transition duration-200">
-                    <td className="px-6 py-4 text-slate-900 font-medium">{event.title}</td>
-                    <td className="px-6 py-4 text-slate-600">{event.category}</td>
-                    <td className="px-6 py-4 text-slate-600">
-                      {new Date(event.date).toLocaleDateString('pt-BR')}
+                filteredEvents.map((event) => (
+                  <tr key={event.id} className="hover:bg-slate-50 transition-colors">
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="flex items-center">
+                        <div>
+                          <div className="text-sm font-medium text-slate-900">{event.title}</div>
+                          <div className="text-xs text-slate-500">{event.category}</div>
+                        </div>
+                      </div>
                     </td>
-                    <td className="px-6 py-4 text-slate-600">{event.location}</td>
-                    <td className="px-6 py-4 text-slate-600 font-medium">{event.capacity}</td>
-                    <td className="px-6 py-4">
-                      <span
-                        className={`px-3 py-1 rounded-full text-xs font-bold ${
-                          event.available_spots > 0
-                            ? 'bg-green-100 text-green-700'
-                            : 'bg-red-100 text-red-700'
-                        }`}
-                      >
-                        {event.available_spots} vagas
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <span className="px-2.5 py-1 text-xs font-medium rounded-full bg-purple-100 text-purple-800">
+                        {event.category}
                       </span>
                     </td>
-                    <td className="px-6 py-4">
-                      <div className="flex gap-2">
-                        <button className="p-2 hover:bg-blue-100 rounded-lg transition text-blue-600 font-medium">
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="text-sm text-slate-900">{formatDate(event.date)}</div></td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="text-sm text-slate-900">{event.location}</div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="flex items-center">
+                        <div className="w-24 bg-slate-200 rounded-full h-2.5 mr-2">
+                          <div 
+                            className={`h-2.5 rounded-full ${
+                              (event.available_spots / event.capacity) > 0.5 
+                                ? 'bg-green-500' 
+                                : (event.available_spots / event.capacity) > 0.2 
+                                  ? 'bg-yellow-500' 
+                                  : 'bg-red-500'
+                            }`}
+                            style={{ width: `${(event.available_spots / event.capacity) * 100}%` }}
+                          ></div>
+                        </div>
+                        <span className="text-sm font-medium text-slate-700">
+                          {event.available_spots}/{event.capacity}
+                        </span>
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                      <div className="flex justify-end space-x-2">
+                        <button
+                          onClick={() => handleViewDetails(event)}
+                          className="text-slate-600 hover:text-purple-900 p-1.5 rounded-full hover:bg-slate-100 transition-colors"
+                          title="Ver detalhes"
+                        >
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                          </svg>
+                        </button>
+                        <button
+                          onClick={() => handleEditEvent(event)}
+                          className="text-blue-600 hover:text-blue-900 p-1.5 rounded-full hover:bg-blue-50 transition-colors"
+                          title="Editar"
+                        >
                           <Edit2 size={18} />
                         </button>
                         <button
-                          onClick={() => handleDeleteEvent(event.id)}
-                          className="p-2 hover:bg-red-100 rounded-lg transition text-red-600 font-medium"
+                          onClick={() => handleDeleteClick(event.id)}
+                          className="text-red-600 hover:text-red-900 p-1.5 rounded-full hover:bg-red-50 transition-colors"
+                          title="Excluir"
                         >
                           <Trash2 size={18} />
                         </button>
@@ -264,6 +380,141 @@ export default function AdminEvents() {
           </table>
         </div>
       </div>
+
+      {/* Event Details Modal */}
+      {selectedEvent && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="p-6">
+              <div className="flex justify-between items-start">
+                <div>
+                  <h3 className="text-2xl font-bold text-slate-900">{selectedEvent.title}</h3>
+                  <p className="text-purple-600 font-medium mt-1">{selectedEvent.category}</p>
+                </div>
+                <button
+                  onClick={() => setShowDetailsModal(false)}
+                  className="text-slate-400 hover:text-slate-500 transition-colors"
+                >
+                  <X size={24} />
+                </button>
+              </div>
+              
+              <div className="mt-6 space-y-4">
+                <div className="flex items-start">
+                  <Calendar className="h-5 w-5 text-slate-400 mt-0.5 mr-3 flex-shrink-0" />
+                  <div>
+                    <p className="text-sm text-slate-500">Data e Hora</p>
+                    <p className="text-slate-900 font-medium">
+                      {formatDate(selectedEvent.date)} • {new Date(selectedEvent.date).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
+                    </p>
+                  </div>
+                </div>
+                
+                <div className="flex items-start">
+                  <MapPin className="h-5 w-5 text-slate-400 mt-0.5 mr-3 flex-shrink-0" />
+                  <div>
+                    <p className="text-sm text-slate-500">Local</p>
+                    <p className="text-slate-900 font-medium">{selectedEvent.location}</p>
+                  </div>
+                </div>
+                
+                <div className="flex items-start">
+                  <Users className="h-5 w-5 text-slate-400 mt-0.5 mr-3 flex-shrink-0" />
+                  <div className="w-full">
+                    <div className="flex justify-between mb-1">
+                      <p className="text-sm text-slate-500">Vagas disponíveis</p>
+                      <p className="text-sm font-medium">
+                        {selectedEvent.available_spots} de {selectedEvent.capacity} vagas
+                      </p>
+                    </div>
+                    <div className="w-full bg-slate-200 rounded-full h-2.5">
+                      <div 
+                        className={`h-2.5 rounded-full ${
+                          (selectedEvent.available_spots / selectedEvent.capacity) > 0.5 
+                            ? 'bg-green-500' 
+                            : (selectedEvent.available_spots / selectedEvent.capacity) > 0.2 
+                              ? 'bg-yellow-500' 
+                              : 'bg-red-500'
+                        }`}
+                        style={{ width: `${(selectedEvent.available_spots / selectedEvent.capacity) * 100}%` }}
+                      ></div>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="pt-2">
+                  <p className="text-sm text-slate-500 mb-2">Descrição</p>
+                  <p className="text-slate-700 whitespace-pre-line">
+                    {selectedEvent.description || 'Nenhuma descrição fornecida.'}
+                  </p>
+                </div>
+              </div>
+              
+              <div className="mt-8 flex justify-end space-x-3">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowDetailsModal(false);
+                    handleEditEvent(selectedEvent);
+                  }}
+                  className="px-4 py-2 border border-slate-300 rounded-lg text-slate-700 hover:bg-slate-50 transition-colors font-medium"
+                >
+                  Editar Evento
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowDetailsModal(false);
+                    handleDeleteClick(selectedEvent.id);
+                  }}
+                  className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-medium"
+                >
+                  Excluir Evento
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+      
+      {/* Delete Confirmation Modal */}
+      {showDeleteModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-xl p-6 max-w-md w-full">
+            <div className="text-center">
+              <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-100">
+                <Trash2 className="h-6 w-6 text-red-600" />
+              </div>
+              <h3 className="mt-3 text-lg font-medium text-slate-900">Excluir Evento</h3>
+              <div className="mt-2">
+                <p className="text-sm text-slate-500">
+                  Tem certeza que deseja excluir este evento? Esta ação não pode ser desfeita.
+                </p>
+              </div>
+              <div className="mt-5 sm:mt-6 space-y-3 sm:space-y-0 sm:grid sm:grid-cols-2 sm:gap-3 sm:grid-flow-row-dense">
+                <button
+                  type="button"
+                  className="w-full inline-flex justify-center rounded-md border border-slate-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-slate-700 hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 sm:col-start-2 sm:text-sm"
+                  onClick={() => {
+                    setShowDeleteModal(false);
+                    setEventToDelete(null);
+                  }}
+                >
+                  Cancelar
+                </button>
+                <button
+                  type="button"
+                  className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:col-start-1 sm:text-sm"
+                  onClick={handleDeleteEvent}
+                  ref={deleteButtonRef}
+                >
+                  Excluir
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

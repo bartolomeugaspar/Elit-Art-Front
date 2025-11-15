@@ -2,7 +2,7 @@
 
 import { useAuth } from '@/hooks/useAuth';
 import { useRouter, usePathname } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import {
   LayoutDashboard,
@@ -15,17 +15,30 @@ import {
   X,
   ChevronRight,
   Bell,
+  FileText,
 } from 'lucide-react';
-import { useState } from 'react';
+import { useToast, ToastContainer } from './Toast';
 
 export function AdminLayout({ children }: { children: React.ReactNode }) {
-  const { user, loading, logout } = useAuth();
+  const { toasts, showToast, removeToast } = useToast();
+  const { user, loading, logout: logoutFromAuth } = useAuth((message) => {
+    showToast(message, 'success');
+  });
   const router = useRouter();
   const pathname = usePathname();
   const [sidebarOpen, setSidebarOpen] = useState(true);
 
+  const logout = () => {
+    showToast('Saindo do sistema...', 'info');
+    setTimeout(() => {
+      logoutFromAuth();
+    }, 1000);
+  };
+
   useEffect(() => {
+    console.log('[AdminLayout] Estado:', { loading, user: user?.email, role: user?.role });
     if (!loading && (!user || user.role !== 'admin')) {
+      console.log('[AdminLayout] Redirecionando para login');
       router.push('/admin/login');
     }
   }, [user, loading, router]);
@@ -70,6 +83,11 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
       label: 'Newsletter',
       href: '/admin/newsletter',
       icon: Mail,
+    },
+    {
+      label: 'Logs do Sistema',
+      href: '/admin/audit-logs',
+      icon: FileText,
     },
   ];
 
@@ -231,6 +249,9 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
           {children}
         </div>
       </div>
+      
+      {/* Toast Container */}
+      <ToastContainer toasts={toasts} removeToast={removeToast} />
     </div>
   );
 }

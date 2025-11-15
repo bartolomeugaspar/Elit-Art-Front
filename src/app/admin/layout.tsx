@@ -2,6 +2,7 @@
 
 import { AdminLayout } from '@/components/AdminLayout';
 import { usePathname } from 'next/navigation';
+import { Toaster } from 'react-hot-toast';
 
 export default function RootLayout({
   children,
@@ -15,5 +16,10 @@ export default function RootLayout({
     return children;
   }
   
-  return <AdminLayout>{children}</AdminLayout>;
+  return (
+    <>
+      <AdminLayout>{children}</AdminLayout>
+      <Toaster position="top-right" />
+    </>
+  );
 }
