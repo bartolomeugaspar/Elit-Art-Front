@@ -27,6 +27,19 @@ export default function EventGalleryModal({
     const files = e.target.files
     if (!files) return
 
+    // Validar limite de fotos (máximo 2)
+    if (localImages.length >= 2) {
+      toast.error('Máximo de 2 fotos permitidas na galeria')
+      return
+    }
+
+    // Validar se adição de novas fotos excederia o limite
+    const totalImages = localImages.length + files.length
+    if (totalImages > 2) {
+      toast.error(`Você pode adicionar apenas ${2 - localImages.length} foto(s) mais`)
+      return
+    }
+
     setIsUploading(true)
     const uploadToast = toast.loading('Enviando imagens...')
 
@@ -156,36 +169,42 @@ export default function EventGalleryModal({
           </div>
 
           {/* Upload Area */}
-          <div className="mb-6">
-            <label className="flex flex-col items-center justify-center w-full p-6 border-2 border-dashed border-slate-300 rounded-lg cursor-pointer hover:border-purple-500 hover:bg-purple-50 transition">
-              <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                {isUploading ? (
-                  <>
-                    <div className="w-8 h-8 border-4 border-purple-500 border-t-transparent rounded-full animate-spin mb-2"></div>
-                    <p className="text-sm text-slate-600">Enviando imagens...</p>
-                  </>
-                ) : (
-                  <>
-                    <Upload className="w-8 h-8 text-slate-400 mb-2" />
-                    <p className="text-sm text-slate-600">
-                      <span className="font-semibold">Clique para enviar</span> ou arraste imagens
-                    </p>
-                    <p className="text-xs text-slate-500 mt-1">
-                      PNG, JPG, WebP ou GIF (máx. 5MB cada)
-                    </p>
-                  </>
-                )}
-              </div>
-              <input
-                type="file"
-                multiple
-                accept="image/jpeg,image/png,image/webp,image/gif"
-                onChange={handleImageUpload}
-                disabled={isUploading}
-                className="hidden"
-              />
-            </label>
-          </div>
+          {localImages.length < 2 && (
+            <div className="mb-6">
+              <label className={`flex flex-col items-center justify-center w-full p-6 border-2 border-dashed rounded-lg transition ${
+                isUploading 
+                  ? 'border-slate-300 bg-slate-50 cursor-not-allowed' 
+                  : 'border-slate-300 cursor-pointer hover:border-purple-500 hover:bg-purple-50'
+              }`}>
+                <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                  {isUploading ? (
+                    <>
+                      <div className="w-8 h-8 border-4 border-purple-500 border-t-transparent rounded-full animate-spin mb-2"></div>
+                      <p className="text-sm text-slate-600">Enviando imagens...</p>
+                    </>
+                  ) : (
+                    <>
+                      <Upload className="w-8 h-8 text-slate-400 mb-2" />
+                      <p className="text-sm text-slate-600">
+                        <span className="font-semibold">Clique para enviar</span> ou arraste imagens
+                      </p>
+                      <p className="text-xs text-slate-500 mt-1">
+                        PNG, JPG, WebP ou GIF (máx. 5MB cada) - {localImages.length}/2 fotos
+                      </p>
+                    </>
+                  )}
+                </div>
+                <input
+                  type="file"
+                  multiple
+                  accept="image/jpeg,image/png,image/webp,image/gif"
+                  onChange={handleImageUpload}
+                  disabled={isUploading || localImages.length >= 2}
+                  className="hidden"
+                />
+              </label>
+            </div>
+          )}
 
           {/* Gallery Grid */}
           {localImages.length > 0 && (
