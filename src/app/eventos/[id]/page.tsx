@@ -12,6 +12,45 @@ export default function EventDetailPage({ params }: { params: { id: string } }) 
   const testimonials = event ? getTestimonialsByEventId(event.id as number) : []
   const [isLiked, setIsLiked] = useState(false)
   const [showShareMenu, setShowShareMenu] = useState(false)
+  const [isRegistering, setIsRegistering] = useState(false)
+  const [registrationMessage, setRegistrationMessage] = useState<{ type: 'success' | 'error', text: string } | null>(null)
+
+  const handleRegister = async () => {
+    if (!event) return
+
+    const token = localStorage.getItem('token')
+    if (!token) {
+      setRegistrationMessage({ type: 'error', text: 'Você precisa estar logado para se inscrever' })
+      return
+    }
+
+    setIsRegistering(true)
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/events/${event.id}/register`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      })
+
+      if (!response.ok) {
+        const error = await response.json()
+        throw new Error(error.message || 'Erro ao se inscrever')
+      }
+
+      setRegistrationMessage({ type: 'success', text: 'Inscrição realizada com sucesso!' })
+      // Atualizar a página após 2 segundos
+      setTimeout(() => window.location.reload(), 2000)
+    } catch (error) {
+      setRegistrationMessage({ 
+        type: 'error', 
+        text: error instanceof Error ? error.message : 'Erro ao se inscrever'
+      })
+    } finally {
+      setIsRegistering(false)
+    }
+  }
 
   if (!event) {
     return (
@@ -167,8 +206,27 @@ export default function EventDetailPage({ params }: { params: { id: string } }) 
             <div className="lg:col-span-1">
               {/* Action Buttons */}
               <div className="bg-white p-4 md:p-6 rounded-lg md:rounded-xl shadow-lg sticky top-20 md:top-24 space-y-2 md:space-y-3">
-                <button className="w-full bg-elit-orange hover:bg-elit-gold text-elit-light py-2.5 md:py-3 rounded-lg font-semibold text-sm md:text-base transition-all duration-300">
-                  Inscrever-se
+                {registrationMessage && (
+                  <div className={`p-3 rounded-lg text-sm font-semibold ${
+                    registrationMessage.type === 'success' 
+                      ? 'bg-green-100 text-green-800' 
+                      : 'bg-red-100 text-red-800'
+                  }`}>
+                    {registrationMessage.text}
+                  </div>
+                )}
+                <button 
+                  onClick={handleRegister}
+                  disabled={isRegistering || event.availableSpots === 0}
+                  className={`w-full py-2.5 md:py-3 rounded-lg font-semibold text-sm md:text-base transition-all duration-300 ${
+                    event.availableSpots === 0
+                      ? 'bg-gray-400 text-white cursor-not-allowed'
+                      : isRegistering
+                      ? 'bg-elit-orange/50 text-elit-light'
+                      : 'bg-elit-orange hover:bg-elit-gold text-elit-light'
+                  }`}
+                >
+                  {isRegistering ? 'Inscrevendo...' : event.availableSpots === 0 ? 'Evento Lotado' : 'Inscrever-se'}
                 </button>
 
                 <button

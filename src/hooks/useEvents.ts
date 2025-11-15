@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { API_URL } from '@/lib/api'
 
 export interface Event {
   id: number | string
@@ -28,7 +29,7 @@ export interface Testimonial {
   rating: number
 }
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'
+const API_BASE_URL = API_URL
 
 export const useEvents = () => {
   const [events, setEvents] = useState<Event[]>([])
