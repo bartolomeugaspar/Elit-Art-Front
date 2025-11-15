@@ -160,29 +160,32 @@ export default function EventRegistrationModal({
       onClick={onClose}
     >
       <div
-        className="bg-white rounded-xl max-w-md w-full max-h-[90vh] overflow-y-auto"
+        className="bg-white rounded-xl max-w-sm w-full max-h-[95vh] overflow-y-auto shadow-2xl"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="p-6">
-          <div className="flex justify-between items-start mb-6">
-            <div>
-              <h2 className="text-2xl font-bold text-slate-900">Inscrição no Evento</h2>
-              <p className="text-slate-600 mt-1">{eventTitle}</p>
+        {/* Header with gradient */}
+        <div className="bg-gradient-to-r from-elit-orange to-elit-gold p-4 text-white">
+          <div className="flex justify-between items-start gap-2">
+            <div className="flex-1">
+              <h2 className="text-xl font-bold">Inscrição</h2>
+              <p className="text-elit-light/90 mt-0.5 text-xs line-clamp-2">{eventTitle}</p>
             </div>
             <button
               onClick={onClose}
-              className="text-slate-400 hover:text-slate-500 transition-colors"
+              className="text-elit-light hover:text-white transition-colors flex-shrink-0"
             >
-              <X size={24} />
+              <X size={20} />
             </button>
           </div>
+        </div>
 
+        <div className="p-4">
           {!isFree && (
-            <div className="mb-6 p-4 bg-purple-50 border border-purple-200 rounded-lg">
-              <p className="text-sm text-slate-600">
-                <span className="font-semibold">Valor do evento:</span>
+            <div className="mb-4 p-3 bg-gradient-to-br from-elit-orange/10 to-elit-gold/10 border border-elit-orange/30 rounded-lg">
+              <p className="text-xs text-elit-dark font-semibold">
+                Valor:
               </p>
-              <p className="text-2xl font-bold text-purple-600 mt-1">
+              <p className="text-2xl font-bold text-elit-orange mt-1">
                 {eventPrice.toLocaleString('pt-BR', {
                   style: 'currency',
                   currency: 'MZN',
@@ -191,10 +194,10 @@ export default function EventRegistrationModal({
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-3">
             {/* Nome Completo */}
             <div>
-              <label htmlFor="fullName" className="block text-sm font-medium text-slate-700 mb-1">
+              <label htmlFor="fullName" className="block text-xs font-medium text-elit-dark mb-1">
                 Nome Completo *
               </label>
               <input
@@ -203,7 +206,7 @@ export default function EventRegistrationModal({
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
                 placeholder="Ex: João Silva"
-                className="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 placeholder-slate-500 focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 transition"
+                className="w-full px-3 py-2 bg-elit-light border-2 border-elit-light rounded-lg text-sm text-elit-dark placeholder-elit-dark/50 focus:outline-none focus:border-elit-orange focus:ring-2 focus:ring-elit-orange/20 transition"
                 required
               />
             </div>
@@ -211,33 +214,33 @@ export default function EventRegistrationModal({
             {/* Método de Pagamento (apenas para eventos pagos) */}
             {!isFree && (
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-3">
+                <label className="block text-xs font-medium text-elit-dark mb-2">
                   Método de Pagamento *
                 </label>
-                <div className="space-y-2">
-                  <label className="flex items-center p-3 border border-slate-300 rounded-lg cursor-pointer hover:bg-slate-50 transition">
+                <div className="space-y-1.5">
+                  <label className="flex items-center p-2 border-2 border-elit-light rounded-lg cursor-pointer hover:bg-elit-light/50 transition">
                     <input
                       type="radio"
                       name="paymentMethod"
                       value="mpesa"
                       checked={paymentMethod === 'mpesa'}
                       onChange={(e) => setPaymentMethod(e.target.value as 'mpesa')}
-                      className="w-4 h-4 text-purple-600"
+                      className="w-3 h-3 text-elit-orange"
                     />
-                    <span className="ml-3 text-sm font-medium text-slate-900">
+                    <span className="ml-2 text-xs font-medium text-elit-dark">
                       M-Pesa
                     </span>
                   </label>
-                  <label className="flex items-center p-3 border border-slate-300 rounded-lg cursor-pointer hover:bg-slate-50 transition">
+                  <label className="flex items-center p-2 border-2 border-elit-light rounded-lg cursor-pointer hover:bg-elit-light/50 transition">
                     <input
                       type="radio"
                       name="paymentMethod"
                       value="transfer"
                       checked={paymentMethod === 'transfer'}
                       onChange={(e) => setPaymentMethod(e.target.value as 'transfer')}
-                      className="w-4 h-4 text-purple-600"
+                      className="w-3 h-3 text-elit-orange"
                     />
-                    <span className="ml-3 text-sm font-medium text-slate-900">
+                    <span className="ml-2 text-xs font-medium text-elit-dark">
                       Transferência Bancária
                     </span>
                   </label>
@@ -248,16 +251,16 @@ export default function EventRegistrationModal({
             {/* Comprovativo de Pagamento (apenas para eventos pagos) */}
             {!isFree && (
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-3">
-                  Comprovativo de Pagamento *
+                <label className="block text-xs font-medium text-elit-dark mb-1">
+                  Comprovativo *
                 </label>
 
                 {proofPreview && (
-                  <div className="mb-4 relative">
+                  <div className="mb-2 relative">
                     <img
                       src={proofPreview}
                       alt="Preview"
-                      className="w-full h-40 object-cover rounded-lg border border-slate-300"
+                      className="w-full h-24 object-cover rounded-lg border-2 border-elit-orange"
                     />
                     <button
                       type="button"
@@ -265,52 +268,46 @@ export default function EventRegistrationModal({
                         setProofFile(null)
                         setProofPreview(null)
                       }}
-                      className="absolute top-2 right-2 bg-red-500 hover:bg-red-600 text-white p-2 rounded-full transition"
+                      className="absolute top-1 right-1 bg-elit-red hover:bg-elit-red/80 text-white p-1 rounded-full transition"
                       title="Remover"
                     >
-                      <X size={16} />
+                      <X size={14} />
                     </button>
                   </div>
                 )}
 
                 {proofFile && !proofPreview && (
-                  <div className="mb-4 p-3 bg-slate-50 border border-slate-300 rounded-lg flex items-center gap-2">
-                    <FileText size={20} className="text-slate-400" />
+                  <div className="mb-2 p-2 bg-elit-light border-2 border-elit-orange rounded-lg flex items-center gap-2">
+                    <FileText size={16} className="text-elit-orange flex-shrink-0" />
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-slate-900 truncate">
+                      <p className="text-xs font-medium text-elit-dark truncate">
                         {proofFile.name}
-                      </p>
-                      <p className="text-xs text-slate-500">
-                        {(proofFile.size / 1024 / 1024).toFixed(2)} MB
                       </p>
                     </div>
                     <button
                       type="button"
                       onClick={() => setProofFile(null)}
-                      className="text-red-600 hover:text-red-700"
+                      className="text-elit-red hover:text-elit-red/80 flex-shrink-0"
                     >
-                      <X size={18} />
+                      <X size={14} />
                     </button>
                   </div>
                 )}
 
-                <label className="flex flex-col items-center justify-center w-full p-6 border-2 border-dashed border-slate-300 rounded-lg cursor-pointer hover:border-purple-500 hover:bg-purple-50 transition">
-                  <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                <label className="flex flex-col items-center justify-center w-full p-3 border-2 border-dashed border-elit-orange/30 rounded-lg cursor-pointer hover:border-elit-orange hover:bg-elit-orange/5 transition">
+                  <div className="flex flex-col items-center justify-center">
                     {proofFile ? (
                       <>
-                        <FileText className="w-8 h-8 text-green-500 mb-2" />
-                        <p className="text-sm text-slate-600">
-                          <span className="font-semibold">Clique para alterar</span> o comprovativo
+                        <FileText className="w-5 h-5 text-elit-orange mb-1" />
+                        <p className="text-xs text-elit-dark text-center">
+                          <span className="font-semibold">Alterar</span>
                         </p>
                       </>
                     ) : (
                       <>
-                        <Upload className="w-8 h-8 text-slate-400 mb-2" />
-                        <p className="text-sm text-slate-600">
-                          <span className="font-semibold">Clique para enviar</span> ou arraste
-                        </p>
-                        <p className="text-xs text-slate-500 mt-1">
-                          Imagem ou PDF (máx. 10MB)
+                        <Upload className="w-5 h-5 text-elit-orange/60 mb-1" />
+                        <p className="text-xs text-elit-dark text-center">
+                          <span className="font-semibold">Enviar</span> comprovativo
                         </p>
                       </>
                     )}
@@ -327,19 +324,19 @@ export default function EventRegistrationModal({
             )}
 
             {/* Botões */}
-            <div className="flex gap-3 pt-4">
+            <div className="flex gap-2 pt-3 border-t border-elit-light">
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="flex-1 bg-gradient-to-r from-purple-600 to-purple-500 hover:from-purple-700 hover:to-purple-600 disabled:from-purple-400 disabled:to-purple-400 disabled:cursor-not-allowed text-white px-6 py-3 rounded-lg transition duration-200 font-medium shadow-md hover:shadow-lg"
+                className="flex-1 bg-gradient-to-r from-elit-orange to-elit-gold hover:from-elit-gold hover:to-elit-orange disabled:from-elit-orange/50 disabled:to-elit-gold/50 disabled:cursor-not-allowed text-white px-4 py-2 rounded-lg transition duration-200 font-medium text-sm shadow-md hover:shadow-lg"
               >
-                {isSubmitting ? 'Processando...' : 'Confirmar Inscrição'}
+                {isSubmitting ? 'Processando...' : 'Confirmar'}
               </button>
               <button
                 type="button"
                 onClick={onClose}
                 disabled={isSubmitting}
-                className="flex-1 bg-slate-200 hover:bg-slate-300 disabled:bg-slate-100 disabled:cursor-not-allowed text-slate-900 px-6 py-3 rounded-lg transition duration-200 font-medium"
+                className="flex-1 bg-elit-light hover:bg-elit-light/80 disabled:bg-elit-light/50 disabled:cursor-not-allowed text-elit-dark px-4 py-2 rounded-lg transition duration-200 font-medium text-sm border border-elit-light"
               >
                 Cancelar
               </button>
