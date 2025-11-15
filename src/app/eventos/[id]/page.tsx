@@ -18,20 +18,20 @@ export default function EventDetailPage({ params }: { params: { id: string } }) 
   const handleRegister = async () => {
     if (!event) return
 
-    const token = localStorage.getItem('token')
-    if (!token) {
-      setRegistrationMessage({ type: 'error', text: 'Você precisa estar logado para se inscrever' })
-      return
-    }
-
     setIsRegistering(true)
     try {
+      const token = localStorage.getItem('token')
+      const headers: HeadersInit = {
+        'Content-Type': 'application/json',
+      }
+      
+      if (token) {
+        headers['Authorization'] = `Bearer ${token}`
+      }
+
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/events/${event.id}/register`, {
         method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
+        headers,
       })
 
       if (!response.ok) {
