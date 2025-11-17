@@ -113,7 +113,6 @@ export default function AdminEvents() {
   const [editingEvent, setEditingEvent] = useState<Event | null>(null);
   const deleteButtonRef = useRef<HTMLButtonElement>(null);
 
-  // Filtrar eventos com base no termo de busca
   const filteredEvents = events.filter(event => 
     event.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
     event.category.toLowerCase().includes(searchTerm.toLowerCase()) ||
