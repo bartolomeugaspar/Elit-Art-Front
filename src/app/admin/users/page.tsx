@@ -209,7 +209,7 @@ export default function AdminUsers() {
   return (
     <div className="space-y-6">
       {/* Barra de pesquisa, contador e botão de novo usuário */}
-      <div className="flex flex-col sm:flex-row items-stArte sm:items-center justify-between gap-4 w-full">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 w-full">
         {/* Campo de busca */}
         <div className="relative flex-1 max-w-2xl">
           <input

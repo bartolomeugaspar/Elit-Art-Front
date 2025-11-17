@@ -162,7 +162,9 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
       <div
         className={`${
           sidebarOpen ? 'w-64' : 'w-20'
-        } bg-white border-r border-slate-200 text-slate-900 transition-all duration-300 flex flex-col shadow-sm fixed left-0 top-0 h-screen z-40`}
+        } bg-white border-r border-slate-200 text-slate-900 transition-all duration-300 flex flex-col shadow-sm fixed left-0 top-0 h-screen z-40 ${
+          sidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'
+        } md:translate-x-0`}
       >
         {/* Logo Section */}
         <div className="p-6 border-b border-slate-200 flex items-center justify-between">
@@ -222,13 +224,13 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
       </div>
 
       {/* Main Content */}
-      <div className={`flex-1 flex flex-col overflow-hidden transition-all duration-300 ${sidebarOpen ? 'md:ml-64' : 'md:ml-20'}`}>
+      <div className={`flex-1 flex flex-col overflow-hidden transition-all duration-300 ml-0 md:ml-0 ${sidebarOpen ? 'md:ml-64' : 'md:ml-20'}`}>
         {/* Header */}
         <header className="bg-white border-b border-gray-100 shadow-sm sticky top-0 z-30">
-          <div className="px-6 py-3">
-            <div className="flex items-center justify-between h-16">
+          <div className="px-4 sm:px-6 py-2 sm:py-3">
+            <div className="flex items-center justify-between h-14 sm:h-16">
               {/* Left Section */}
-              <div className="flex items-center space-x-8">
+              <div className="flex items-center space-x-4 sm:space-x-8">
                 <button 
                   onClick={() => setSidebarOpen(!sidebarOpen)}
                   className="p-2 -ml-2 rounded-md text-gray-500 hover:text-gray-600 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 md:hidden"
@@ -330,7 +332,7 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
         </header>
 
         {/* Content */}
-        <div className="flex-1 overflow-auto bg-slate-50 p-6 md:p-8">
+        <div className="flex-1 overflow-auto bg-slate-50 p-4 sm:p-6 md:p-8">
           {children}
         </div>
       </div>

@@ -226,7 +226,7 @@ export default function AdminEvents() {
   return (
     <div className="space-y-6">
       {/* Header with search and add button */}
-      <div className="flex flex-col sm:flex-row justify-between items-stArte sm:items-center gap-4">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div className="relative w-full sm:w-96">
           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
             <svg className="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -269,8 +269,8 @@ export default function AdminEvents() {
         />
       )}
 
-      {/* Events Table */}
-      <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+      {/* Events Table - Desktop */}
+      <div className="hidden md:block bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
         <div className="overflow-x-auto">
           <table className="min-w-full divide-y divide-slate-200">
             <thead className="bg-slate-50">
@@ -392,6 +392,98 @@ export default function AdminEvents() {
             </tbody>
           </table>
         </div>
+      </div>
+
+      {/* Events Cards - Mobile */}
+      <div className="md:hidden space-y-4">
+        {loading ? (
+          <div className="flex items-center justify-center gap-2 py-8">
+            <div className="w-5 h-5 border-2 border-purple-500 border-t-transparent rounded-full animate-spin"></div>
+            <span className="text-slate-500">Carregando eventos...</span>
+          </div>
+        ) : filteredEvents.length === 0 ? (
+          <div className="text-center py-8 text-slate-500">
+            {searchTerm ? 'Nenhum evento encontrado para a busca' : 'Nenhum evento cadastrado'}
+          </div>
+        ) : (
+          filteredEvents.map((event) => (
+            <div key={event.id} className="bg-white rounded-lg border border-slate-200 p-4 shadow-sm hover:shadow-md transition-shadow">
+              <div className="flex justify-between items-start gap-3 mb-3">
+                <div className="flex-1">
+                  <div className="flex items-center gap-2 mb-1">
+                    <h3 className="font-semibold text-slate-900 text-sm">{event.title}</h3>
+                    {event.status === 'completed' && (
+                      <span className="px-2 py-0.5 text-xs font-semibold rounded-full bg-gray-200 text-gray-700">
+                        Passado
+                      </span>
+                    )}
+                  </div>
+                  <span className="inline-block px-2 py-1 text-xs font-medium rounded-full bg-purple-100 text-purple-800">
+                    {event.category}
+                  </span>
+                </div>
+              </div>
+
+              <div className="space-y-2 mb-4 text-sm text-slate-600">
+                <div className="flex items-center gap-2">
+                  <Calendar size={16} className="text-slate-400" />
+                  <span>{formatDate(event.date)}</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <MapPin size={16} className="text-slate-400" />
+                  <span>{event.location}</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Users size={16} className="text-slate-400" />
+                  <div className="flex-1">
+                    <div className="w-full bg-slate-200 rounded-full h-2">
+                      <div 
+                        className={`h-2 rounded-full ${
+                          (event.available_spots / event.capacity) > 0.5 
+                            ? 'bg-green-500' 
+                            : (event.available_spots / event.capacity) > 0.2 
+                              ? 'bg-yellow-500' 
+                              : 'bg-red-500'
+                        }`}
+                        style={{ width: `${(event.available_spots / event.capacity) * 100}%` }}
+                      ></div>
+                    </div>
+                  </div>
+                  <span className="font-medium text-slate-700 whitespace-nowrap">
+                    {event.available_spots}/{event.capacity}
+                  </span>
+                </div>
+              </div>
+
+              <div className="flex gap-2 justify-end">
+                <button
+                  onClick={() => handleViewDetails(event)}
+                  className="text-slate-600 hover:text-purple-900 p-2 rounded-lg hover:bg-slate-100 transition-colors"
+                  title="Ver detalhes"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                  </svg>
+                </button>
+                <button
+                  onClick={() => handleEditEvent(event)}
+                  className="text-blue-600 hover:text-blue-900 p-2 rounded-lg hover:bg-blue-50 transition-colors"
+                  title="Editar"
+                >
+                  <Edit2 size={18} />
+                </button>
+                <button
+                  onClick={() => handleDeleteClick(event.id)}
+                  className="text-red-600 hover:text-red-900 p-2 rounded-lg hover:bg-red-50 transition-colors"
+                  title="Excluir"
+                >
+                  <Trash2 size={18} />
+                </button>
+              </div>
+            </div>
+          ))
+        )}
       </div>
 
       {/* Event Details Modal */}
