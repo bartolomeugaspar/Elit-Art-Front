@@ -42,7 +42,7 @@ Você deve ver:
 ## 4️⃣ Fazer Login
 
 **Credenciais de Teste:**
-- **Email:** admin@elit-Artee.com
+- **Email:** admin@elit-Arte.com
 - **Senha:** admin123
 
 Clique em "Entrar" e você será redirecionado para o dashboard.

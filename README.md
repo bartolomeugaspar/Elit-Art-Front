@@ -2,23 +2,23 @@
 
 > **Movimento Arteístico angolano dedicado à preservacção e celebracção da rica cultura angolana**
 
-## 🌐 **[🚀 ACESSE O SITE ONLINE](https://elit-Artee.vercel.app/)**
+## 🌐 **[🚀 ACESSE O SITE ONLINE](https://elit-Arte.vercel.app/)**
 
 [![Next.js](https://img.shields.io/badge/Next.js-14-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?style=for-the-badge&logo=typescript)](https://www.typescriptlang.org/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind-3-38bdf8?style=for-the-badge&logo=tailwind-css)](https://tailwindcss.com/)
 [![Responsive](https://img.shields.io/badge/Responsive-✅-green?style=for-the-badge)](https://github.com/bArteolomeugaspar/Elit-Arte-Front)
-[![Live Site](https://img.shields.io/badge/Live_Site-🌐_Online-success?style=for-the-badge)](https://elit-Artee.vercel.app/)
+[![Live Site](https://img.shields.io/badge/Live_Site-🌐_Online-success?style=for-the-badge)](https://elit-Arte.vercel.app/)
 
 ## 🌟 Sobre o Elit'Arte
 
 O **Elit'Arte** é um movimento Arteístico angolano fundado em **13 de Fevereiro de 2024** que une **teatro, música, dança, literatura, pintura e cinema**, com o objetivo de promover e celebrar nossa rica cultura através da fusão entre tradição e contemporaneidade.
 
 ### 🎯 Nossa Missão
-Promover a Artee nas suas múltiplas expressões como ferramentas de transformacção da nossa sociedade e de desenvolvimento dos angolanos, marcadamente com traços da nossa cultura angolana tradicional.
+Promover a Arte nas suas múltiplas expressões como ferramentas de transformacção da nossa sociedade e de desenvolvimento dos angolanos, marcadamente com traços da nossa cultura angolana tradicional.
 
 ### 👁️ Nossa Visão
-Ser reconhecido como o maior movimento Arteístico de Angola, em inovacção Arteística, inspirando gerações e transformando vidas por meio da Artee.
+Ser reconhecido como o maior movimento Arteístico de Angola, em inovacçãoArtística, inspirando gerações e transformando vidas por meio da Arte.
 
 ## 🚀 Tecnologias Utilizadas
 
@@ -46,7 +46,7 @@ src/
 │   │   ├── PresentationSection.tsx # Apresentacção
 │   │   ├── IdentitySection.tsx    # Missão, Visão, Valores
 │   │   ├── HistorySection.tsx     # História do movimento
-│   │   ├── AreasSection.tsx       # Áreas Arteísticas
+│   │   ├── AreasSection.tsx       # ÁreasArtísticas
 │   │   ├── TeamSection.tsx        # Equipa e líderes
 │   │   ├── GallerySection.tsx     # Galeria de imagens/vídeos
 │   │   ├── CommunitySection.tsx   # Atividades comunitárias
@@ -59,7 +59,7 @@ src/
 └── tailwind.config.js  # Configuracção do Tailwind
 ```
 
-## 🎨 Áreas Arteísticas
+## 🎨 ÁreasArtísticas
 
 ### 🎭 **Teatro**
 - Dramatizacção de peças teatrais de vanguarda
@@ -87,9 +87,9 @@ src/
 - Festivais de cinema
 
 ### 🎨 **Pintura**
-- Artee visual angolana
+- Arte visual angolana
 - Exposições e workshops
-- Preservacção da Artee tradicional
+- Preservacção da Arte tradicional
 
 ## 📱 Funcionalidades
 
@@ -132,11 +132,11 @@ src/
 
 ### 📱 **No Telefone/Mobile**
 1. Abra o navegador (Chrome, Safari, etc.)
-2. Acesse: **https://elit-Artee.vercel.app/**
+2. Acesse: **https://elit-Arte.vercel.app/**
 3. O site é totalmente responsivo e otimizado para mobile!
 
 ### 💻 **No Desktop**
-- Acesse diretamente: **https://elit-Artee.vercel.app/**
+- Acesse diretamente: **https://elit-Arte.vercel.app/**
 - Experiência completa com todas as funcionalidades
 
 ### 📲 **Instalar como App (PWA)**
@@ -186,17 +186,17 @@ npm run export
 ### 🎯 **Líderes**
 - **Faustino Domingos (Guido Alves)** - Fundador e Diretor Geral
 - **Josemara Comongo (Maíris de Jesus)** - Co-fundadora
-- **Luísa Gonçalves** - Diretora Arteística
+- **Luísa Gonçalves** - DiretoraArtística
 
-### 🎭 **Arteistas**
-Mais de 20 Arteistas nas diversas áreas: teatro, música, dança, literatura, cinema e pintura.
+### 🎭 **Artistas  **
+Mais de 20 Artistasnas diversas áreas: teatro, música, dança, literatura, cinema e pintura.
 
 ## 📞 Contato
 
 - **📧 Email**: faustinodomingos83@hotmail.com
 - **📱 Telefone**: +244 927 935 543
 - **💬 WhatsApp**: +244 950 291 335
-- **📍 Localizacção**: Luanda, Angola
+- **📍 Localização**: Luanda, Angola
 
 ## 🤝 Como Contribuir
 
@@ -214,7 +214,7 @@ Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para ma
 
 > *"Somos o sopro criativo que transforma histórias em emoção."*
 
-Junte-se ao movimento Arteístico que está transformando Angola através da Artee e cultura!
+Junte-se ao movimento Arteístico que está transformando Angola através da Arte e cultura!
 
 ---
 

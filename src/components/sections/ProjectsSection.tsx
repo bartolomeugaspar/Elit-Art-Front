@@ -7,7 +7,7 @@ export default function ProjectsSection() {
         <div className="text-center mb-16">
           <h2 className="text-4xl font-bold text-gray-800 mb-4">Projetos em Destaque</h2>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Iniciativas que marcaram nossa jornada Arteística e cultural
+            Iniciativas que marcaram nossa jornadaArtística e cultural
           </p>
         </div>
 
@@ -41,7 +41,7 @@ export default function ProjectsSection() {
             </div>
             <div className="p-8">
               <p className="text-gray-600 leading-relaxed mb-6">
-                Oficinas de Artees visuais que conectam Arteistas emergentes com mestres tradicionais, 
+                Oficinas de Artes visuais que conectam Artistasemergentes com mestres tradicionais, 
                 preservando técnicas ancestrais através da expressão contemporânea.
               </p>
               <button className="text-green-600 font-semibold hover:text-green-700 transition-colors">

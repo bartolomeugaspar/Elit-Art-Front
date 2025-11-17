@@ -319,7 +319,7 @@ export default function EventForm({
             type="text"
             id="title"
             name="title"
-            placeholder="Ex: Exposição de Artee Contemporânea"
+            placeholder="Ex: Exposição de Arte Contemporânea"
             value={formData.title}
             onChange={handleChange}
             className="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 placeholder-slate-500 focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 transition"

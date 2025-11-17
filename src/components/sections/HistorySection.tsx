@@ -8,7 +8,7 @@ export default function HistorySection() {
           {/* Frase-mestra */}
           <div className="text-center mb-16">
             <p className="text-2xl md:text-3xl font-light text-elit-gold italic mb-8">
-              "A Artee é a nossa linguagem universal; a cultura, a nossa assinatura."
+              "A Arte é a nossa linguagem universal; a cultura, a nossa assinatura."
             </p>
           </div>
 
@@ -34,11 +34,11 @@ export default function HistorySection() {
                     </p>
                     <p className="text-gray-700 leading-relaxed">
                       O Elit'Arte, fundado no pretérito 13 de Fevereiro de 2024, é um Movimento Arteístico que nasceu da 
-                      paixão pela Artee de dois jovens, <strong>Faustino Domingos</strong> e <strong>Luísa Gonçalves</strong>, 
+                      paixão pela Arte de dois jovens, <strong>Faustino Domingos</strong> e <strong>Luísa Gonçalves</strong>, 
                       como forma de transformacção pessoal, social, cultural e espiritual.
                     </p>
                     <p className="text-gray-700 leading-relaxed mt-4">
-                      O Movimento congrega várias expressões Arteísticas num só lugar (teatro, dança, música, literatura, 
+                      O Movimento congrega várias expressõesArtísticas num só lugar (teatro, dança, música, literatura, 
                       pintura e cinema), a fim de promover um espaço de criacção, expressão, promoção e reflexão, 
                       sempre com forte conexão com a nossa identidade cultural.
                     </p>
@@ -83,10 +83,10 @@ export default function HistorySection() {
                       de desenhar o estatuto e todo o projecto Arteístico do Elit'Arte.
                     </p>
                     <p className="text-gray-700 leading-relaxed mt-4">
-                      Posteriormente, endereçou-se o convite a vários fazedores de Artee, nas disciplinas do teatro, 
+                      Posteriormente, endereçou-se o convite a vários fazedores de Arte, nas disciplinas do teatro, 
                       música, cinema, pintura e literatura, maioritariamente alunos do 
-                      <strong className="text-elit-orange"> Icra e do Marista</strong>, para fazerem pArtee das diferentes 
-                      áreas Arteísticas que compõem o Elit'Arte.
+                      <strong className="text-elit-orange"> Icra e do Marista</strong>, para fazerem pArte das diferentes 
+                      áreasArtísticas que compõem o Elit'Arte.
                     </p>
                   </div>
                 </div>
@@ -105,7 +105,7 @@ export default function HistorySection() {
                 <h3 className="text-3xl font-bold text-elit-dark mb-6">Motivações</h3>
                 <div className="bg-gradient-to-r from-elit-red/10 via-elit-yellow/10 to-elit-orange/10 p-8 rounded-2xl shadow-lg max-w-4xl mx-auto">
                   <p className="text-xl text-gray-700 leading-relaxed italic">
-                    "É saber que, a pArteir da Artee, podemos construir nos nossos Arteistas e na nossa gente 
+                    "É saber que, a pArteir da Arte, podemos construir nos nossos Artistase na nossa gente 
                     uma mentalidade cada vez mais séria, mais comprometida com o país e consigo mesmo."
                   </p>
                 </div>

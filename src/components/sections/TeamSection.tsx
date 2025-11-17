@@ -7,7 +7,7 @@ export default function TeamSection() {
       ArteisticName: "Guido Alves",
       role: "Coordenador",
       area: "Literatura e Cinema",
-      description: "Coordenador do Elit'Arte, director da área do cinema e fundador. Formacção Arteística em teatro (15+ anos) e cinema.",
+      description: "Coordenador do Elit'Arte, director da área do cinema e fundador. FormacçãoArtística em teatro (15+ anos) e cinema.",
       quote: "Gosto tanto de escrever quanto gosto de comer, é uma necessidade vital para a minha alma.",
       email: "faustinodomingos83@hotmail.com",
       phone: "927935543",
@@ -69,7 +69,7 @@ export default function TeamSection() {
             "Grandes histórias são contadas por grandes equipas."
           </p>
           <h2 className="text-4xl md:text-5xl font-bold text-elit-dark mb-6">
-            Equipa <span className="text-elit-red">Administrativa</span>, Arteística e Técnica
+            Equipa <span className="text-elit-red">Administrativa</span>,Artística e Técnica
           </h2>
         </div>
 
@@ -138,9 +138,9 @@ export default function TeamSection() {
           </div>
         </div>
 
-        {/* Arteistas */}
+        {/* Artistas*/}
         <div className="mb-20">
-          <h3 className="text-3xl font-bold text-elit-dark mb-12 text-center">Arteistas do Movimento</h3>
+          <h3 className="text-3xl font-bold text-elit-dark mb-12 text-center">Artistas do Movimento</h3>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {Arteists.map((Arteist, index) => (
               <div key={index} className="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition-shadow">

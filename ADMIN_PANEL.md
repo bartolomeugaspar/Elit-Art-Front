@@ -13,7 +13,7 @@ http://localhost:3000/admin
 
 ### Credenciais de Teste
 ```
-Email: admin@elit-Artee.com
+Email: admin@elit-Arte.com
 Senha: admin123
 ```
 

@@ -23,7 +23,7 @@ export default function IdentitySection() {
                 <h3 className="text-2xl font-bold text-elit-dark">Missão</h3>
               </div>
               <p className="text-gray-700 leading-relaxed">
-                Promover a Artee nas suas múltiplas expressões (teatro, dança, música, pintura, cinema e literatura) 
+                Promover a Arte nas suas múltiplas expressões (teatro, dança, música, pintura, cinema e literatura) 
                 como ferramentas de transformacção da nossa sociedade e de desenvolvimento dos angolanos, 
                 marcadamente com traços da nossa cultura angolana tradicional.
               </p>
@@ -38,8 +38,8 @@ export default function IdentitySection() {
                 <h3 className="text-2xl font-bold text-elit-dark">Visão</h3>
               </div>
               <p className="text-gray-700 leading-relaxed">
-                Ser reconhecido como o maior movimento Arteístico de Angola, em inovacção Arteística, 
-                inspirando gerações e transformando vidas por meio da Artee.
+                Ser reconhecido como o maior movimento Arteístico de Angola, em inovacçãoArtística, 
+                inspirando gerações e transformando vidas por meio da Arte.
               </p>
             </div>
 
@@ -129,7 +129,7 @@ export default function IdentitySection() {
                 </div>
                 <h4 className="text-xl font-bold text-elit-dark mb-3">Excelência</h4>
                 <p className="text-gray-600 text-sm leading-relaxed">
-                  Buscamos sempre a perfeição em cada obra e apresentacção Arteística.
+                  Buscamos sempre a perfeição em cada obra e apresentacçãoArtística.
                 </p>
               </div>
             </div>

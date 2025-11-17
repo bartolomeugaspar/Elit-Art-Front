@@ -5,13 +5,13 @@ export default function GallerySection() {
     {
       type: 'image',
       src: '/WhatsApp Image 2025-11-13 at 16.39.48 (1).jpeg',
-      alt: 'Momentos únicos do Elit\'Artee',
+      alt: 'Momentos únicos do Elit\'Arte',
       category: 'Fundacção'
     },
     {
       type: 'image',
       src: '/WhatsApp Image 2025-11-13 at 16.39.48 (2).jpeg',
-      alt: 'Comunidade Arteística unida',
+      alt: 'ComunidadeArtística unida',
       category: 'Equipa'
     },
     {
@@ -23,7 +23,7 @@ export default function GallerySection() {
     {
       type: 'image',
       src: '/WhatsApp Image 2025-11-13 at 16.39.50 (1).jpeg',
-      alt: 'Artee em movimento',
+      alt: 'Arte em movimento',
       category: 'Teatro'
     },
     {
@@ -43,6 +43,13 @@ export default function GallerySection() {
       src: '/WhatsApp Image 2025-11-13 at 16.39.51 (2).jpeg',
       alt: 'Música tradicional',
       category: 'Música'
+    }
+    ,
+    {
+      type: 'image',
+      src: '/WhatsApp Image 2025-11-13 at 17.02.52 (1).jpeg',
+      alt: 'Legado cultural preservado',
+      category: 'Fundacção'
     },
     {
       type: 'image',
@@ -59,13 +66,13 @@ export default function GallerySection() {
     {
       type: 'image',
       src: '/WhatsApp Image 2025-11-13 at 16.44.23 (1).jpeg',
-      alt: 'Artee visual contemporânea',
+      alt: 'Arte visual contemporânea',
       category: 'Pintura'
     },
     {
       type: 'image',
       src: '/WhatsApp Image 2025-11-13 at 16.44.24 (1).jpeg',
-      alt: 'Criacção Arteística',
+      alt: 'CriacçãoArtística',
       category: 'Pintura'
     },
     {
@@ -89,7 +96,7 @@ export default function GallerySection() {
     {
       type: 'image',
       src: '/WhatsApp Image 2025-11-13 at 17.41.22 (1).jpeg',
-      alt: 'Colaboracção Arteística',
+      alt: 'ColaboracçãoArtística',
       category: 'Equipa'
     },
     {
@@ -125,7 +132,7 @@ export default function GallerySection() {
     {
       type: 'image',
       src: '/S.jpeg',
-      alt: 'Artee contemporânea',
+      alt: 'Arte contemporânea',
       category: 'Pintura'
     },
     {
@@ -137,7 +144,7 @@ export default function GallerySection() {
     {
       type: 'image',
       src: '/carimbo.jpeg',
-      alt: 'Expressão Arteística',
+      alt: 'ExpressãoArtística',
       category: 'Pintura'
     },
     {
@@ -150,6 +157,12 @@ export default function GallerySection() {
       type: 'image',
       src: '/WhatsApp Image 2025-11-13 at 16.39.45.jpeg',
       alt: 'Momentos Arteísticos únicos',
+      category: 'Fundacção'
+    },
+    {
+      type: 'image',
+      src: '/preta.jpeg',
+      alt: 'Legado cultural preservado',
       category: 'Fundacção'
     },
     {
@@ -167,7 +180,7 @@ export default function GallerySection() {
     {
       type: 'image',
       src: '/WhatsApp Image 2025-11-13 at 16.39.48.jpeg',
-      alt: 'Artee em movimento',
+      alt: 'Arte em movimento',
       category: 'Teatro'
     },
     {
@@ -203,7 +216,7 @@ export default function GallerySection() {
     {
       type: 'image',
       src: '/uniao.jpeg',
-      alt: 'União e colaboracção Arteística',
+      alt: 'União e colaboracçãoArtística',
       category: 'Fundacção'
     },
     {
@@ -215,6 +228,12 @@ export default function GallerySection() {
     {
       type: 'image',
       src: '/6.jpeg',
+      alt: 'Legado cultural preservado',
+      category: 'Fundacção'
+    },
+    {
+      type: 'image',
+      src: '/WhatsApp Image 2025-11-13 at 17.02.51.jpeg',
       alt: 'Legado cultural preservado',
       category: 'Fundacção'
     },
@@ -248,28 +267,6 @@ export default function GallerySection() {
       alt: 'Legado cultural preservado',
       category: 'Fundacção'
     }
-    ,
-    {
-      type: 'image',
-      src: '/WhatsApp Image 2025-11-13 at 17.02.52 (1).jpeg',
-      alt: 'Legado cultural preservado',
-      category: 'Fundacção'
-    }
-    ,
-    {
-      type: 'image',
-      src: '/preta.jpeg',
-      alt: 'Legado cultural preservado',
-      category: 'Fundacção'
-    }
-    ,
-    {
-      type: 'image',
-      src: '/WhatsApp Image 2025-11-13 at 17.02.51.jpeg',
-      alt: 'Legado cultural preservado',
-      category: 'Fundacção'
-    }
-    
   ]
 
   const categories = ['Todos', 'Fundacção', 'Teatro', 'Música', 'Pintura', 'Literatura', 'Cinema', 'Equipa']
@@ -390,7 +387,7 @@ export default function GallerySection() {
                   Seu navegador não suporta o elemento de vídeo.
                 </video>
               </div>
-              <h4 className="text-lg sm:text-xl font-bold mb-2">Performance Arteística</h4>
+              <h4 className="text-lg sm:text-xl font-bold mb-2">PerformanceArtística</h4>
               <p className="text-elit-light text-sm">Expressão cultural angolana</p>
             </div>
           </div>

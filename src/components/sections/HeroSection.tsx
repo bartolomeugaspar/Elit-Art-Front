@@ -10,7 +10,7 @@ export default function HeroSection() {
   const slides = [
     {
       image: '/WhatsApp Image 2025-11-13 at 20.43.02.jpeg',
-      title: 'Liderança Arteística',
+      title: 'LiderançaArtística',
       subtitle: 'Formando os líderes culturais de amanhã'
     },
     {
@@ -25,13 +25,13 @@ export default function HeroSection() {
     },
     {
       image: '/WhatsApp Image 2025-11-13 at 16.39.50 (2).jpeg',
-      title: 'Artee Visual',
+      title: 'Arte Visual',
       subtitle: 'Cores e formas da cultura angolana'
     },
     {
       image: '/nova.jpeg',
-      title: 'Comunidade Arteística',
-      subtitle: 'Unidos pela paixão da Artee'
+      title: 'ComunidadeArtística',
+      subtitle: 'Unidos pela paixão da Arte'
     },
     {
       image: '/WhatsApp Image 2025-11-13 at 20.43.23 (1).jpeg',
@@ -93,7 +93,7 @@ export default function HeroSection() {
         <div className="max-w-7xl mx-auto py-8 sm:py-12">
           {/* Frase-mestra */}
           <p className="text-base sm:text-lg md:text-xl lg:text-2xl font-light mb-6 sm:mb-8 text-elit-yellow italic animate-fade-in px-4">
-            "Elit'Arte: Onde a essência angolana encontra a expressão Arteística."
+            "Elit'Arte: Onde a essência angolana encontra a expressãoArtística."
           </p>
           
           {/* Título Principal */}

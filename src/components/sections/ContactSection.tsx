@@ -22,7 +22,7 @@ export default function ContactSection() {
     },
     {
       icon: MapPin,
-      title: "Localizacção",
+      title: "Localização",
       value: "Luanda, Angola",
       description: "Local de ensaios e sede"
     }
@@ -38,7 +38,7 @@ export default function ContactSection() {
             Contacto e <span className="text-elit-red">Redes Sociais</span>
           </h2>
           <p className="text-base sm:text-lg lg:text-xl text-elit-light px-4">
-            Apoie o Elit'Arte e pArteilhe a nossa paixão pela Artee.
+            Apoie o Elit'Arte e pArteilhe a nossa paixão pela Arte.
           </p>
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 mb-12 sm:mb-16">

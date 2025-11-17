@@ -13,7 +13,7 @@ module.exports = {
       },
       colors: {
         // Cores idênticas ao logotipo Elit'Arte
-        'elit-red': '#8B4513',      // Marrom/vermelho escuro do "Artee"
+        'elit-red': '#8B4513',      // Marrom/vermelho escuro do "Arte"
         'elit-orange': '#D2691E',   // Laranja médio do logotipo
         'elit-yellow': '#F4A460',   // Dourado claro do "elit"
         'elit-brown': '#654321',    // Marrom escuro para contraste

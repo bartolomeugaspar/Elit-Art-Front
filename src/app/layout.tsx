@@ -5,7 +5,7 @@ import RootLayoutClient from './layout-client'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata = {
-  title: 'Elit\'Arte | Amantes da Artee',
+  title: 'Elit\'Arte | Amantes da Arte',
   description: 'Movimento Arteístico que celebra e preserva a rica cultura angolana através da fusão harmoniosa entre tradição e contemporaneidade',
   icons: {
     icon: '/icon.jpeg',

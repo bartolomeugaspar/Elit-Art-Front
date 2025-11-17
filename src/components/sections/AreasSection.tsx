@@ -60,7 +60,7 @@ export default function AreasSection() {
               </div>
               <div className="bg-white p-6 rounded-xl shadow-lg">
                 <p className="text-gray-700 leading-relaxed mb-4">
-                  A área da música do Elit'Arte, formada por não mais de 06 Arteistas, procura interpretar e produzir 
+                  A área da música do Elit'Arte, formada por não mais de 06 Artistas  , procura interpretar e produzir 
                   canções angolanas, cujo conteúdo seja de vanguarda e numa fusão de estilos tradicionais com modernos.
                 </p>
                 <p className="text-gray-700 leading-relaxed">
@@ -88,7 +88,7 @@ export default function AreasSection() {
               </div>
               <div className="bg-white p-6 rounded-xl shadow-lg">
                 <p className="text-gray-700 leading-relaxed mb-4">
-                  A área da dança do Elit'Arte, formada por não mais de 08 Arteistas, procura produzir estilos 
+                  A área da dança do Elit'Arte, formada por não mais de 08 Artistas  , procura produzir estilos 
                   de dança que celebram raízes angolanas, mas com um toque modernista.
                 </p>
                 <p className="text-gray-700 leading-relaxed">
@@ -115,7 +115,7 @@ export default function AreasSection() {
               </div>
               <div className="bg-white p-6 rounded-xl shadow-lg">
                 <p className="text-gray-700 leading-relaxed mb-4">
-                  A área da literatura, formada por não mais de 06 Arteistas, procura produzir textos literários 
+                  A área da literatura, formada por não mais de 06 Artistas  , procura produzir textos literários 
                   de vanguarda, nas modalidades do conto e poesia, com presença vincada dos nossos hábitos e costumes.
                 </p>
                 <p className="text-gray-700 leading-relaxed">
@@ -169,7 +169,7 @@ export default function AreasSection() {
               </div>
               <div className="bg-white p-6 rounded-xl shadow-lg">
                 <p className="text-gray-700 leading-relaxed mb-4">
-                  A área de pintura do Elit'Arte, formada por 06 Arteistas, procura produzir obras que retratam 
+                  A área de pintura do Elit'Arte, formada por 06 Artistas  , procura produzir obras que retratam 
                   a identidade e a alma do povo angolano.
                 </p>
                 <p className="text-gray-700 leading-relaxed">

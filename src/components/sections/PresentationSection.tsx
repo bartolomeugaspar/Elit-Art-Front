@@ -23,7 +23,7 @@ export default function PresentationSection() {
                 <h2 className="text-4xl font-bold text-elit-dark">
                   <span className="text-elit-red">Elit</span>
                   <span className="text-elit-yellow">'</span>
-                  <span className="text-elit-brown">Artee</span>
+                  <span className="text-elit-brown">Arte</span>
                 </h2>
               </div>
 
@@ -37,7 +37,7 @@ export default function PresentationSection() {
                 </p>
                 <p className="text-lg text-gray-700 leading-relaxed mt-4">
                   O nosso trabalho visa <span className="text-elit-gold font-semibold">transformar, inspirar e conectar</span> a 
-                  sociedade angolana com a Artee que junta o tradicional ao contemporâneo.
+                  sociedade angolana com a Arte que junta o tradicional ao contemporâneo.
                 </p>
               </div>
             </div>
