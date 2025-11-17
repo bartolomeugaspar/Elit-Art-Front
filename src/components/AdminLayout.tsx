@@ -162,9 +162,9 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
       <div
         className={`${
           sidebarOpen ? 'w-64' : 'w-20'
-        } bg-white border-r border-slate-200 text-slate-900 transition-all duration-300 flex flex-col shadow-sm fixed left-0 top-0 h-screen z-40 ${
+        } bg-white border-r border-slate-200 text-slate-900 transition-all duration-300 flex flex-col shadow-sm fixed md:relative left-0 top-0 h-screen z-40 ${
           sidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'
-        } md:translate-x-0`}
+        }`}
       >
         {/* Logo Section */}
         <div className="p-6 border-b border-slate-200 flex items-center justify-between">
@@ -224,7 +224,7 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
       </div>
 
       {/* Main Content */}
-      <div className={`flex-1 flex flex-col overflow-hidden transition-all duration-300 ml-0 md:ml-0 ${sidebarOpen ? 'md:ml-64' : 'md:ml-20'}`}>
+      <div className={`flex-1 flex flex-col overflow-hidden transition-all duration-300 ${sidebarOpen ? 'md:ml-0' : 'md:ml-0'}`}>
         {/* Header */}
         <header className="bg-white border-b border-gray-100 shadow-sm sticky top-0 z-30">
           <div className="px-4 sm:px-6 py-2 sm:py-3">
@@ -336,6 +336,14 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
           {children}
         </div>
       </div>
+      
+      {/* Mobile Overlay */}
+      {sidebarOpen && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 z-30 md:hidden"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
       
       {/* Toast Container */}
       <ToastContainer toasts={toasts} removeToast={removeToast} />

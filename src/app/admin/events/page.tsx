@@ -270,27 +270,27 @@ export default function AdminEvents() {
       )}
 
       {/* Events Table - Desktop */}
-      <div className="hidden md:block bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+      <div className="hidden lg:block bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-slate-200">
+          <table className="min-w-full divide-y divide-slate-200 text-sm">
             <thead className="bg-slate-50">
               <tr>
-                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
+                <th scope="col" className="px-4 lg:px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
                   Título
                 </th>
-                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
+                <th scope="col" className="px-4 lg:px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
                   Categoria
                 </th>
-                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
+                <th scope="col" className="px-4 lg:px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
                   Data
                 </th>
-                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
+                <th scope="col" className="px-4 lg:px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
                   Local
                 </th>
-                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
+                <th scope="col" className="px-4 lg:px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
                   Vagas
                 </th>
-                <th scope="col" className="px-6 py-3 text-right text-xs font-medium text-slate-500 uppercase tracking-wider">
+                <th scope="col" className="px-4 lg:px-6 py-3 text-right text-xs font-medium text-slate-500 uppercase tracking-wider">
                   Ações
                 </th>
               </tr>
@@ -298,7 +298,7 @@ export default function AdminEvents() {
             <tbody className="bg-white divide-y divide-slate-200">
               {loading ? (
                 <tr>
-                  <td colSpan={6} className="px-6 py-8 text-center text-slate-500">
+                  <td colSpan={6} className="px-4 lg:px-6 py-8 text-center text-slate-500">
                     <div className="flex items-center justify-center gap-2">
                       <div className="w-5 h-5 border-2 border-purple-500 border-t-transparent rounded-full animate-spin"></div>
                       Carregando eventos...
@@ -307,18 +307,18 @@ export default function AdminEvents() {
                 </tr>
               ) : filteredEvents.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="px-6 py-8 text-center text-slate-500">
+                  <td colSpan={6} className="px-4 lg:px-6 py-8 text-center text-slate-500">
                     {searchTerm ? 'Nenhum evento encontrado para a busca' : 'Nenhum evento cadastrado'}
                   </td>
                 </tr>
               ) : (
                 filteredEvents.map((event) => (
                   <tr key={event.id} className="hover:bg-slate-50 transition-colors">
-                    <td className="px-6 py-4 whitespace-nowrap">
+                    <td className="px-4 lg:px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center">
                         <div>
                           <div className="flex items-center gap-2">
-                            <div className="text-sm font-medium text-slate-900">{event.title}</div>
+                            <div className="text-xs lg:text-sm font-medium text-slate-900">{event.title}</div>
                             {event.status === 'completed' && (
                               <span className="px-2 py-0.5 text-xs font-semibold rounded-full bg-gray-200 text-gray-700">
                                 Passado
@@ -329,19 +329,19 @@ export default function AdminEvents() {
                         </div>
                       </div>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
+                    <td className="px-4 lg:px-6 py-4 whitespace-nowrap">
                       <span className="px-2.5 py-1 text-xs font-medium rounded-full bg-purple-100 text-purple-800">
                         {event.category}
                       </span>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-slate-900">{formatDate(event.date)}</div></td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-slate-900">{event.location}</div>
+                    <td className="px-4 lg:px-6 py-4 whitespace-nowrap">
+                      <div className="text-xs lg:text-sm text-slate-900">{formatDate(event.date)}</div></td>
+                    <td className="px-4 lg:px-6 py-4 whitespace-nowrap">
+                      <div className="text-xs lg:text-sm text-slate-900">{event.location}</div>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="flex items-center">
-                        <div className="w-24 bg-slate-200 rounded-full h-2.5 mr-2">
+                    <td className="px-4 lg:px-6 py-4 max-w-xs">
+                      <div className="flex items-center gap-2 min-w-0">
+                        <div className="w-16 bg-slate-200 rounded-full h-2.5 flex-shrink-0">
                           <div 
                             className={`h-2.5 rounded-full ${
                               (event.available_spots / event.capacity) > 0.5 
@@ -353,13 +353,13 @@ export default function AdminEvents() {
                             style={{ width: `${(event.available_spots / event.capacity) * 100}%` }}
                           ></div>
                         </div>
-                        <span className="text-sm font-medium text-slate-700">
+                        <span className="text-sm font-medium text-slate-700 whitespace-nowrap flex-shrink-0">
                           {event.available_spots}/{event.capacity}
                         </span>
                       </div>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                      <div className="flex justify-end space-x-2">
+                    <td className="px-4 lg:px-6 py-4 whitespace-nowrap text-right text-xs lg:text-sm font-medium">
+                      <div className="flex justify-end space-x-1 lg:space-x-2">
                         <button
                           onClick={() => handleViewDetails(event)}
                           className="text-slate-600 hover:text-purple-900 p-1.5 rounded-full hover:bg-slate-100 transition-colors"
@@ -395,7 +395,7 @@ export default function AdminEvents() {
       </div>
 
       {/* Events Cards - Mobile */}
-      <div className="md:hidden space-y-4">
+      <div className="lg:hidden space-y-4">
         {loading ? (
           <div className="flex items-center justify-center gap-2 py-8">
             <div className="w-5 h-5 border-2 border-purple-500 border-t-transparent rounded-full animate-spin"></div>
@@ -434,22 +434,20 @@ export default function AdminEvents() {
                   <span>{event.location}</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Users size={16} className="text-slate-400" />
-                  <div className="flex-1">
-                    <div className="w-full bg-slate-200 rounded-full h-2">
-                      <div 
-                        className={`h-2 rounded-full ${
-                          (event.available_spots / event.capacity) > 0.5 
-                            ? 'bg-green-500' 
-                            : (event.available_spots / event.capacity) > 0.2 
-                              ? 'bg-yellow-500' 
-                              : 'bg-red-500'
-                        }`}
-                        style={{ width: `${(event.available_spots / event.capacity) * 100}%` }}
-                      ></div>
-                    </div>
+                  <Users size={16} className="text-slate-400 flex-shrink-0" />
+                  <div className="w-24 bg-slate-200 rounded-full h-2">
+                    <div 
+                      className={`h-2 rounded-full ${
+                        (event.available_spots / event.capacity) > 0.5 
+                          ? 'bg-green-500' 
+                          : (event.available_spots / event.capacity) > 0.2 
+                            ? 'bg-yellow-500' 
+                            : 'bg-red-500'
+                      }`}
+                      style={{ width: `${(event.available_spots / event.capacity) * 100}%` }}
+                    ></div>
                   </div>
-                  <span className="font-medium text-slate-700 whitespace-nowrap">
+                  <span className="font-medium text-slate-700 whitespace-nowrap flex-shrink-0">
                     {event.available_spots}/{event.capacity}
                   </span>
                 </div>
@@ -498,7 +496,7 @@ export default function AdminEvents() {
           >
             {/* Imagem do evento */}
             {selectedEvent.image && (
-              <div className="relative w-full h-64 bg-slate-200">
+              <div className="relative w-full h-48 sm:h-64 bg-slate-200">
                 <img
                   src={selectedEvent.image}
                   alt={selectedEvent.title}
@@ -514,11 +512,11 @@ export default function AdminEvents() {
               </div>
             )}
             
-            <div className="p-6">
-              <div className="flex justify-between items-stArte">
+            <div className="p-4 sm:p-6">
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-start gap-4">
                 <div>
-                  <div className="flex items-center gap-3">
-                    <h3 className="text-2xl font-bold text-slate-900">{selectedEvent.title}</h3>
+                  <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
+                    <h3 className="text-lg sm:text-2xl font-bold text-slate-900">{selectedEvent.title}</h3>
                     {selectedEvent.status === 'completed' && (
                       <span className="px-3 py-1 text-sm font-semibold rounded-full bg-gray-200 text-gray-700">
                         Evento Passado
@@ -539,7 +537,7 @@ export default function AdminEvents() {
               </div>
               
               <div className="mt-6 space-y-4">
-                <div className="flex items-stArte">
+                <div className="flex items-start">
                   <Calendar className="h-5 w-5 text-slate-400 mt-0.5 mr-3 flex-shrink-0" />
                   <div>
                     <p className="text-sm text-slate-500">Data e Hora</p>
@@ -549,7 +547,7 @@ export default function AdminEvents() {
                   </div>
                 </div>
                 
-                <div className="flex items-stArte">
+                <div className="flex items-start">
                   <MapPin className="h-5 w-5 text-slate-400 mt-0.5 mr-3 flex-shrink-0" />
                   <div>
                     <p className="text-sm text-slate-500">Local</p>
@@ -557,7 +555,7 @@ export default function AdminEvents() {
                   </div>
                 </div>
                 
-                <div className="flex items-stArte">
+                <div className="flex items-start">
                   <Users className="h-5 w-5 text-slate-400 mt-0.5 mr-3 flex-shrink-0" />
                   <div className="w-full">
                     <div className="flex justify-between mb-1">

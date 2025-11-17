@@ -304,10 +304,22 @@ export default function EventForm({
   };
 
   return (
-    <div className="bg-white rounded-xl p-6 border border-slate-200 shadow-lg">
-      <h2 className="text-xl font-bold text-slate-900 mb-6">
-        {isEditing ? 'Editar Evento' : 'Criar Novo Evento'}
-      </h2>
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+      <div className="bg-white rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+        <div className="sticky top-0 bg-white border-b border-slate-200 p-6 flex items-center justify-between">
+          <h2 className="text-xl font-bold text-slate-900">
+            {isEditing ? 'Editar Evento' : 'Criar Novo Evento'}
+          </h2>
+          <button
+            onClick={onCancel}
+            className="text-slate-400 hover:text-slate-600 transition-colors"
+            title="Fechar"
+          >
+            <X size={24} />
+          </button>
+        </div>
+        
+        <div className="p-6">
       
       <form onSubmit={handleSubmit} className="space-y-4">
         {/* Título */}
@@ -575,6 +587,8 @@ export default function EventForm({
           </button>
         </div>
       </form>
+        </div>
+      </div>
     </div>
   );
 }
