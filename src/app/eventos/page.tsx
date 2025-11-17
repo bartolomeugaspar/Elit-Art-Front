@@ -146,11 +146,6 @@ export default function EventosPage() {
                           <span className="font-semibold text-elit-orange">{event.attendees}</span>   Inscritos
                         </p>
                       )}
-                      {event.availableSpots !== undefined && (
-                        <p className="text-xs text-elit-dark">
-                          <span className="font-semibold text-elit-orange">{event.availableSpots}</span> vagas disponíveis
-                        </p>
-                      )}
                     </div>
 
                     {/* CTA Button */}
