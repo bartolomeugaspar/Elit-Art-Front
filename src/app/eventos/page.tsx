@@ -7,8 +7,8 @@ import Link from 'next/link'
 import { useState, useMemo } from 'react'
 
 export default function EventosPage() {
-  const { getEvents, getPastEvents, searchEvents } = useEvents()
-  const upcomingEvents = getEvents()
+  const { getUpcomingEvents, getPastEvents, searchEvents } = useEvents()
+  const upcomingEvents = getUpcomingEvents()
   const pastEvents = getPastEvents()
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
