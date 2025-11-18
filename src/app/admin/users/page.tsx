@@ -298,7 +298,7 @@ export default function AdminUsers() {
                     className="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
                   >
                     <option value="user">Usuário</option>
-                    <option value="Arteist">Arteista</option>
+                    <option value="Arteist">Artista</option>
                     <option value="admin">Admin</option>
                   </select>
                 </div>
@@ -386,7 +386,7 @@ export default function AdminUsers() {
                             : 'bg-slate-100 text-slate-800'
                         }`}
                       >
-                        {user.role === 'admin' ? 'Admin' : user.role === 'Arteist' ? 'Arteista' : 'Usuário'}
+                        {user.role === 'admin' ? 'Admin' : user.role === 'Arteist' ? 'Artista' : 'Usuário'}
                       </span>
                     </td>
                     <td className="px-4 lg:px-6 py-4 whitespace-nowrap">
@@ -467,7 +467,7 @@ export default function AdminUsers() {
                         : 'bg-slate-100 text-slate-800'
                     }`}
                   >
-                    {user.role === 'admin' ? 'Admin' : user.role === 'Arteist' ? 'Arteista' : 'Usuário'}
+                    {user.role === 'admin' ? 'Admin' : user.role === 'Arteist' ? 'Artista' : 'Usuário'}
                   </span>
                 </div>
                 <div className="flex items-center justify-between gap-2">
@@ -583,7 +583,7 @@ export default function AdminUsers() {
                   <span className="text-sm font-medium text-slate-500">Função</span>
                   <span className="text-sm text-slate-900 font-medium capitalize">
                     {selectedUser.role === 'admin' ? 'Administrador' : 
-                     selectedUser.role === 'Arteist' ? 'Arteista' : 'Usuário'}
+                     selectedUser.role === 'Arteist' ? 'Artista' : 'Usuário'}
                   </span>
                 </div>
                 <div className="flex justify-between py-2 border-b border-slate-100">

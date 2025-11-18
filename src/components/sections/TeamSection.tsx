@@ -24,7 +24,7 @@ export default function TeamSection() {
       role: "Porta-voz",
       area: "Literatura",
       description: "Porta-voz, directora da área da literatura e fundadora. Vencedora do Concurso Literário 'Quem me dera ser onda' 2019.",
-      quote: "Aceitei ser fundadora deste Movimento para ressuscitar a Arteista que estava encubada em mim.",
+      quote: "Aceitei ser fundadora deste Movimento para ressuscitar a Artista que estava encubada em mim.",
       email: "mairisdejesus.mj@gmail.com",
       phone: "936346918"
     },

@@ -162,7 +162,7 @@ export default function AdminUsers() {
                   className="px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition"
                 >
                   <option value="user">Usuário</option>
-                  <option value="Arteist">Arteista</option>
+                  <option value="Arteist">Artista</option>
                   <option value="admin">Admin</option>
                 </select>
               </div>
@@ -248,7 +248,7 @@ export default function AdminUsers() {
                           {user.role === 'admin'
                             ? 'Admin'
                             : user.role === 'Arteist'
-                            ? 'Arteista'
+                            ? 'Artista'
                             : 'Usuário'}
                         </span>
                       </td>
