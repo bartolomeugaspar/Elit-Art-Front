@@ -95,6 +95,28 @@ export default function TeamSection() {
       description: "Grandeza não é corpulência, mas sim o estado de espírito, a intrepidez vislumbrada no tamanho dos nossos ideais.",
       email: "jessedenatanaelcassange@gmail.com",
       phone: "925 064 560"
+    },
+    {
+      name: "Oyono Fernandes",
+      ArteisticName: "TiaZita",
+      area: "Teatro e Cinema",
+      description: "Atuar é viver várias vidas, é descobrir diferentes personalidades e realidades de forma artística. É lindo!",
+      email: "Oyonorodolfo@gmail.com",
+      phone: "941514388"
+    },
+    {
+      name: "Maria Goreth Gaspar João",
+      area: "Comunicação",
+      description: "A área da comunicação é onde o apresentador se conecta com o público, transmite energia, emoção e guia cada momento do evento, fazendo todos sentirem a experiência de forma única.",
+      email: "mariagoreth93811@gmail.com",
+      phone: "938116151 / 955910284"
+    },
+    {
+      name: "Verónica Jucas Miguel",
+      area: "Apresentação e Comunicação",
+      description: "O que quer que você faça, faça bem feito",
+      email: "veramiguelita@gmail.com",
+      phone: "+244925129006"
     }
   ]
 
