@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { CheckCircle, X, Upload, Image as ImageIcon, Link as LinkIcon } from 'lucide-react';
+import { CheckCircle, X, Upload, Image as ImageIcon, Link as LinkIcon, Settings } from 'lucide-react';
 import { API_URL } from '@/lib/api';
 import toast from 'react-hot-toast';
 
@@ -17,6 +17,16 @@ interface EventFormProps {
     location: string;
     capacity: string;
     image?: string;
+    price?: number;
+    isFree?: boolean;
+    bankDetails?: {
+      accountHolder?: string;
+      accountNumber?: string;
+      bankName?: string;
+      iban?: string;
+      swift?: string;
+      mpesaNumber?: string;
+    };
   };
   isEditing?: boolean;
 }
@@ -47,7 +57,17 @@ export default function EventForm({
     location: initialData?.location || '',
     capacity: initialData?.capacity || '',
     image: initialData?.image || '',
+    price: initialData?.price || 0,
+    isFree: initialData?.isFree || false,
+    bankDetails: initialData?.bankDetails || {
+      accountHolder: '',
+      accountNumber: '',
+      bankName: '',
+      iban: '',
+    },
   });
+
+  const [activeTab, setActiveTab] = useState<'basic' | 'settings'>('basic');
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [imagePreview, setImagePreview] = useState<string | null>(initialData?.image || null);
@@ -60,6 +80,25 @@ export default function EventForm({
     setFormData(prev => ({
       ...prev,
       [name]: value
+    }));
+  };
+
+  const handleBankDetailsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      bankDetails: {
+        ...prev.bankDetails,
+        [name]: value
+      }
+    }));
+  };
+
+  const handleToggleFree = () => {
+    setFormData(prev => ({
+      ...prev,
+      isFree: !prev.isFree,
+      price: !prev.isFree ? 0 : prev.price
     }));
   };
 
@@ -261,6 +300,14 @@ export default function EventForm({
           location: formData.location.trim(),
           image: formData.image,
           capacity: parseInt(formData.capacity),
+          price: formData.isFree ? 0 : parseFloat(String(formData.price)) || 0,
+          is_free: formData.isFree,
+          bank_details: !formData.isFree ? {
+            account_holder: formData.bankDetails.accountHolder || undefined,
+            account_number: formData.bankDetails.accountNumber || undefined,
+            bank_name: formData.bankDetails.bankName || undefined,
+            iban: formData.bankDetails.iban || undefined,
+          } : undefined,
         }),
       });
 
@@ -320,8 +367,37 @@ export default function EventForm({
         </div>
         
         <div className="p-6">
+          {/* Abas */}
+          <div className="flex gap-2 mb-6 border-b border-slate-200">
+            <button
+              type="button"
+              onClick={() => setActiveTab('basic')}
+              className={`flex items-center gap-2 px-4 py-2 font-medium transition ${
+                activeTab === 'basic'
+                  ? 'text-purple-600 border-b-2 border-purple-600 -mb-1'
+                  : 'text-slate-600 hover:text-slate-900'
+              }`}
+            >
+              Informações Básicas
+            </button>
+            <button
+              type="button"
+              onClick={() => setActiveTab('settings')}
+              className={`flex items-center gap-2 px-4 py-2 font-medium transition ${
+                activeTab === 'settings'
+                  ? 'text-purple-600 border-b-2 border-purple-600 -mb-1'
+                  : 'text-slate-600 hover:text-slate-900'
+              }`}
+            >
+              <Settings size={18} />
+              Definições
+            </button>
+          </div>
       
       <form onSubmit={handleSubmit} className="space-y-4">
+        {/* TAB: BASIC */}
+        {activeTab === 'basic' && (
+          <>
         {/* Título */}
         <div>
           <label htmlFor="title" className="block text-sm font-medium text-slate-700 mb-1">
@@ -567,6 +643,114 @@ export default function EventForm({
             required
           />
         </div>
+          </>
+        )}
+
+        {/* TAB: SETTINGS */}
+        {activeTab === 'settings' && (
+          <>
+        {/* Tipo de Evento */}
+        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+          <label className="flex items-center gap-3 cursor-pointer">
+            <input
+              type="checkbox"
+              checked={formData.isFree}
+              onChange={handleToggleFree}
+              className="w-5 h-5 rounded border-slate-300 text-purple-600 focus:ring-2 focus:ring-purple-500"
+            />
+            <span className="font-medium text-slate-900">Evento Gratuito</span>
+          </label>
+        </div>
+
+        {/* Preço */}
+        {!formData.isFree && (
+          <div>
+            <label htmlFor="price" className="block text-sm font-medium text-slate-700 mb-1">
+              Preço (AOA) *
+            </label>
+            <input
+              type="number"
+              id="price"
+              name="price"
+              placeholder="Ex: 5000"
+              value={formData.price}
+              onChange={(e) => setFormData(prev => ({ ...prev, price: parseFloat(e.target.value) || 0 }))}
+              min="0"
+              step="0.01"
+              className="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 placeholder-slate-500 focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 transition"
+            />
+          </div>
+        )}
+
+        {/* Coordenadas Bancárias */}
+        {!formData.isFree && (
+          <div className="bg-slate-50 border border-slate-200 rounded-lg p-4 space-y-4">
+            <h3 className="font-semibold text-slate-900 mb-4">Coordenadas Bancárias</h3>
+            
+            <div>
+              <label htmlFor="accountHolder" className="block text-sm font-medium text-slate-700 mb-1">
+                Titular da Conta
+              </label>
+              <input
+                type="text"
+                id="accountHolder"
+                name="accountHolder"
+                placeholder="Nome do titular"
+                value={formData.bankDetails.accountHolder}
+                onChange={handleBankDetailsChange}
+                className="w-full px-4 py-3 bg-white border border-slate-300 rounded-lg text-slate-900 placeholder-slate-500 focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 transition"
+              />
+            </div>
+
+            <div>
+              <label htmlFor="bankName" className="block text-sm font-medium text-slate-700 mb-1">
+                Nome do Banco
+              </label>
+              <input
+                type="text"
+                id="bankName"
+                name="bankName"
+                placeholder="Ex: BAI, BPC, etc"
+                value={formData.bankDetails.bankName}
+                onChange={handleBankDetailsChange}
+                className="w-full px-4 py-3 bg-white border border-slate-300 rounded-lg text-slate-900 placeholder-slate-500 focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 transition"
+              />
+            </div>
+
+            <div>
+              <label htmlFor="accountNumber" className="block text-sm font-medium text-slate-700 mb-1">
+                Número da Conta
+              </label>
+              <input
+                type="text"
+                id="accountNumber"
+                name="accountNumber"
+                placeholder="Ex: 1234567890"
+                value={formData.bankDetails.accountNumber}
+                onChange={handleBankDetailsChange}
+                className="w-full px-4 py-3 bg-white border border-slate-300 rounded-lg text-slate-900 placeholder-slate-500 focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 transition"
+              />
+            </div>
+
+            <div>
+              <label htmlFor="iban" className="block text-sm font-medium text-slate-700 mb-1">
+                IBAN
+              </label>
+              <input
+                type="text"
+                id="iban"
+                name="iban"
+                placeholder="Ex: AO06000100037131174310147"
+                value={formData.bankDetails.iban}
+                onChange={handleBankDetailsChange}
+                className="w-full px-4 py-3 bg-white border border-slate-300 rounded-lg text-slate-900 placeholder-slate-500 focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 transition"
+              />
+            </div>
+
+          </div>
+        )}
+          </>
+        )}
 
         {/* Botões */}
         <div className="flex gap-3 pt-4">

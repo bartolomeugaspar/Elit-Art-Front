@@ -518,7 +518,7 @@ export default function AdminEvents() {
                     <h3 className="text-lg sm:text-2xl font-bold text-slate-900">{selectedEvent.title}</h3>
                     {selectedEvent.status === 'completed' && (
                       <span className="px-3 py-1 text-sm font-semibold rounded-full bg-gray-200 text-gray-700">
-                        Evento Passado
+                        Evento Terminado
                       </span>
                     )}
                   </div>

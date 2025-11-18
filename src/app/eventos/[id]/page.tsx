@@ -147,6 +147,55 @@ export default function EventDetailPage({ params }: { params: { id: string } }) 
                 </p>
               </div>
 
+              {/* Price and Payment Info */}
+              {!event.isFree && (event.price || event.bankDetails) && (
+                <div className="bg-white p-4 md:p-8 rounded-lg md:rounded-xl shadow-lg mb-6 md:mb-8">
+                  <h2 className="text-xl md:text-2xl font-bold text-elit-dark mb-3 md:mb-4">Informações de Pagamento</h2>
+                  
+                  {event.price && (
+                    <div className="mb-6 pb-6 border-b border-elit-orange/30">
+                      <p className="text-elit-dark/70 text-sm md:text-base mb-2">Valor do Evento:</p>
+                      <p className="text-2xl md:text-3xl font-bold text-elit-orange">{event.price.toFixed(2)} AOA</p>
+                    </div>
+                  )}
+
+                  {event.bankDetails && (
+                    <div className="space-y-4">
+                      <p className="text-elit-dark/70 text-sm md:text-base font-semibold mb-3">Coordenadas Bancárias:</p>
+                      
+                      {event.bankDetails.accountHolder && (
+                        <div>
+                          <p className="text-elit-dark/60 text-xs md:text-sm">Titular da Conta:</p>
+                          <p className="text-elit-dark font-medium text-sm md:text-base">{event.bankDetails.accountHolder}</p>
+                        </div>
+                      )}
+
+                      {event.bankDetails.bankName && (
+                        <div>
+                          <p className="text-elit-dark/60 text-xs md:text-sm">Banco:</p>
+                          <p className="text-elit-dark font-medium text-sm md:text-base">{event.bankDetails.bankName}</p>
+                        </div>
+                      )}
+
+                      {event.bankDetails.accountNumber && (
+                        <div>
+                          <p className="text-elit-dark/60 text-xs md:text-sm">Número da Conta:</p>
+                          <p className="text-elit-dark font-medium text-sm md:text-base font-mono">{event.bankDetails.accountNumber}</p>
+                        </div>
+                      )}
+
+                      {event.bankDetails.iban && (
+                        <div>
+                          <p className="text-elit-dark/60 text-xs md:text-sm">IBAN:</p>
+                          <p className="text-elit-dark font-medium text-sm md:text-base font-mono">{event.bankDetails.iban}</p>
+                        </div>
+                      )}
+
+                    </div>
+                  )}
+                </div>
+              )}
+
               {/* Gallery */}
               {event.images && event.images.length > 0 && (
                 <div className="mb-6 md:mb-8">
@@ -189,7 +238,7 @@ export default function EventDetailPage({ params }: { params: { id: string } }) 
                       : 'bg-elit-orange hover:bg-elit-gold text-elit-light'
                   }`}
                 >
-                  {event.isPast ? 'Evento Passado' : event.availableSpots === 0 ? 'Evento Lotado' : 'Inscrever-se'}
+                  {event.isPast ? 'Evento Terminado' : event.availableSpots === 0 ? 'Evento Lotado' : 'Inscrever-se'}
                 </button>
 
                 <button

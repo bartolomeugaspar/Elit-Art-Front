@@ -373,7 +373,7 @@ export default function EventRegistrationModal({
                 disabled={isSubmitting || isUploadingProof || isPast}
                 className="flex-1 bg-gradient-to-r from-elit-orange to-elit-gold hover:from-elit-orange/90 hover:to-elit-gold/90 disabled:from-elit-orange/50 disabled:to-elit-gold/50 disabled:cursor-not-allowed text-elit-light px-4 py-1.5 rounded-lg transition duration-200 font-medium text-sm"
               >
-                {isPast ? 'Evento Passado' : isSubmitting ? 'Processando...' : 'Confirmar'}
+                {isPast ? 'Evento Terminado' : isSubmitting ? 'Processando...' : 'Confirmar'}
               </button>
               <button
                 type="button"

@@ -19,6 +19,13 @@ export interface Event {
   isPast?: boolean
   isFree?: boolean
   capacity?: number
+  price?: number
+  bankDetails?: {
+    accountHolder?: string
+    accountNumber?: string
+    bankName?: string
+    iban?: string
+  }
 }
 
 export interface Testimonial {
@@ -68,7 +75,17 @@ export const useEvents = () => {
           availableSpots: event.available_spots,
           fullDescription: event.full_description,
           images: event.images,
-          isPast: event.status === 'completed'
+          isPast: event.status === 'completed',
+          price: event.price,
+          isFree: event.is_free,
+          bankDetails: event.bank_details ? {
+            accountHolder: event.bank_details.account_holder,
+            accountNumber: event.bank_details.account_number,
+            bankName: event.bank_details.bank_name,
+            iban: event.bank_details.iban,
+            swift: event.bank_details.swift,
+            mpesaNumber: event.bank_details.mpesa_number
+          } : undefined
         }))
 
         setEvents(mappedEvents)
