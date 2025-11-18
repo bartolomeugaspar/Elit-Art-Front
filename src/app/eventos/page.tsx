@@ -169,7 +169,7 @@ export default function EventosPage() {
                       className="w-full h-full object-cover"  
                     />
                     <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
-                      <span className="text-elit-light font-bold text-lg">Evento Passado</span>
+                      <span className="text-elit-light font-bold text-lg">Evento Terminado</span>
                     </div>
                   </div>
                   <div className="p-3 sm:p-4 flex flex-col flex-grow">
