@@ -230,45 +230,45 @@ export default function AdminRegistrations() {
           </div>
         </div>
 
-        {/* Registrations Table */}
-        <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+        {/* Registrations Table - Desktop */}
+        <div className="hidden lg:block bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
           <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead className="bg-gradient-to-r from-slate-50 to-slate-100 border-b border-slate-200">
+            <table className="min-w-full divide-y divide-slate-200 text-sm">
+              <thead className="bg-slate-50">
                 <tr>
-                  <th className="px-6 py-4 text-left text-sm font-bold text-slate-900">
+                  <th scope="col" className="px-4 lg:px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
                     Usuário
                   </th>
-                  <th className="px-6 py-4 text-left text-sm font-bold text-slate-900">
+                  <th scope="col" className="px-4 lg:px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
                     Email
                   </th>
-                  <th className="px-6 py-4 text-left text-sm font-bold text-slate-900">
+                  <th scope="col" className="px-4 lg:px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
                     Evento
                   </th>
-                  <th className="px-6 py-4 text-left text-sm font-bold text-slate-900">
+                  <th scope="col" className="px-4 lg:px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
                     Status
                   </th>
-                  <th className="px-6 py-4 text-left text-sm font-bold text-slate-900">
+                  <th scope="col" className="px-4 lg:px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
                     Data Inscrição
                   </th>
-                  <th className="px-6 py-4 text-left text-sm font-bold text-slate-900">
+                  <th scope="col" className="px-4 lg:px-6 py-3 text-right text-xs font-medium text-slate-500 uppercase tracking-wider">
                     Ações
                   </th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody className="bg-white divide-y divide-slate-200">
                 {loading ? (
                   <tr>
-                    <td colSpan={6} className="px-6 py-8 text-center text-slate-500">
+                    <td colSpan={6} className="px-4 lg:px-6 py-8 text-center text-slate-500">
                       <div className="flex items-center justify-center gap-2">
-                        <div className="w-4 h-4 border-2 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
-                        Carregando...
+                        <div className="w-5 h-5 border-2 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+                        Carregando inscrições...
                       </div>
                     </td>
                   </tr>
                 ) : filteredRegistrations.length === 0 ? (
                   <tr>
-                    <td colSpan={6} className="px-6 py-8 text-center text-slate-500">
+                    <td colSpan={6} className="px-4 lg:px-6 py-8 text-center text-slate-500">
                       {searchTerm ? 'Nenhuma inscrição encontrada para a busca' : 'Nenhuma inscrição encontrada'}
                     </td>
                   </tr>
@@ -276,39 +276,39 @@ export default function AdminRegistrations() {
                   filteredRegistrations.map((registration) => (
                     <tr
                       key={registration.id}
-                      className="border-b border-slate-200 hover:bg-slate-50 transition duration-200"
+                      className="hover:bg-slate-50 transition-colors"
                     >
-                      <td className="px-6 py-4 text-slate-900 font-medium">
-                        {registration.full_name || 'N/A'}
+                      <td className="px-4 lg:px-6 py-4 whitespace-nowrap">
+                        <div className="text-xs lg:text-sm font-medium text-slate-900">{registration.full_name || 'N/A'}</div>
                       </td>
-                      <td className="px-6 py-4 text-slate-600">
-                        {registration.email || 'N/A'}
+                      <td className="px-4 lg:px-6 py-4 whitespace-nowrap">
+                        <div className="text-xs lg:text-sm text-slate-600">{registration.email || 'N/A'}</div>
                       </td>
-                      <td className="px-6 py-4 text-slate-600">
-                        {registration.event?.title || 'N/A'}
+                      <td className="px-4 lg:px-6 py-4 whitespace-nowrap">
+                        <div className="text-xs lg:text-sm text-slate-600">{registration.event?.title || 'N/A'}</div>
                       </td>
-                      <td className="px-6 py-4">
+                      <td className="px-4 lg:px-6 py-4 whitespace-nowrap">
                         <span
-                          className={`px-3 py-1 rounded-full text-xs font-bold ${getStatusColor(
+                          className={`px-2.5 py-1 text-xs font-medium rounded-full ${getStatusColor(
                             registration.status
                           )}`}
                         >
                           {getStatusLabel(registration.status)}
                         </span>
                       </td>
-                      <td className="px-6 py-4 text-slate-600 text-sm">
-                        {new Date(registration.created_at).toLocaleDateString(
-                          'pt-BR'
-                        )}
+                      <td className="px-4 lg:px-6 py-4 whitespace-nowrap">
+                        <div className="text-xs lg:text-sm text-slate-600">
+                          {new Date(registration.created_at).toLocaleDateString('pt-BR')}
+                        </div>
                       </td>
-                      <td className="px-6 py-4">
-                        <div className="flex gap-2">
+                      <td className="px-4 lg:px-6 py-4 whitespace-nowrap text-right text-xs lg:text-sm font-medium">
+                        <div className="flex justify-end space-x-1 lg:space-x-2">
                           {registration.status !== 'attended' && (
                             <button
                               onClick={() =>
                                 handleUpdateStatus(registration.id, 'attended')
                               }
-                              className="p-2 hover:bg-green-100 rounded-lg transition text-green-600 font-medium"
+                              className="text-green-600 hover:text-green-900 p-1.5 rounded-full hover:bg-green-50 transition-colors"
                               title="Confirmar"
                             >
                               <CheckCircle size={18} />
@@ -319,7 +319,7 @@ export default function AdminRegistrations() {
                               onClick={() =>
                                 handleUpdateStatus(registration.id, 'cancelled')
                               }
-                              className="p-2 hover:bg-red-100 rounded-lg transition text-red-600 font-medium"
+                              className="text-red-600 hover:text-red-900 p-1.5 rounded-full hover:bg-red-50 transition-colors"
                               title="Cancelar"
                             >
                               <XCircle size={18} />
@@ -331,7 +331,7 @@ export default function AdminRegistrations() {
                               download
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="p-2 hover:bg-blue-100 rounded-lg transition text-blue-600 font-medium"
+                              className="text-blue-600 hover:text-blue-900 p-1.5 rounded-full hover:bg-blue-50 transition-colors"
                               title="Baixar comprovativo"
                             >
                               <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -345,7 +345,7 @@ export default function AdminRegistrations() {
                             onClick={() =>
                               handleDeleteClick(registration)
                             }
-                            className="p-2 hover:bg-red-100 rounded-lg transition text-red-600 font-medium"
+                            className="text-red-600 hover:text-red-900 p-1.5 rounded-full hover:bg-red-50 transition-colors"
                             title="Deletar"
                           >
                             <Trash2 size={18} />
@@ -358,6 +358,102 @@ export default function AdminRegistrations() {
               </tbody>
             </table>
           </div>
+        </div>
+
+        {/* Registrations Cards - Mobile */}
+        <div className="lg:hidden space-y-4">
+          {loading ? (
+            <div className="flex items-center justify-center gap-2 py-8">
+              <div className="w-5 h-5 border-2 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+              <span className="text-slate-500">Carregando inscrições...</span>
+            </div>
+          ) : filteredRegistrations.length === 0 ? (
+            <div className="text-center py-8 text-slate-500">
+              {searchTerm ? 'Nenhuma inscrição encontrada para a busca' : 'Nenhuma inscrição encontrada'}
+            </div>
+          ) : (
+            filteredRegistrations.map((registration) => (
+              <div key={registration.id} className="bg-white rounded-lg border border-slate-200 p-4 shadow-sm hover:shadow-md transition-shadow">
+                <div className="flex justify-between items-start gap-3 mb-3">
+                  <div className="flex-1 min-w-0">
+                    <h3 className="font-semibold text-slate-900 text-sm truncate">{registration.full_name || 'N/A'}</h3>
+                    <p className="text-xs text-slate-500 truncate">{registration.email || 'N/A'}</p>
+                  </div>
+                </div>
+
+                <div className="space-y-2 mb-4">
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="text-xs text-slate-500">Evento:</span>
+                    <span className="text-xs text-slate-600 truncate">{registration.event?.title || 'N/A'}</span>
+                  </div>
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="text-xs text-slate-500">Status:</span>
+                    <span
+                      className={`px-2 py-1 text-xs font-medium rounded-full ${getStatusColor(
+                        registration.status
+                      )}`}
+                    >
+                      {getStatusLabel(registration.status)}
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="text-xs text-slate-500">Inscrição:</span>
+                    <span className="text-xs text-slate-600">{new Date(registration.created_at).toLocaleDateString('pt-BR')}</span>
+                  </div>
+                </div>
+
+                <div className="flex gap-2 justify-end">
+                  {registration.status !== 'attended' && (
+                    <button
+                      onClick={() =>
+                        handleUpdateStatus(registration.id, 'attended')
+                      }
+                      className="text-green-600 hover:text-green-900 p-2 rounded-lg hover:bg-green-50 transition-colors"
+                      title="Confirmar"
+                    >
+                      <CheckCircle size={18} />
+                    </button>
+                  )}
+                  {registration.status !== 'cancelled' && (
+                    <button
+                      onClick={() =>
+                        handleUpdateStatus(registration.id, 'cancelled')
+                      }
+                      className="text-red-600 hover:text-red-900 p-2 rounded-lg hover:bg-red-50 transition-colors"
+                      title="Cancelar"
+                    >
+                      <XCircle size={18} />
+                    </button>
+                  )}
+                  {registration.proof_url && (
+                    <a
+                      href={registration.proof_url}
+                      download
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-600 hover:text-blue-900 p-2 rounded-lg hover:bg-blue-50 transition-colors"
+                      title="Baixar comprovativo"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="7 10 12 15 17 10"></polyline>
+                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                      </svg>
+                    </a>
+                  )}
+                  <button
+                    onClick={() =>
+                      handleDeleteClick(registration)
+                    }
+                    className="text-red-600 hover:text-red-900 p-2 rounded-lg hover:bg-red-50 transition-colors"
+                    title="Deletar"
+                  >
+                    <Trash2 size={18} />
+                  </button>
+                </div>
+              </div>
+            ))
+          )}
         </div>
 
         {/* Toast Notifications */}
