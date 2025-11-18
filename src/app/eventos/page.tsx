@@ -146,15 +146,19 @@ export default function EventosPage() {
                           <span className="font-semibold text-elit-orange">{event.attendees}</span>   Inscritos
                         </p>
                       )}
-                      {event.price && !event.isFree && (
-                        <p className="text-xs text-elit-dark">
-                          <span className="font-semibold text-elit-orange">{event.price.toFixed(2)}</span> AOA
-                        </p>
-                      )}
-                      {event.isFree && (
-                        <p className="text-xs text-elit-dark">
-                          <span className="font-semibold text-elit-orange">Gratuito</span>
-                        </p>
+                      {!event.isPast && (
+                        <>
+                          {event.price && !event.isFree && (
+                            <p className="text-xs text-elit-dark">
+                              <span className="font-semibold text-elit-orange">{event.price.toFixed(2)}</span> AOA
+                            </p>
+                          )}
+                          {event.isFree && (
+                            <p className="text-xs text-elit-dark">
+                              <span className="font-semibold text-elit-orange">Gratuito</span>
+                            </p>
+                          )}
+                        </>
                       )}
                     </div>
 

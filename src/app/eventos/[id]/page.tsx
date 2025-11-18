@@ -148,7 +148,7 @@ export default function EventDetailPage({ params }: { params: { id: string } }) 
               </div>
 
               {/* Price and Payment Info */}
-              {!event.isFree && (event.price || event.bankDetails) && (
+              {!event.isPast && !event.isFree && (event.price || event.bankDetails) && (
                 <div className="bg-white p-4 md:p-8 rounded-lg md:rounded-xl shadow-lg mb-6 md:mb-8">
                   <h2 className="text-xl md:text-2xl font-bold text-elit-dark mb-3 md:mb-4">Informações de Pagamento</h2>
                   
