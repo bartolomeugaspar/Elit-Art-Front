@@ -58,6 +58,43 @@ export default function TeamSection() {
       description: "Arteista comprometido e apaixonado pelo desenho e pintura.",
       email: "abiugabrielduashoras@gmail.com",
       phone: "937051439"
+    },
+    {
+      name: "Justino Singorres",
+      area: "Literatura",
+      description: "Devemos fazer sim as coisas bem, porque todos os nossos actos têm sempre consequências.",
+      email: "Justinosingorres@gmail.com",
+      phone: "952719775 / 929 615 517"
+    },
+    {
+      name: "Lucrécia da Luz Vinte e Cinco",
+      ArteisticName: "LUZ",
+      area: "Maquilhagem",
+      description: "Na arte da maquilhagem, cada pincelada é um sussurro de beleza que revela a força escondida em cada olhar.",
+      email: "daluzlucrecia@gmail.com",
+      phone: "939 023 547"
+    },
+    {
+      name: "Edmir Willian da Silva e Silva",
+      area: "Marketing, Comunicação e Imagem",
+      description: "Com imagens que falam e estratégias que conectam, revelamos ao mundo que os verdadeiros amantes da arte estão no Elit'arte.",
+      email: "edmir.w.s.silva@gmail.com",
+      phone: "933 700 135"
+    },
+    {
+      name: "Albertina José Joaquim",
+      area: "Música e Teatro",
+      description: "Como as lágrimas que escapam da alma, a arte transborda sentimentos que não cabem em palavras.",
+      email: "albertinajoaquim380@gmail.com",
+      phone: "939 292 461"
+    },
+    {
+      name: "Jessé de Natanael Cassange Quissanga",
+      ArteisticName: "Papá lhe Chotó",
+      area: "Teatro e Cinema",
+      description: "Grandeza não é corpulência, mas sim o estado de espírito, a intrepidez vislumbrada no tamanho dos nossos ideais.",
+      email: "jessedenatanaelcassange@gmail.com",
+      phone: "925 064 560"
     }
   ]
 
