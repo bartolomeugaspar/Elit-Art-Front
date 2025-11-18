@@ -38,7 +38,7 @@ export default function IdentitySection() {
                 <h3 className="text-2xl font-bold text-elit-dark">Visão</h3>
               </div>
               <p className="text-gray-700 leading-relaxed">
-                Ser reconhecido como o maior movimento Arteístico de Angola, em inovacçãoArtística, 
+                Ser reconhecido como o maior movimento Artístico de Angola, em inovacçãoArtística, 
                 inspirando gerações e transformando vidas por meio da Arte.
               </p>
             </div>
@@ -52,7 +52,7 @@ export default function IdentitySection() {
                 <h3 className="text-2xl font-bold text-elit-dark">Linha Orientadora</h3>
               </div>
               <p className="text-gray-700 leading-relaxed">
-                A Nossa linha orientadora está voltada para a produção de conteúdos Arteísticos de vanguarda, 
+                A Nossa linha orientadora está voltada para a produção de conteúdos Artísticos de vanguarda, 
                 focados, unicamente, nos hábitos, costumes, vivências, indumentária, linguagem do angolano.
               </p>
             </div>

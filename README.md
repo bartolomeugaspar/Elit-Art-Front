@@ -1,6 +1,6 @@
 # 🎭 Elit'Arte - Website Oficial
 
-> **Movimento Arteístico angolano dedicado à preservacção e celebracção da rica cultura angolana**
+> **Movimento Artístico angolano dedicado à preservacção e celebracção da rica cultura angolana**
 
 ## 🌐 **[🚀 ACESSE O SITE ONLINE](https://elit-Arte.vercel.app/)**
 
@@ -12,13 +12,13 @@
 
 ## 🌟 Sobre o Elit'Arte
 
-O **Elit'Arte** é um movimento Arteístico angolano fundado em **13 de Fevereiro de 2024** que une **teatro, música, dança, literatura, pintura e cinema**, com o objetivo de promover e celebrar nossa rica cultura através da fusão entre tradição e contemporaneidade.
+O **Elit'Arte** é um movimento Artístico angolano fundado em **13 de Fevereiro de 2024** que une **teatro, música, dança, literatura, pintura e cinema**, com o objetivo de promover e celebrar nossa rica cultura através da fusão entre tradição e contemporaneidade.
 
 ### 🎯 Nossa Missão
 Promover a Arte nas suas múltiplas expressões como ferramentas de transformacção da nossa sociedade e de desenvolvimento dos angolanos, marcadamente com traços da nossa cultura angolana tradicional.
 
 ### 👁️ Nossa Visão
-Ser reconhecido como o maior movimento Arteístico de Angola, em inovacçãoArtística, inspirando gerações e transformando vidas por meio da Arte.
+Ser reconhecido como o maior movimento Artístico de Angola, em inovacçãoArtística, inspirando gerações e transformando vidas por meio da Arte.
 
 ## 🚀 Tecnologias Utilizadas
 
@@ -214,7 +214,7 @@ Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para ma
 
 > *"Somos o sopro criativo que transforma histórias em emoção."*
 
-Junte-se ao movimento Arteístico que está transformando Angola através da Arte e cultura!
+Junte-se ao movimento Artístico que está transformando Angola através da Arte e cultura!
 
 ---
 

@@ -9,7 +9,7 @@ export default function Header() {
   const navigationItems = [
     { label: 'Home', href: '#home' },
     { label: 'Sobre Nós', href: '#sobre' },
-    { label: 'Áreas de actuacção', href: '#areas' },
+    { label: 'Áreas de actuação', href: '#areas' },
     { label: 'Galeria', href: '#galeria' },
     { label: 'Equipa', href: '#equipa' },
     { label: 'Eventos', href: '/eventos' }

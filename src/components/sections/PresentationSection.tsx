@@ -31,7 +31,7 @@ export default function PresentationSection() {
               <div className="bg-gradient-to-r from-elit-light to-white p-8 rounded-2xl shadow-lg">
                 <h3 className="text-2xl font-bold text-elit-dark mb-6">Mensagem de Boas-Vindas</h3>
                 <p className="text-lg text-gray-700 leading-relaxed">
-                  Somos o <strong className="text-elit-red">Elit'Arte</strong>, um Movimento Arteístico angolano que une 
+                  Somos o <strong className="text-elit-red">Elit'Arte</strong>, um Movimento Artístico angolano que une 
                   <span className="text-elit-orange font-semibold"> teatro, música, dança, literatura, pintura e cinema</span>, 
                   com o objectivo de promover e celebrar a nossa rica cultura. 
                 </p>

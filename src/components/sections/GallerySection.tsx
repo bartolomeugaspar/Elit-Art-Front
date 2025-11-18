@@ -156,7 +156,7 @@ export default function GallerySection() {
     {
       type: 'image',
       src: '/WhatsApp Image 2025-11-13 at 16.39.45.jpeg',
-      alt: 'Momentos Arteísticos únicos',
+      alt: 'Momentos Artísticos únicos',
       category: 'Fundacção'
     },
     {
@@ -373,7 +373,7 @@ export default function GallerySection() {
                 </video>
               </div>
               <h4 className="text-lg sm:text-xl font-bold mb-2">Apresentacção Especial</h4>
-              <p className="text-elit-light text-sm">Momento Arteístico do Elit'Arte</p>
+              <p className="text-elit-light text-sm">Momento Artístico do Elit'Arte</p>
             </div>
 
             <div className="bg-gray-800 rounded-xl p-4 sm:p-6 text-center">

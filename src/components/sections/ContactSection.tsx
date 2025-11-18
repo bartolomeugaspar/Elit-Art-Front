@@ -32,13 +32,13 @@ export default function ContactSection() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12 sm:mb-16">
           <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-light text-elit-yellow italic mb-6 sm:mb-8 px-4">
-            "Junte-se ao Movimento Arteístico que vai mudar Angola."
+            "Junte-se ao Movimento Artístico que vai mudar Angola."
           </p>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 sm:mb-6 px-2">
             Contacto e <span className="text-elit-red">Redes Sociais</span>
           </h2>
           <p className="text-base sm:text-lg lg:text-xl text-elit-light px-4">
-            Apoie o Elit'Arte e pArteilhe a nossa paixão pela Arte.
+            Apoie o Elit'Arte e Partilhe a nossa paixão pela Arte.
           </p>
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 mb-12 sm:mb-16">

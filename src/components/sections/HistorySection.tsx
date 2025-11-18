@@ -33,7 +33,7 @@ export default function HistorySection() {
                       <strong className="text-elit-red">13 de Fevereiro de 2024</strong>
                     </p>
                     <p className="text-gray-700 leading-relaxed">
-                      O Elit'Arte, fundado no pretérito 13 de Fevereiro de 2024, é um Movimento Arteístico que nasceu da 
+                      O Elit'Arte, fundado no pretérito 13 de Fevereiro de 2024, é um Movimento Artístico que nasceu da 
                       paixão pela Arte de dois jovens, <strong>Faustino Domingos</strong> e <strong>Luísa Gonçalves</strong>, 
                       como forma de transformacção pessoal, social, cultural e espiritual.
                     </p>
@@ -80,7 +80,7 @@ export default function HistorySection() {
                     <p className="text-gray-700 leading-relaxed">
                       Algum tempo depois, recrutou-se outros cinco membros, a quem se denominou como sendo 
                       <strong className="text-elit-yellow"> "membros fundadores"</strong> que tiveram a responsabilidade 
-                      de desenhar o estatuto e todo o projecto Arteístico do Elit'Arte.
+                      de desenhar o estatuto e todo o projecto Artístico do Elit'Arte.
                     </p>
                     <p className="text-gray-700 leading-relaxed mt-4">
                       Posteriormente, endereçou-se o convite a vários fazedores de Arte, nas disciplinas do teatro, 
@@ -105,7 +105,7 @@ export default function HistorySection() {
                 <h3 className="text-3xl font-bold text-elit-dark mb-6">Motivações</h3>
                 <div className="bg-gradient-to-r from-elit-red/10 via-elit-yellow/10 to-elit-orange/10 p-8 rounded-2xl shadow-lg max-w-4xl mx-auto">
                   <p className="text-xl text-gray-700 leading-relaxed italic">
-                    "É saber que, a pArteir da Arte, podemos construir nos nossos Artistase na nossa gente 
+                    "É saber que, a partir da Arte, podemos construir nos nossos Artistas e na nossa gente 
                     uma mentalidade cada vez mais séria, mais comprometida com o país e consigo mesmo."
                   </p>
                 </div>

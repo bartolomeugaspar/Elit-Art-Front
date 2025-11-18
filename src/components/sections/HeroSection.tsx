@@ -106,7 +106,7 @@ export default function HeroSection() {
           </h1>
           
           <p className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-200 mb-8 sm:mb-12 max-w-xs sm:max-w-2xl lg:max-w-4xl mx-auto leading-relaxed px-2 sm:px-4">
-            Movimento Arteístico angolano que une teatro, música, dança, literatura, pintura e cinema, 
+            Movimento Artístico angolano que une teatro, música, dança, literatura, pintura e cinema, 
             celebrando nossa rica cultura através da fusão entre tradição e contemporaneidade.
           </p>
           

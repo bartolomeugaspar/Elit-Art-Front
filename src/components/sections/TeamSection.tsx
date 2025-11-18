@@ -69,7 +69,7 @@ export default function TeamSection() {
             "Grandes histórias são contadas por grandes equipas."
           </p>
           <h2 className="text-4xl md:text-5xl font-bold text-elit-dark mb-6">
-            Equipa <span className="text-elit-red">Administrativa</span>,Artística e Técnica
+            Equipa <span className="text-elit-red">Administrativa</span>, Artística e Técnica
           </h2>
         </div>
 

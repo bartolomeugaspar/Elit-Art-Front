@@ -9,7 +9,7 @@ export default function AreasSection() {
             "Multiplicamos vozes através da música, dança, literatura e teatro."
           </p>
           <h2 className="text-4xl md:text-5xl font-bold text-elit-dark mb-6">
-            Áreas de <span className="text-elit-red">actuacção</span>
+            Áreas de <span className="text-elit-red">actuação</span>
           </h2>
         </div>
 
