@@ -1,6 +1,11 @@
+'use client'
+
 import { Users, Mail, Phone, Facebook, Instagram } from 'lucide-react'
+import { useArtists } from '@/hooks/useArtists'
 
 export default function TeamSection() {
+  const { artists: dynamicArtists, loading: artistsLoading } = useArtists()
+
   const leaders = [
     {
       name: "Faustino Domingos",
@@ -35,90 +40,8 @@ export default function TeamSection() {
     }
   ]
 
-  const Arteists = [
-    {
-      name: "Adelino Canganjo Vitorino Mateus",
-      area: "Música (Piano)",
-      description: "Começou a cantar no coral da igreja, onde sentiu a vocacção pelo piano.",
-      email: "deliano053@gmail.com",
-      phone: "949437675"
-    },
-    {
-      name: "Mariana Tabina Passagem Feitio",
-      area: "Teatro e Cinema",
-      description: "A representacção é uma forma de escape e ferramenta de transformacção social.",
-      email: "mariannafeitio0@gmail.com",
-      phone: "931194171"
-    },
-    {
-      name: "Abiú José Duas Horas Gabriel",
-      ArteisticName: "Abiú",
-      role: "Director da área de desenho",
-      area: "Desenho e Pintura",
-      description: "Arteista comprometido e apaixonado pelo desenho e pintura.",
-      email: "abiugabrielduashoras@gmail.com",
-      phone: "937051439"
-    },
-    {
-      name: "Justino Singorres",
-      area: "Literatura",
-      description: "Devemos fazer sim as coisas bem, porque todos os nossos actos têm sempre consequências.",
-      email: "Justinosingorres@gmail.com",
-      phone: "952719775 / 929 615 517"
-    },
-    {
-      name: "Lucrécia da Luz Vinte e Cinco",
-      ArteisticName: "LUZ",
-      area: "Maquilhagem",
-      description: "Na arte da maquilhagem, cada pincelada é um sussurro de beleza que revela a força escondida em cada olhar.",
-      email: "daluzlucrecia@gmail.com",
-      phone: "939 023 547"
-    },
-    {
-      name: "Edmir Willian da Silva e Silva",
-      area: "Marketing, Comunicação e Imagem",
-      description: "Com imagens que falam e estratégias que conectam, revelamos ao mundo que os verdadeiros amantes da arte estão no Elit'arte.",
-      email: "edmir.w.s.silva@gmail.com",
-      phone: "933 700 135"
-    },
-    {
-      name: "Albertina José Joaquim",
-      area: "Música e Teatro",
-      description: "Como as lágrimas que escapam da alma, a arte transborda sentimentos que não cabem em palavras.",
-      email: "albertinajoaquim380@gmail.com",
-      phone: "939 292 461"
-    },
-    {
-      name: "Jessé de Natanael Cassange Quissanga",
-      ArteisticName: "Papá lhe Chotó",
-      area: "Teatro e Cinema",
-      description: "Grandeza não é corpulência, mas sim o estado de espírito, a intrepidez vislumbrada no tamanho dos nossos ideais.",
-      email: "jessedenatanaelcassange@gmail.com",
-      phone: "925 064 560"
-    },
-    {
-      name: "Oyono Fernandes",
-      ArteisticName: "TiaZita",
-      area: "Teatro e Cinema",
-      description: "Atuar é viver várias vidas, é descobrir diferentes personalidades e realidades de forma artística. É lindo!",
-      email: "Oyonorodolfo@gmail.com",
-      phone: "941514388"
-    },
-    {
-      name: "Maria Goreth Gaspar João",
-      area: "Comunicação",
-      description: "A área da comunicação é onde o apresentador se conecta com o público, transmite energia, emoção e guia cada momento do evento, fazendo todos sentirem a experiência de forma única.",
-      email: "mariagoreth93811@gmail.com",
-      phone: "938116151 / 955910284"
-    },
-    {
-      name: "Verónica Jucas Miguel",
-      area: "Apresentação e Comunicação",
-      description: "O que quer que você faça, faça bem feito",
-      email: "veramiguelita@gmail.com",
-      phone: "+244925129006"
-    }
-  ]
+  // Usar artistas dinâmicos do backend, ou array vazio se carregando
+  const Arteists = dynamicArtists.length > 0 ? dynamicArtists : []
 
   return (
     <section id="equipa" className="py-20 bg-gradient-to-br from-elit-light to-white">
@@ -183,7 +106,7 @@ export default function TeamSection() {
                 </blockquote>
                 
                 <div className="space-y-2 text-sm">
-                  <div className="flex items-stArte">
+                  <div className="flex items-start">
                     <Mail className="w-4 h-4 text-elit-red mr-2 mt-0.5 flex-shrink-0" />
                     <span className="text-gray-600 break-all">{leader.email}</span>
                   </div>
@@ -200,16 +123,35 @@ export default function TeamSection() {
         {/* Artistas*/}
         <div className="mb-20">
           <h3 className="text-3xl font-bold text-elit-dark mb-12 text-center">Artistas do Movimento</h3>
+          {artistsLoading ? (
+            <div className="text-center py-12">
+              <p className="text-gray-600">Carregando artistas...</p>
+            </div>
+          ) : Arteists.length === 0 ? (
+            <div className="text-center py-12">
+              <p className="text-gray-600">Nenhum artista encontrado</p>
+            </div>
+          ) : (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {Arteists.map((Arteist, index) => (
               <div key={index} className="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition-shadow">
                 <div className="text-center mb-4">
-                  <div className="w-16 h-16 bg-elit-yellow rounded-full mx-auto mb-3 flex items-center justify-center">
-                    <Users className="w-8 h-8 text-white" />
-                  </div>
+                  {Arteist.image ? (
+                    <div className="w-20 h-20 mx-auto mb-3 overflow-hidden rounded-full border-4 border-elit-gold">
+                      <img 
+                        src={Arteist.image} 
+                        alt={Arteist.name} 
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                  ) : (
+                    <div className="w-20 h-20 bg-elit-yellow rounded-full mx-auto mb-3 flex items-center justify-center">
+                      <Users className="w-10 h-10 text-white" />
+                    </div>
+                  )}
                   <h4 className="font-bold text-elit-dark">{Arteist.name}</h4>
-                  {Arteist.ArteisticName && (
-                    <p className="text-elit-orange text-sm">({Arteist.ArteisticName})</p>
+                  {Arteist.artisticName && (
+                    <p className="text-elit-orange text-sm">({Arteist.artisticName})</p>
                   )}
                   {Arteist.role && (
                     <p className="text-elit-gold font-medium text-sm">{Arteist.role}</p>
@@ -220,7 +162,7 @@ export default function TeamSection() {
                 <p className="text-gray-700 text-sm mb-4">{Arteist.description}</p>
                 
                 <div className="space-y-1 text-xs">
-                  <div className="flex items-stArte">
+                  <div className="flex items-start">
                     <Mail className="w-3 h-3 text-elit-red mr-2 mt-0.5 flex-shrink-0" />
                     <span className="text-gray-600 break-all">{Arteist.email}</span>
                   </div>
@@ -232,6 +174,7 @@ export default function TeamSection() {
               </div>
             ))}
           </div>
+          )}
         </div>
       </div>
     </section>

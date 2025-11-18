@@ -16,6 +16,7 @@ import {
   ChevronRight,
   Bell,
   FileText,
+  Palette,
 } from 'lucide-react';
 import { useToast, ToastContainer } from './Toast';
 
@@ -133,6 +134,11 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
       label: 'Usuários',
       href: '/admin/users',
       icon: Users,
+    },
+    {
+      label: 'Artistas',
+      href: '/admin/artists',
+      icon: Palette,
     },
     {
       label: 'Eventos',
