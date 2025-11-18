@@ -182,14 +182,14 @@ export default function EventDetailPage({ params }: { params: { id: string } }) 
                 )}
                 <button 
                   onClick={handleRegisterClick}
-                  disabled={event.availableSpots === 0}
+                  disabled={event.availableSpots === 0 || event.isPast}
                   className={`w-full py-2.5 md:py-3 rounded-lg font-semibold text-sm md:text-base transition-all duration-300 ${
-                    event.availableSpots === 0
+                    event.availableSpots === 0 || event.isPast
                       ? 'bg-gray-400 text-white cursor-not-allowed'
                       : 'bg-elit-orange hover:bg-elit-gold text-elit-light'
                   }`}
                 >
-                  {event.availableSpots === 0 ? 'Evento Lotado' : 'Inscrever-se'}
+                  {event.isPast ? 'Evento Passado' : event.availableSpots === 0 ? 'Evento Lotado' : 'Inscrever-se'}
                 </button>
 
                 <button
@@ -265,6 +265,7 @@ export default function EventDetailPage({ params }: { params: { id: string } }) 
           eventId={event.id as string}
           eventTitle={event.title}
           isFree={event.isFree || false}
+          isPast={event.isPast || false}
           onClose={() => setShowRegistrationModal(false)}
           onSuccess={handleRegistrationSuccess}
         />

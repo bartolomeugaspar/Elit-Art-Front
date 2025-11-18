@@ -9,6 +9,7 @@ interface EventRegistrationModalProps {
   eventId: string
   eventTitle: string
   isFree: boolean
+  isPast: boolean
   onClose: () => void
   onSuccess: () => void
 }
@@ -17,6 +18,7 @@ export default function EventRegistrationModal({
   eventId,
   eventTitle,
   isFree,
+  isPast,
   onClose,
   onSuccess,
 }: EventRegistrationModalProps) {
@@ -98,6 +100,12 @@ export default function EventRegistrationModal({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+
+    // Bloquear inscrição em eventos passados
+    if (isPast) {
+      toast.error('Não é possível se inscrever em eventos que já passaram')
+      return
+    }
 
     // Validar nome completo
     if (!fullName.trim()) {
@@ -228,6 +236,14 @@ export default function EventRegistrationModal({
             </button>
           </div>
 
+          {isPast && (
+            <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
+              <p className="text-red-700 font-semibold text-sm">
+                ⚠️ Este evento já passou e não aceita novas inscrições.
+              </p>
+            </div>
+          )}
+
           <form onSubmit={handleSubmit} className="space-y-4">
             {/* Full Name */}
             <div>
@@ -354,10 +370,10 @@ export default function EventRegistrationModal({
             <div className="flex gap-2 pt-3">
               <button
                 type="submit"
-                disabled={isSubmitting || isUploadingProof}
+                disabled={isSubmitting || isUploadingProof || isPast}
                 className="flex-1 bg-gradient-to-r from-elit-orange to-elit-gold hover:from-elit-orange/90 hover:to-elit-gold/90 disabled:from-elit-orange/50 disabled:to-elit-gold/50 disabled:cursor-not-allowed text-elit-light px-4 py-1.5 rounded-lg transition duration-200 font-medium text-sm"
               >
-                {isSubmitting ? 'Processando...' : 'Confirmar'}
+                {isPast ? 'Evento Passado' : isSubmitting ? 'Processando...' : 'Confirmar'}
               </button>
               <button
                 type="button"
