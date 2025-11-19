@@ -36,12 +36,12 @@ export default function ComunidadePage() {
   useEffect(() => {
     const fetchTopics = async () => {
       try {
-        let apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'
-        apiUrl = apiUrl.replace(/\/api\/$/, '').replace(/\/$/, '')
+        let apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://elit-arte-back.vercel.app/api'
+        apiUrl = apiUrl.replace(/\/$/, '')
         
         const url = selectedCategory
-          ? `${apiUrl}/api/forum/topics?category=${selectedCategory}`
-          : `${apiUrl}/api/forum/topics`
+          ? `${apiUrl}/forum/topics?category=${selectedCategory}`
+          : `${apiUrl}/forum/topics`
 
         const response = await fetch(url)
         if (!response.ok) throw new Error('Failed to fetch topics')

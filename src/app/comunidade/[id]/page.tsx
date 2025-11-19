@@ -42,10 +42,10 @@ export default function TopicDetailPage() {
   useEffect(() => {
     const fetchTopic = async () => {
       try {
-        let apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'
-        apiUrl = apiUrl.replace(/\/api\/$/, '').replace(/\/$/, '')
+        let apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://elit-arte-back.vercel.app/api'
+        apiUrl = apiUrl.replace(/\/$/, '')
 
-        const response = await fetch(`${apiUrl}/api/forum/topics/${topicId}`)
+        const response = await fetch(`${apiUrl}/forum/topics/${topicId}`)
         if (!response.ok) throw new Error('Tópico não encontrado')
 
         const data = await response.json()
@@ -71,10 +71,10 @@ export default function TopicDetailPage() {
 
     setSubmittingReply(true)
     try {
-      let apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'
-      apiUrl = apiUrl.replace(/\/api\/$/, '').replace(/\/$/, '')
+      let apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://elit-arte-back.vercel.app/api'
+      apiUrl = apiUrl.replace(/\/$/, '')
 
-      const response = await fetch(`${apiUrl}/api/forum/topics/${topicId}/replies`, {
+      const response = await fetch(`${apiUrl}/forum/topics/${topicId}/replies`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

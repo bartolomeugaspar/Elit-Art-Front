@@ -34,12 +34,12 @@ export default function ImprensaPage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        let apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'
-        apiUrl = apiUrl.replace(/\/api\/$/, '').replace(/\/$/, '')
+        let apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://elit-arte-back.vercel.app/api'
+        apiUrl = apiUrl.replace(/\/$/, '')
         
         const [releasesRes, kitsRes] = await Promise.all([
-          fetch(`${apiUrl}/api/press/releases`),
-          fetch(`${apiUrl}/api/press/media-kit`),
+          fetch(`${apiUrl}/press/releases`),
+          fetch(`${apiUrl}/press/media-kit`),
         ])
 
         if (releasesRes.ok) {
@@ -63,10 +63,10 @@ export default function ImprensaPage() {
 
   const handleDownload = async (kitId: string) => {
     try {
-      let apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'
-      apiUrl = apiUrl.replace(/\/api\/$/, '').replace(/\/$/, '')
+      let apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://elit-arte-back.vercel.app/api'
+      apiUrl = apiUrl.replace(/\/$/, '')
       
-      await fetch(`${apiUrl}/api/press/media-kit/${kitId}/download`, {
+      await fetch(`${apiUrl}/press/media-kit/${kitId}/download`, {
         method: 'POST',
       })
     } catch (err) {

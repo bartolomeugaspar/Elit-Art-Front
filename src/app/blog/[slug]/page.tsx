@@ -37,12 +37,12 @@ export default function BlogPostPage() {
     const fetchPost = async () => {
       try {
         setLoading(true)
-        let apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'
+        let apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://elit-arte-back.vercel.app/api'
         
-        // Remove /api/ se existir no final para evitar duplicação
-        apiUrl = apiUrl.replace(/\/api\/$/, '').replace(/\/$/, '')
+        // Remove barra final se existir
+        apiUrl = apiUrl.replace(/\/$/, '')
         
-        const response = await fetch(`${apiUrl}/api/blog/slug/${slug}`)
+        const response = await fetch(`${apiUrl}/blog/slug/${slug}`)
         
         if (!response.ok) {
           throw new Error('Artigo não encontrado')

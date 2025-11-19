@@ -27,10 +27,10 @@ export const useBlog = () => {
     setLoading(true)
     setError(null)
     try {
-      const apiUrl = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000').replace(/\/$/, '')
+      const apiUrl = (process.env.NEXT_PUBLIC_API_URL || 'https://elit-arte-back.vercel.app/api').replace(/\/$/, '')
       const url = category
-        ? `${apiUrl}/api/blog?category=${category}`
-        : `${apiUrl}/api/blog`
+        ? `${apiUrl}/blog?category=${category}`
+        : `${apiUrl}/blog`
 
       const response = await fetch(url)
       if (!response.ok) throw new Error('Failed to fetch posts')
@@ -48,8 +48,8 @@ export const useBlog = () => {
     setLoading(true)
     setError(null)
     try {
-      const apiUrl = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000').replace(/\/$/, '')
-      const response = await fetch(`${apiUrl}/api/blog/slug/${slug}`)
+      const apiUrl = (process.env.NEXT_PUBLIC_API_URL || 'https://elit-arte-back.vercel.app/api').replace(/\/$/, '')
+      const response = await fetch(`${apiUrl}/blog/slug/${slug}`)
       if (!response.ok) throw new Error('Failed to fetch post')
 
       const data = await response.json()
@@ -66,8 +66,8 @@ export const useBlog = () => {
     setLoading(true)
     setError(null)
     try {
-      const apiUrl = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000').replace(/\/$/, '')
-      const response = await fetch(`${apiUrl}/api/blog/search/${query}`)
+      const apiUrl = (process.env.NEXT_PUBLIC_API_URL || 'https://elit-arte-back.vercel.app/api').replace(/\/$/, '')
+      const response = await fetch(`${apiUrl}/blog/search/${query}`)
       if (!response.ok) throw new Error('Failed to search posts')
 
       const data = await response.json()

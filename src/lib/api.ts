@@ -1,13 +1,13 @@
-export const API_URL = (process.env.NEXT_PUBLIC_API_URL || 'https://elit-arte-back.vercel.app').replace(/\/$/, '');
+export const API_URL = (process.env.NEXT_PUBLIC_API_URL || 'https://elit-arte-back.vercel.app/api').replace(/\/$/, '');
 
 /**
- * Build API URL with /api prefix
- * @param endpoint - endpoint path (e.g., 'press/releases')
- * @returns full URL with /api prefix
+ * Build API URL
+ * @param endpoint - endpoint path (e.g., 'auth/login')
+ * @returns full URL
  */
 export const buildApiUrl = (endpoint: string): string => {
   const cleanEndpoint = endpoint.replace(/^\/+/, ''); // Remove leading slashes
-  return `${API_URL}/api/${cleanEndpoint}`;
+  return `${API_URL}/${cleanEndpoint}`;
 };
 
 export const apiCall = async (endpoint: string, options?: RequestInit) => {

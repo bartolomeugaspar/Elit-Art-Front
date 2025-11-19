@@ -45,7 +45,7 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
         const token = localStorage.getItem('token');
         if (!token) return;
 
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/registrations`, {
+        const response = await fetch(`${(process.env.NEXT_PUBLIC_API_URL || 'https://elit-arte-back.vercel.app/api').replace(/\/$/, '')}/registrations`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
