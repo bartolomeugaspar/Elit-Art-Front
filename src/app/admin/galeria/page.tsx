@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState, useCallback, useRef } from 'react'
-import { Trash2, Edit2, Plus, CheckCircle, X, Search } from 'lucide-react'
+import { Trash2, Edit2, Plus, CheckCircle, X, Search, Eye } from 'lucide-react'
 import { API_URL } from '@/lib/api'
 import toast from 'react-hot-toast'
 import { useArtists } from '@/hooks/useArtists'
@@ -23,7 +23,10 @@ export default function GaleriaAdminPage() {
   const [filterType, setFilterType] = useState<string>('all')
   const [showForm, setShowForm] = useState(false)
   const [showDeleteModal, setShowDeleteModal] = useState(false)
+  const [showViewModal, setShowViewModal] = useState(false)
+  const [viewingArtwork, setViewingArtwork] = useState<any>(null)
   const [artworkToDelete, setArtworkToDelete] = useState<string | null>(null)
+  const [editingArtwork, setEditingArtwork] = useState<string | null>(null)
   const [formData, setFormData] = useState({
     title: '',
     description: '',
@@ -189,6 +192,51 @@ export default function GaleriaAdminPage() {
     }
   }
 
+  const handleViewClick = async (artwork: Artwork) => {
+    try {
+      const response = await fetch(`${API_URL}/artworks/${artwork.id}`)
+      if (response.ok) {
+        const data = await response.json()
+        setViewingArtwork(data.artwork)
+        setShowViewModal(true)
+      } else {
+        toast.error('Erro ao carregar obra')
+      }
+    } catch (error) {
+      console.error('Erro ao buscar obra:', error)
+      toast.error('Erro ao carregar obra')
+    }
+  }
+
+  const handleEditClick = async (artwork: Artwork) => {
+    try {
+      const response = await fetch(`${API_URL}/artworks/${artwork.id}`)
+      if (response.ok) {
+        const data = await response.json()
+        const fullArtwork = data.artwork
+        
+        setEditingArtwork(artwork.id)
+        setFormData({
+          title: fullArtwork.title,
+          description: fullArtwork.description || '',
+          artist_id: fullArtwork.artist_id || '',
+          artist_name: fullArtwork.artist_name,
+          type: fullArtwork.type,
+          year: fullArtwork.year || new Date(fullArtwork.created_at).getFullYear(),
+          image_url: fullArtwork.image_url,
+        })
+        setImagePreview(fullArtwork.image_url)
+        setArtistSearchTerm(fullArtwork.artist_name)
+        setShowForm(true)
+      } else {
+        toast.error('Erro ao carregar obra para edição')
+      }
+    } catch (error) {
+      console.error('Erro ao buscar obra:', error)
+      toast.error('Erro ao carregar obra para edição')
+    }
+  }
+
   const handleCreateArtwork = async (e: React.FormEvent) => {
     e.preventDefault()
 
@@ -197,7 +245,7 @@ export default function GaleriaAdminPage() {
       return
     }
 
-    const loadingToast = toast.loading('Criando obra...')
+    const loadingToast = toast.loading(editingArtwork ? 'Atualizando obra...' : 'Criando obra...')
 
     try {
       const token = localStorage.getItem('token')
@@ -207,8 +255,12 @@ export default function GaleriaAdminPage() {
         artist_id: formData.artist_id || crypto.randomUUID(),
       }
       
-      const response = await fetch(`${API_URL}/artworks`, {
-        method: 'POST',
+      const url = editingArtwork 
+        ? `${API_URL}/artworks/${editingArtwork}`
+        : `${API_URL}/artworks`
+      
+      const response = await fetch(url, {
+        method: editingArtwork ? 'PUT' : 'POST',
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
@@ -219,7 +271,7 @@ export default function GaleriaAdminPage() {
       const data = await response.json()
 
       if (response.ok) {
-        toast.success('Obra criada com sucesso!', {
+        toast.success(editingArtwork ? 'Obra atualizada com sucesso!' : 'Obra criada com sucesso!', {
           id: loadingToast,
           icon: <CheckCircle className="text-green-500" />,
           style: {
@@ -240,14 +292,16 @@ export default function GaleriaAdminPage() {
         })
         setImagePreview(null)
         setShowForm(false)
+        setEditingArtwork(null)
+        setArtistSearchTerm('')
         fetchArtworks()
       } else {
-        const errorMsg = data.message || data.errors?.[0]?.msg || 'Erro ao criar obra'
+        const errorMsg = data.message || data.errors?.[0]?.msg || 'Erro ao salvar obra'
         throw new Error(errorMsg)
       }
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Erro ao criar obra'
-      console.error('Erro ao criar obra:', errorMessage, error)
+      const errorMessage = error instanceof Error ? error.message : 'Erro ao salvar obra'
+      console.error('Erro ao salvar obra:', errorMessage, error)
       toast.error(errorMessage, {
         id: loadingToast,
         icon: <X className="text-red-500" />,
@@ -326,16 +380,26 @@ export default function GaleriaAdminPage() {
                   {types.find(t => t.value === artwork.type)?.label}
                 </p>
                 <div className="flex gap-2">
-                  <button className="flex-1 flex items-center justify-center gap-2 px-3 py-2 text-blue-600 hover:bg-blue-50 rounded transition">
+                  <button 
+                    onClick={() => handleViewClick(artwork)}
+                    className="flex-1 flex items-center justify-center gap-2 px-3 py-2 text-green-600 hover:bg-green-50 rounded transition"
+                    title="Visualizar obra"
+                  >
+                    <Eye size={16} />
+                  </button>
+                  <button 
+                    onClick={() => handleEditClick(artwork)}
+                    className="flex-1 flex items-center justify-center gap-2 px-3 py-2 text-blue-600 hover:bg-blue-50 rounded transition"
+                    title="Editar obra"
+                  >
                     <Edit2 size={16} />
-                    Editar
                   </button>
                   <button
                     onClick={() => handleDeleteClick(artwork.id)}
                     className="flex-1 flex items-center justify-center gap-2 px-3 py-2 text-red-600 hover:bg-red-50 rounded transition"
+                    title="Deletar obra"
                   >
                     <Trash2 size={16} />
-                    Deletar
                   </button>
                 </div>
               </div>
@@ -349,10 +413,13 @@ export default function GaleriaAdminPage() {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-xl p-6 w-full max-w-2xl max-h-[90vh] overflow-hidden flex flex-col">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-xl font-bold text-slate-900">Criar Nova Obra</h2>
+              <h2 className="text-xl font-bold text-slate-900">
+                {editingArtwork ? 'Editar Obra' : 'Criar Nova Obra'}
+              </h2>
               <button
                 onClick={() => {
                   setShowForm(false)
+                  setEditingArtwork(null)
                   setFormData({
                     title: '',
                     description: '',
@@ -363,6 +430,7 @@ export default function GaleriaAdminPage() {
                     image_url: '',
                   })
                   setImagePreview(null)
+                  setArtistSearchTerm('')
                 }}
                 className="text-slate-400 hover:text-slate-600"
               >
@@ -394,9 +462,20 @@ export default function GaleriaAdminPage() {
                       {isUploadingImage ? 'Enviando...' : 'Selecionar Imagem'}
                     </button>
                     {imagePreview && (
-                      <div className="flex items-center gap-2 px-3 py-2 bg-green-50 border border-green-200 rounded-lg">
+                      <div className="flex items-center gap-2 px-3 py-2 bg-green-50 border border-green-200 rounded-lg relative">
                         <img src={imagePreview} alt="Preview" className="h-10 w-10 object-cover rounded" />
                         <span className="text-sm text-green-700 font-medium">Imagem enviada</span>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setImagePreview(null)
+                            setFormData({ ...formData, image_url: '' })
+                          }}
+                          className="ml-2 text-red-500 hover:text-red-700 transition"
+                          title="Remover imagem"
+                        >
+                          <X size={16} />
+                        </button>
                       </div>
                     )}
                   </div>
@@ -527,6 +606,7 @@ export default function GaleriaAdminPage() {
                   type="button"
                   onClick={() => {
                     setShowForm(false)
+                    setEditingArtwork(null)
                     setFormData({
                       title: '',
                       description: '',
@@ -537,6 +617,7 @@ export default function GaleriaAdminPage() {
                       image_url: '',
                     })
                     setImagePreview(null)
+                    setArtistSearchTerm('')
                   }}
                   className="px-6 py-2.5 text-sm font-medium text-slate-700 bg-white hover:bg-slate-50 border border-slate-300 rounded-lg transition"
                 >
@@ -547,10 +628,109 @@ export default function GaleriaAdminPage() {
                   className="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition flex items-center gap-2 shadow-sm"
                 >
                   <CheckCircle size={16} />
-                  Criar Obra
+                  {editingArtwork ? 'Atualizar Obra' : 'Criar Obra'}
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* Modal de Visualização */}
+      {showViewModal && viewingArtwork && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-xl p-6 w-full max-w-4xl max-h-[90vh] overflow-hidden flex flex-col">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-2xl font-bold text-slate-900">{viewingArtwork.title}</h2>
+              <button
+                onClick={() => {
+                  setShowViewModal(false)
+                  setViewingArtwork(null)
+                }}
+                className="text-slate-400 hover:text-slate-600"
+              >
+                <X size={24} />
+              </button>
+            </div>
+
+            <div className="overflow-y-auto flex-1 space-y-4">
+              {/* Imagem da obra */}
+              {viewingArtwork.image_url && (
+                <div className="w-full h-96 bg-slate-100 rounded-lg overflow-hidden">
+                  <img
+                    src={viewingArtwork.image_url}
+                    alt={viewingArtwork.title}
+                    className="w-full h-full object-contain"
+                  />
+                </div>
+              )}
+
+              {/* Informações da obra */}
+              <div className="grid grid-cols-2 gap-4 p-4 bg-slate-50 rounded-lg">
+                <div>
+                  <p className="text-sm text-slate-500">Artista</p>
+                  <p className="font-medium text-slate-900">{viewingArtwork.artist_name}</p>
+                </div>
+                <div>
+                  <p className="text-sm text-slate-500">Tipo</p>
+                  <p className="font-medium text-slate-900 capitalize">{viewingArtwork.type}</p>
+                </div>
+                <div>
+                  <p className="text-sm text-slate-500">Ano</p>
+                  <p className="font-medium text-slate-900">
+                    {viewingArtwork.year || new Date(viewingArtwork.created_at).getFullYear()}
+                  </p>
+                </div>
+                <div>
+                  <p className="text-sm text-slate-500">Data de Criação</p>
+                  <p className="font-medium text-slate-900 text-sm">
+                    {new Date(viewingArtwork.created_at).toLocaleDateString('pt-BR')}
+                  </p>
+                </div>
+              </div>
+
+              {/* Descrição */}
+              {viewingArtwork.description && (
+                <div>
+                  <h3 className="text-lg font-semibold text-slate-900 mb-2">Descrição</h3>
+                  <div className="text-slate-700 bg-slate-50 p-4 rounded-lg whitespace-pre-wrap">
+                    {viewingArtwork.description}
+                  </div>
+                </div>
+              )}
+
+              {/* Dimensões */}
+              {(viewingArtwork.width || viewingArtwork.height) && (
+                <div>
+                  <h3 className="text-lg font-semibold text-slate-900 mb-2">Dimensões</h3>
+                  <p className="text-slate-700 bg-slate-50 p-4 rounded-lg">
+                    {viewingArtwork.width} x {viewingArtwork.height} cm
+                  </p>
+                </div>
+              )}
+
+              {/* Técnica */}
+              {viewingArtwork.technique && (
+                <div>
+                  <h3 className="text-lg font-semibold text-slate-900 mb-2">Técnica</h3>
+                  <p className="text-slate-700 bg-slate-50 p-4 rounded-lg">
+                    {viewingArtwork.technique}
+                  </p>
+                </div>
+              )}
+            </div>
+
+            <div className="flex justify-end gap-3 pt-6 border-t border-slate-200 mt-6">
+              <button
+                onClick={() => {
+                  setShowViewModal(false)
+                  setViewingArtwork(null)
+                }}
+                className="px-6 py-2.5 text-sm font-medium text-slate-700 bg-white hover:bg-slate-50 border border-slate-300 rounded-lg transition"
+              >
+                Fechar
+              </button>
+            </div>
           </div>
         </div>
       )}

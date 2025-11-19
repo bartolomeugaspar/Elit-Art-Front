@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState, useCallback, useRef } from 'react'
-import { Trash2, Edit2, Plus, CheckCircle, X } from 'lucide-react'
+import { Trash2, Edit2, Plus, CheckCircle, X, Eye } from 'lucide-react'
 import { API_URL } from '@/lib/api'
 import toast from 'react-hot-toast'
 
@@ -23,7 +23,10 @@ export default function BlogAdminPage() {
   const [filterStatus, setFilterStatus] = useState<'all' | 'draft' | 'published' | 'archived'>('all')
   const [showForm, setShowForm] = useState(false)
   const [showDeleteModal, setShowDeleteModal] = useState(false)
+  const [showViewModal, setShowViewModal] = useState(false)
+  const [viewingPost, setViewingPost] = useState<any>(null)
   const [postToDelete, setPostToDelete] = useState<string | null>(null)
+  const [editingPost, setEditingPost] = useState<string | null>(null)
   const [formData, setFormData] = useState({
     title: '',
     slug: '',
@@ -186,15 +189,60 @@ export default function BlogAdminPage() {
     }
   }
 
+  const handleViewClick = async (post: BlogPost) => {
+    try {
+      const response = await fetch(`${API_URL}/blog/${post.id}`)
+      if (response.ok) {
+        const data = await response.json()
+        setViewingPost(data.post)
+        setShowViewModal(true)
+      } else {
+        toast.error('Erro ao carregar artigo')
+      }
+    } catch (error) {
+      console.error('Erro ao buscar artigo:', error)
+      toast.error('Erro ao carregar artigo')
+    }
+  }
+
+  const handleEditClick = async (post: BlogPost) => {
+    try {
+      const response = await fetch(`${API_URL}/blog/${post.id}`)
+      if (response.ok) {
+        const data = await response.json()
+        const fullPost = data.post
+        
+        setEditingPost(post.id)
+        setFormData({
+          title: fullPost.title,
+          slug: fullPost.slug,
+          content: fullPost.content || '',
+          excerpt: fullPost.excerpt || '',
+          featured_image: fullPost.featured_image || '',
+          category: fullPost.category,
+          author_id: fullPost.author_id || '',
+          author_name: fullPost.author_name,
+        })
+        setImagePreview(fullPost.featured_image || null)
+        setShowForm(true)
+      } else {
+        toast.error('Erro ao carregar artigo para edição')
+      }
+    } catch (error) {
+      console.error('Erro ao buscar artigo:', error)
+      toast.error('Erro ao carregar artigo para edição')
+    }
+  }
+
   const handleCreatePost = async (e: React.FormEvent) => {
     e.preventDefault()
 
-    if (!formData.featured_image) {
+    if (!formData.featured_image && !editingPost) {
       toast.error('Por favor, envie uma imagem do artigo')
       return
     }
 
-    const loadingToast = toast.loading('Criando artigo...')
+    const loadingToast = toast.loading(editingPost ? 'Atualizando artigo...' : 'Criando artigo...')
 
     try {
       const token = localStorage.getItem('token')
@@ -204,8 +252,12 @@ export default function BlogAdminPage() {
         author_id: formData.author_id || crypto.randomUUID(),
       }
       
-      const response = await fetch(`${API_URL}/blog`, {
-        method: 'POST',
+      const url = editingPost 
+        ? `${API_URL}/blog/${editingPost}`
+        : `${API_URL}/blog`
+      
+      const response = await fetch(url, {
+        method: editingPost ? 'PATCH' : 'POST',
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
@@ -216,7 +268,7 @@ export default function BlogAdminPage() {
       const data = await response.json()
 
       if (response.ok) {
-        toast.success('Artigo criado com sucesso!', {
+        toast.success(editingPost ? 'Artigo atualizado com sucesso!' : 'Artigo criado com sucesso!', {
           id: loadingToast,
           icon: <CheckCircle className="text-green-500" />,
           style: {
@@ -238,14 +290,15 @@ export default function BlogAdminPage() {
         })
         setImagePreview(null)
         setShowForm(false)
+        setEditingPost(null)
         fetchPosts()
       } else {
-        const errorMsg = data.message || data.errors?.[0]?.msg || 'Erro ao criar artigo'
+        const errorMsg = data.message || data.errors?.[0]?.msg || 'Erro ao salvar artigo'
         throw new Error(errorMsg)
       }
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Erro ao criar artigo'
-      console.error('Erro ao criar artigo:', errorMessage, error)
+      const errorMessage = error instanceof Error ? error.message : 'Erro ao salvar artigo'
+      console.error('Erro ao salvar artigo:', errorMessage, error)
       toast.error(errorMessage, {
         id: loadingToast,
         icon: <X className="text-red-500" />,
@@ -358,6 +411,14 @@ export default function BlogAdminPage() {
                     <td className="px-4 lg:px-6 py-4 whitespace-nowrap text-right text-xs lg:text-sm font-medium">
                       <div className="flex justify-end space-x-1 lg:space-x-2">
                         <button
+                          onClick={() => handleViewClick(post)}
+                          className="text-green-600 hover:text-green-900 p-1.5 rounded-full hover:bg-green-50 transition-colors"
+                          title="Visualizar artigo"
+                        >
+                          <Eye size={18} />
+                        </button>
+                        <button
+                          onClick={() => handleEditClick(post)}
                           className="text-blue-600 hover:text-blue-900 p-1.5 rounded-full hover:bg-blue-50 transition-colors"
                           title="Editar artigo"
                         >
@@ -416,6 +477,14 @@ export default function BlogAdminPage() {
 
               <div className="flex gap-2 justify-end">
                 <button
+                  onClick={() => handleViewClick(post)}
+                  className="text-green-600 hover:text-green-900 p-2 rounded-lg hover:bg-green-50 transition-colors"
+                  title="Visualizar artigo"
+                >
+                  <Eye size={18} />
+                </button>
+                <button
+                  onClick={() => handleEditClick(post)}
                   className="text-blue-600 hover:text-blue-900 p-2 rounded-lg hover:bg-blue-50 transition-colors"
                   title="Editar artigo"
                 >
@@ -439,10 +508,13 @@ export default function BlogAdminPage() {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-xl p-6 w-full max-w-2xl max-h-[90vh] overflow-hidden flex flex-col">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-xl font-bold text-slate-900">Criar Novo Artigo</h2>
+              <h2 className="text-xl font-bold text-slate-900">
+                {editingPost ? 'Editar Artigo' : 'Criar Novo Artigo'}
+              </h2>
               <button
                 onClick={() => {
                   setShowForm(false)
+                  setEditingPost(null)
                   setFormData({
                     title: '',
                     slug: '',
@@ -485,9 +557,20 @@ export default function BlogAdminPage() {
                       {isUploadingImage ? 'Enviando...' : 'Selecionar Imagem'}
                     </button>
                     {imagePreview && (
-                      <div className="flex items-center gap-2 px-3 py-2 bg-green-50 border border-green-200 rounded-lg">
+                      <div className="flex items-center gap-2 px-3 py-2 bg-green-50 border border-green-200 rounded-lg relative">
                         <img src={imagePreview} alt="Preview" className="h-10 w-10 object-cover rounded" />
                         <span className="text-sm text-green-700 font-medium">Imagem enviada</span>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setImagePreview(null)
+                            setFormData({ ...formData, featured_image: '' })
+                          }}
+                          className="ml-2 text-red-500 hover:text-red-700 transition"
+                          title="Remover imagem"
+                        >
+                          <X size={16} />
+                        </button>
                       </div>
                     )}
                   </div>
@@ -589,6 +672,7 @@ export default function BlogAdminPage() {
                   type="button"
                   onClick={() => {
                     setShowForm(false)
+                    setEditingPost(null)
                     setFormData({
                       title: '',
                       slug: '',
@@ -610,10 +694,109 @@ export default function BlogAdminPage() {
                   className="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition flex items-center gap-2 shadow-sm"
                 >
                   <CheckCircle size={16} />
-                  Criar Artigo
+                  {editingPost ? 'Atualizar Artigo' : 'Criar Artigo'}
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* Modal de Visualização */}
+      {showViewModal && viewingPost && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-xl p-6 w-full max-w-4xl max-h-[90vh] overflow-hidden flex flex-col">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-2xl font-bold text-slate-900">{viewingPost.title}</h2>
+              <button
+                onClick={() => {
+                  setShowViewModal(false)
+                  setViewingPost(null)
+                }}
+                className="text-slate-400 hover:text-slate-600"
+              >
+                <X size={24} />
+              </button>
+            </div>
+
+            <div className="overflow-y-auto flex-1 space-y-4">
+              {/* Imagem destaque */}
+              {viewingPost.featured_image && (
+                <div className="w-full h-64 bg-slate-100 rounded-lg overflow-hidden">
+                  <img
+                    src={viewingPost.featured_image}
+                    alt={viewingPost.title}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              )}
+
+              {/* Informações do artigo */}
+              <div className="grid grid-cols-2 gap-4 p-4 bg-slate-50 rounded-lg">
+                <div>
+                  <p className="text-sm text-slate-500">Categoria</p>
+                  <p className="font-medium text-slate-900">{viewingPost.category}</p>
+                </div>
+                <div>
+                  <p className="text-sm text-slate-500">Autor</p>
+                  <p className="font-medium text-slate-900">{viewingPost.author_name}</p>
+                </div>
+                <div>
+                  <p className="text-sm text-slate-500">Status</p>
+                  <span className={`inline-block px-2.5 py-1 text-xs font-medium rounded-full ${
+                    viewingPost.status === 'published' ? 'bg-green-100 text-green-800' :
+                    viewingPost.status === 'draft' ? 'bg-yellow-100 text-yellow-800' :
+                    'bg-gray-100 text-gray-800'
+                  }`}>
+                    {viewingPost.status}
+                  </span>
+                </div>
+                <div>
+                  <p className="text-sm text-slate-500">Visualizações</p>
+                  <p className="font-medium text-slate-900">{viewingPost.views || 0}</p>
+                </div>
+                <div>
+                  <p className="text-sm text-slate-500">Slug</p>
+                  <p className="font-medium text-slate-900 text-sm">{viewingPost.slug}</p>
+                </div>
+                <div>
+                  <p className="text-sm text-slate-500">Data de Criação</p>
+                  <p className="font-medium text-slate-900 text-sm">
+                    {new Date(viewingPost.created_at).toLocaleDateString('pt-BR')}
+                  </p>
+                </div>
+              </div>
+
+              {/* Resumo */}
+              {viewingPost.excerpt && (
+                <div>
+                  <h3 className="text-lg font-semibold text-slate-900 mb-2">Resumo</h3>
+                  <p className="text-slate-700 bg-slate-50 p-4 rounded-lg">{viewingPost.excerpt}</p>
+                </div>
+              )}
+
+              {/* Conteúdo */}
+              {viewingPost.content && (
+                <div>
+                  <h3 className="text-lg font-semibold text-slate-900 mb-2">Conteúdo</h3>
+                  <div className="text-slate-700 bg-slate-50 p-4 rounded-lg whitespace-pre-wrap">
+                    {viewingPost.content}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            <div className="flex justify-end gap-3 pt-6 border-t border-slate-200 mt-6">
+              <button
+                onClick={() => {
+                  setShowViewModal(false)
+                  setViewingPost(null)
+                }}
+                className="px-6 py-2.5 text-sm font-medium text-slate-700 bg-white hover:bg-slate-50 border border-slate-300 rounded-lg transition"
+              >
+                Fechar
+              </button>
+            </div>
           </div>
         </div>
       )}

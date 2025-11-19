@@ -85,9 +85,24 @@ export default function AdminArtists() {
     setShowForm(!showForm)
   }
 
-  const handleEditArtist = (artist: Artist) => {
-    setEditingArtist(artist)
-    setShowForm(true)
+  const handleEditArtist = async (artist: Artist) => {
+    try {
+      const token = localStorage.getItem('token')
+      const response = await fetch(`${API_URL}/artists/${artist.id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+
+      if (response.ok) {
+        const data = await response.json()
+        setEditingArtist(data.artist)
+        setShowForm(true)
+      } else {
+        toast.error('Erro ao carregar artista para edição')
+      }
+    } catch (error) {
+      console.error('Erro ao buscar artista:', error)
+      toast.error('Erro ao carregar artista para edição')
+    }
   }
 
   const handleDeleteArtist = async () => {

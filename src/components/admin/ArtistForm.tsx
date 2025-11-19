@@ -48,26 +48,49 @@ export default function ArtistForm({ onSuccess, onCancel, initialData, isEditing
     const file = e.target.files?.[0]
     if (!file) return
 
+    if (!['image/jpeg', 'image/png', 'image/webp', 'image/gif'].includes(file.type)) {
+      toast.error('Apenas imagens (JPEG, PNG, WebP, GIF) são permitidas')
+      return
+    }
+
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error('Imagem não pode ser maior que 5MB')
+      return
+    }
+
     setIsUploadingImage(true)
+    const uploadToast = toast.loading('Enviando imagem...')
+
     try {
+      const token = localStorage.getItem('token')
+      if (!token) throw new Error('Token não encontrado')
+
       const formDataUpload = new FormData()
       formDataUpload.append('image', file)
 
       const response = await fetch(`${API_URL}/upload/image`, {
         method: 'POST',
+        headers: { Authorization: `Bearer ${token}` },
         body: formDataUpload,
       })
 
-      if (response.ok) {
-        const data = await response.json()
-        setFormData({ ...formData, image: data.url })
-        setImagePreview(data.url)
-        toast.success('Imagem enviada com sucesso!')
+      const data = await response.json()
+
+      if (response.ok && data.imageUrl) {
+        setFormData({ ...formData, image: data.imageUrl })
+        setImagePreview(data.imageUrl)
+        toast.success('Imagem enviada com sucesso!', {
+          id: uploadToast,
+          duration: 2000,
+        })
       } else {
-        throw new Error('Erro ao fazer upload da imagem')
+        throw new Error(data.message || 'Erro ao enviar imagem')
       }
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : 'Erro ao fazer upload')
+      console.error('Failed to upload image:', error)
+      toast.error(error instanceof Error ? error.message : 'Erro ao fazer upload', {
+        id: uploadToast,
+      })
     } finally {
       setIsUploadingImage(false)
     }
@@ -222,12 +245,23 @@ export default function ArtistForm({ onSuccess, onCancel, initialData, isEditing
                 </label>
               </div>
               {imagePreview && (
-                <div className="w-24 h-24 rounded-lg overflow-hidden border border-slate-200">
+                <div className="relative w-24 h-24 rounded-lg overflow-hidden border border-slate-200">
                   <img
                     src={imagePreview}
                     alt="Preview"
                     className="w-full h-full object-cover"
                   />
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setImagePreview(null)
+                      setFormData({ ...formData, image: '' })
+                    }}
+                    className="absolute top-1 right-1 bg-red-500 hover:bg-red-600 text-white rounded-full p-1 transition"
+                    title="Remover imagem"
+                  >
+                    <X size={14} />
+                  </button>
                 </div>
               )}
             </div>
