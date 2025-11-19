@@ -297,7 +297,7 @@ export default function TopicDetailPage() {
                     value={replyContent}
                     onChange={(e) => setReplyContent(e.target.value)}
                     placeholder="Escreva sua resposta aqui..."
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-elit-red resize-none"
+                    className="w-full text-elit-dark px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-elit-red resize-none"
                     rows={5}
                   />
                   <div className="mt-4 flex justify-end">
