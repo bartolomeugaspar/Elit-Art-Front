@@ -224,7 +224,7 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
         </div>
 
         {/* Menu Items */}
-        <nav className="flex-1 p-4 space-y-1">
+        <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
           {menuItems.map((item) => {
             const Icon = item.icon;
             const isActive = pathname === item.href;
@@ -232,6 +232,12 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
               <Link
                 key={item.href}
                 href={item.href}
+                onClick={() => {
+                  // Fechar sidebar no mobile após clicar
+                  if (window.innerWidth < 768) {
+                    setSidebarOpen(false);
+                  }
+                }}
                 className={`flex items-center gap-3 px-4 py-2.5 rounded-lg transition duration-200 ${
                   isActive
                     ? 'bg-slate-100 text-slate-900 font-semibold border-l-4 border-blue-600'
@@ -239,7 +245,7 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
                 }`}
               >
                 <Icon size={20} className={isActive ? 'text-blue-600' : 'text-slate-400'} />
-                {sidebarOpen && <span>{item.label}</span>}
+                {sidebarOpen && <span className="text-sm md:text-base">{item.label}</span>}
               </Link>
             );
           })}
@@ -265,13 +271,18 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
           <div className="px-4 sm:px-6 py-2 sm:py-3">
             <div className="flex items-center justify-between h-14 sm:h-16">
               {/* Left Section */}
-              <div className="flex items-center space-x-4 sm:space-x-8">
+              <div className="flex items-center space-x-2 sm:space-x-4">
                 <button 
                   onClick={() => setSidebarOpen(!sidebarOpen)}
-                  className="p-2 -ml-2 rounded-md text-gray-500 hover:text-gray-600 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 md:hidden"
+                  className="p-2 rounded-md text-gray-500 hover:text-gray-600 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 md:hidden"
                 >
                   <Menu size={20} />
                 </button>
+                
+                {/* Título visível em mobile */}
+                <h1 className="text-base font-bold text-gray-900 md:hidden truncate">
+                  {menuItems.find((item) => item.href === pathname)?.label}
+                </h1>
                 
                 <div className="hidden md:flex items-center space-x-4">
                   <div className="flex items-center space-x-3">
@@ -312,7 +323,7 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
                       setNotificationCount(0);
                     }, 500);
                   }}
-                  className={`p-2.5 rounded-full transition-all duration-300 ${
+                  className={`p-2 sm:p-2.5 rounded-full transition-all duration-300 ${
                     hasNewRegistration 
                       ? 'bg-red-100 text-red-600 animate-pulse' 
                       : notificationCount > 0
@@ -322,7 +333,7 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
                   title={`${notificationCount} nova(s) inscrição(ões)`}
                 >
                   <div className="relative">
-                    <Bell size={24} />
+                    <Bell size={20} className="sm:w-6 sm:h-6" />
                     {notificationCount > 0 && (
                       <span className="absolute -top-2 -right-2 w-6 h-6 bg-red-600 text-white text-xs font-bold rounded-full flex items-center justify-center shadow-lg">
                         {notificationCount > 99 ? '99+' : notificationCount}
@@ -333,13 +344,13 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
 
                 {/* User Profile */}
                 <div className="relative group">
-                  <button className="flex items-center space-x-3 focus:outline-none">
+                  <button className="flex items-center space-x-2 sm:space-x-3 focus:outline-none">
                     <div className="flex-shrink-0">
                       <div className="relative">
-                        <div className="w-9 h-9 rounded-full bg-gradient-to-br from-blue-600 to-indigo-600 flex items-center justify-center text-white font-medium text-sm">
+                        <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-gradient-to-br from-blue-600 to-indigo-600 flex items-center justify-center text-white font-medium text-xs sm:text-sm">
                           {user?.name?.charAt(0).toUpperCase() || 'A'}
                         </div>
-                        <span className="absolute bottom-0 right-0 block h-2.5 w-2.5 rounded-full bg-green-500 ring-2 ring-white"></span>
+                        <span className="absolute bottom-0 right-0 block h-2 w-2 sm:h-2.5 sm:w-2.5 rounded-full bg-green-500 ring-2 ring-white"></span>
                       </div>
                     </div>
                     <div className="hidden md:block text-left">
