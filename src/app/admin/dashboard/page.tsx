@@ -246,9 +246,9 @@ export default function AdminDashboard() {
             </div>
             <span className="inline-block bg-green-100 text-green-700 text-xs font-bold px-2 py-0.5 rounded-full">+5%</span>
           </div>
-          <p className="text-slate-600 text-xs font-medium mb-1">Artistas</p>
+          <p className="text-slate-600 text-xs font-medium mb-1">Newsletter</p>
           <p className="text-3xl font-bold text-slate-900 mb-1">
-            {loading ? '...' : stats.totalArtists}
+            {loading ? '...' : stats.newsletterSubscribers}
           </p>
           <p className="text-slate-500 text-xs">Inscritos ativos</p>
         </div>
