@@ -22,7 +22,7 @@ export default function CommunitySection() {
   const differentials = [
     {
       icon: Heart,
-      title: "Fundacção de Caridade",
+      title: "Fundação de Caridade",
       description: "Área dedicada a prestar ajuda académica,Artística e de ofícios, incluindo bolsas para crianças carenciadas."
     },
     {

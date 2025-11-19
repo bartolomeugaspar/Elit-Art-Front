@@ -6,7 +6,7 @@ export default function GallerySection() {
       type: 'image',
       src: '/WhatsApp Image 2025-11-13 at 16.39.48 (1).jpeg',
       alt: 'Momentos únicos do Elit\'Arte',
-      category: 'Fundacção'
+      category: 'Fundação'
     },
     {
       type: 'image',
@@ -49,7 +49,7 @@ export default function GallerySection() {
       type: 'image',
       src: '/WhatsApp Image 2025-11-13 at 17.02.52 (1).jpeg',
       alt: 'Legado cultural preservado',
-      category: 'Fundacção'
+      category: 'Fundação'
     },
     {
       type: 'image',
@@ -109,25 +109,25 @@ export default function GallerySection() {
       type: 'image',
       src: '/WhatsApp Image 2025-11-13 at 17.41.24 (1).jpeg',
       alt: 'Momentos especiais',
-      category: 'Fundacção'
+      category: 'Fundação'
     },
     {
       type: 'image',
       src: '/WhatsApp Image 2025-11-13 at 17.41.25 (1).jpeg',
       alt: 'História do movimento',
-      category: 'Fundacção'
+      category: 'Fundação'
     },
     {
       type: 'image',
       src: '/3.jpeg',
       alt: 'Legado cultural',
-      category: 'Fundacção'
+      category: 'Fundação'
     },
     {
       type: 'image',
       src: '/WhatsApp Image 2025-11-13 at 17.41.26.jpeg',
       alt: 'Tradição preservada',
-      category: 'Fundacção'
+      category: 'Fundação'
     },
     {
       type: 'image',
@@ -157,13 +157,13 @@ export default function GallerySection() {
       type: 'image',
       src: '/WhatsApp Image 2025-11-13 at 16.39.45.jpeg',
       alt: 'Momentos Artísticos únicos',
-      category: 'Fundacção'
+      category: 'Fundação'
     },
     {
       type: 'image',
       src: '/preta.jpeg',
       alt: 'Legado cultural preservado',
-      category: 'Fundacção'
+      category: 'Fundação'
     },
     {
       type: 'image',
@@ -217,59 +217,59 @@ export default function GallerySection() {
       type: 'image',
       src: '/uniao.jpeg',
       alt: 'União e colaboracçãoArtística',
-      category: 'Fundacção'
+      category: 'Fundação'
     },
     {
       type: 'image',
       src: '/WhatsApp Image 2025-11-13 at 17.41.25 (1).jpeg',
       alt: 'História do movimento',
-      category: 'Fundacção'
+      category: 'Fundação'
     },
     {
       type: 'image',
       src: '/6.jpeg',
       alt: 'Legado cultural preservado',
-      category: 'Fundacção'
+      category: 'Fundação'
     },
     {
       type: 'image',
       src: '/WhatsApp Image 2025-11-13 at 17.02.51.jpeg',
       alt: 'Legado cultural preservado',
-      category: 'Fundacção'
+      category: 'Fundação'
     },
     {
       type: 'image',
       src: '/meninas.jpeg',
       alt: 'Legado cultural preservado',
-      category: 'Fundacção'
+      category: 'Fundação'
     },
     {
       type: 'image',
       src: '/festiva.jpeg',
       alt: 'Legado cultural preservado',
-      category: 'Fundacção'
+      category: 'Fundação'
     },
     {
       type: 'image',
       src: '/luisa.jpeg',
       alt: 'Legado cultural preservado',
-      category: 'Fundacção'
+      category: 'Fundação'
     },
     {
       type: 'image',
       src: '/bairo.jpeg',
       alt: 'Legado cultural preservado',
-      category: 'Fundacção'
+      category: 'Fundação'
     },
     {
       type: 'image',
       src: '/maos.jpeg',
       alt: 'Legado cultural preservado',
-      category: 'Fundacção'
+      category: 'Fundação'
     }
   ]
 
-  const categories = ['Todos', 'Fundacção', 'Teatro', 'Música', 'Pintura', 'Literatura', 'Cinema', 'Equipa']
+  const categories = ['Todos', 'Fundação', 'Teatro', 'Música', 'Pintura', 'Literatura', 'Cinema', 'Equipa']
 
   return (
     <section id="galeria" className="py-20 bg-gradient-to-br from-elit-dark to-gray-900 text-white">
