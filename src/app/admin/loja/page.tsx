@@ -44,7 +44,7 @@ export default function LojaAdminPage() {
 
   const fetchProducts = useCallback(async () => {
     try {
-      const response = await fetch(`${API_URL}/products`)
+      const response = await fetch(`${API_URL}/api/products`)
       if (response.ok) {
         const data = await response.json()
         setProducts(data.products || [])
@@ -149,7 +149,7 @@ export default function LojaAdminPage() {
 
     try {
       const token = localStorage.getItem('token')
-      const response = await fetch(`${API_URL}/products`, {
+      const response = await fetch(`${API_URL}/api/products`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -213,7 +213,7 @@ export default function LojaAdminPage() {
 
     try {
       const token = localStorage.getItem('token')
-      const response = await fetch(`${API_URL}/products/${productToDelete}`, {
+      const response = await fetch(`${API_URL}/api/products/${productToDelete}`, {
         method: 'DELETE',
         headers: { Authorization: `Bearer ${token}` },
       })

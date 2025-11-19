@@ -30,9 +30,10 @@ export const useProducts = () => {
     setLoading(true)
     setError(null)
     try {
+      const apiUrl = (process.env.NEXT_PUBLIC_API_URL || 'https://elit-arte-back.vercel.app').replace(/\/$/, '')
       const url = category
-        ? `${process.env.NEXT_PUBLIC_API_URL}/products?category=${category}`
-        : `${process.env.NEXT_PUBLIC_API_URL}/products`
+        ? `${apiUrl}/api/products?category=${category}`
+        : `${apiUrl}/api/products`
 
       const response = await fetch(url)
       if (!response.ok) throw new Error('Failed to fetch products')
@@ -50,7 +51,8 @@ export const useProducts = () => {
     setLoading(true)
     setError(null)
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/products/search/${query}`)
+      const apiUrl = (process.env.NEXT_PUBLIC_API_URL || 'https://elit-arte-back.vercel.app').replace(/\/$/, '')
+      const response = await fetch(`${apiUrl}/api/products/search/${query}`)
       if (!response.ok) throw new Error('Failed to search products')
 
       const data = await response.json()
