@@ -36,9 +36,12 @@ export default function ComunidadePage() {
   useEffect(() => {
     const fetchTopics = async () => {
       try {
+        let apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'
+        apiUrl = apiUrl.replace(/\/api\/$/, '').replace(/\/$/, '')
+        
         const url = selectedCategory
-          ? `${process.env.NEXT_PUBLIC_API_URL}/forum/topics?category=${selectedCategory}`
-          : `${process.env.NEXT_PUBLIC_API_URL}/forum/topics`
+          ? `${apiUrl}/api/forum/topics?category=${selectedCategory}`
+          : `${apiUrl}/api/forum/topics`
 
         const response = await fetch(url)
         if (!response.ok) throw new Error('Failed to fetch topics')

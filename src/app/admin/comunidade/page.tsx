@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useCallback, useRef } from 'react'
 import { Trash2, Edit2, Plus, CheckCircle, X, Lock, Unlock } from 'lucide-react'
-import { API_URL } from '@/lib/api'
+import { buildApiUrl } from '@/lib/api'
 import toast from 'react-hot-toast'
 
 interface ForumTopic {
@@ -50,7 +50,7 @@ export default function ComunidadeAdminPage() {
 
   const fetchTopics = useCallback(async () => {
     try {
-      const response = await fetch(`${API_URL}/forum/topics`)
+      const response = await fetch(buildApiUrl('forum/topics'))
       if (response.ok) {
         const data = await response.json()
         setTopics(data.topics || [])
@@ -77,7 +77,7 @@ export default function ComunidadeAdminPage() {
 
     try {
       const token = localStorage.getItem('token')
-      const response = await fetch(`${API_URL}/forum/topics/${topicToDelete}`, {
+      const response = await fetch(buildApiUrl(`forum/topics/${topicToDelete}`), {
         method: 'DELETE',
         headers: { Authorization: `Bearer ${token}` },
       })
@@ -119,7 +119,7 @@ export default function ComunidadeAdminPage() {
 
     try {
       const token = localStorage.getItem('token')
-      const response = await fetch(`${API_URL}/forum/topics`, {
+      const response = await fetch(buildApiUrl('forum/topics'), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
