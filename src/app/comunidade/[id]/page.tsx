@@ -183,7 +183,7 @@ export default function TopicDetailPage() {
       </div>
 
       {/* Main Content */}
-      <div className="py-12 md:py-16">
+      <div className="py-12 md:py-16 pb-24 md:pb-32">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto">
             {/* Topic Header */}

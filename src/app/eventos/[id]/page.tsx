@@ -101,7 +101,7 @@ export default function EventDetailPage({ params }: { params: { id: string } }) 
       </section>
 
       {/* Event Details */}
-      <section className="py-8 md:py-12">
+      <section className="py-8 md:py-12 pb-24 md:pb-32">
         <div className="container mx-auto px-4 sm:px-6">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8">
             {/* Main Content */}

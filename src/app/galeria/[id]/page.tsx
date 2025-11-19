@@ -144,7 +144,7 @@ export default function ArtworkDetailPage() {
       </div>
 
       {/* Main Content */}
-      <div className="py-8 sm:py-12 md:py-16">
+      <div className="py-8 sm:py-12 md:py-16 pb-24 md:pb-32">
         <div className="container mx-auto px-4">
           <div className="max-w-5xl mx-auto">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">

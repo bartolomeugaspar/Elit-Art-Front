@@ -58,7 +58,7 @@ export default function BlogPage() {
         </div>
       </section>
 
-      <section className="py-12 md:py-16">
+      <section className="py-12 md:py-16 pb-24 md:pb-32">
         <div className="container mx-auto px-4 sm:px-6">
         {/* Search Bar */}
         <form onSubmit={handleSearch} className="mb-6 md:mb-8">

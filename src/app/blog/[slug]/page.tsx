@@ -203,7 +203,7 @@ export default function BlogPostPage() {
       </div>
 
       {/* Article Content */}
-      <article className="py-12 md:py-16">
+      <article className="py-12 md:py-16 pb-24 md:pb-32">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto">
             {/* Header */}
