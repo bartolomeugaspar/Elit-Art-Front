@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { useBlog } from '@/hooks/useBlog'
-import { Search, BookOpen, Heart, MessageCircle, Eye } from 'lucide-react'
+import { Search, BookOpen, Heart, MessageCircle, Eye, Filter, ChevronDown } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { Header, Footer } from '@/components'
@@ -11,6 +11,7 @@ export default function BlogPage() {
   const { posts, loading, error, fetchPosts, searchPosts } = useBlog()
   const [selectedCategory, setSelectedCategory] = useState<string>('')
   const [searchQuery, setSearchQuery] = useState('')
+  const [showFilters, setShowFilters] = useState(false)
 
   const categories = [
     { value: 'magazine', label: '📰 Revista' },
@@ -60,7 +61,7 @@ export default function BlogPage() {
       <section className="py-12 md:py-16">
         <div className="container mx-auto px-4 sm:px-6">
         {/* Search Bar */}
-        <form onSubmit={handleSearch} className="mb-8">
+        <form onSubmit={handleSearch} className="mb-6 md:mb-8">
           <div className="flex gap-2">
             <div className="flex-1 relative">
               <Search className="absolute left-3 top-3 text-gray-400" size={20} />
@@ -81,9 +82,61 @@ export default function BlogPage() {
           </div>
         </form>
 
+        {/* Mobile Filter Button */}
+        <div className="lg:hidden mb-6">
+          <button
+            onClick={() => setShowFilters(!showFilters)}
+            className="w-full flex items-center justify-between px-4 py-3 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition"
+          >
+            <div className="flex items-center gap-2">
+              <Filter size={20} className="text-elit-red" />
+              <span className="font-semibold text-elit-dark">
+                {selectedCategory ? categories.find(c => c.value === selectedCategory)?.label : 'Filtros'}
+              </span>
+            </div>
+            <ChevronDown size={20} className={`text-elit-red transition ${showFilters ? 'rotate-180' : ''}`} />
+          </button>
+
+          {/* Mobile Filter Dropdown */}
+          {showFilters && (
+            <div className="mt-2 bg-white rounded-lg shadow-md p-4 space-y-2">
+              <button
+                onClick={() => {
+                  handleCategoryChange('')
+                  setShowFilters(false)
+                }}
+                className={`w-full text-left px-4 py-2 rounded-lg transition ${
+                  !selectedCategory
+                    ? 'bg-elit-red text-white'
+                    : 'bg-gray-100 hover:bg-gray-200 text-elit-dark'
+                }`}
+              >
+                Todos os Artigos
+              </button>
+
+              {categories.map((cat) => (
+                <button
+                  key={cat.value}
+                  onClick={() => {
+                    handleCategoryChange(cat.value)
+                    setShowFilters(false)
+                  }}
+                  className={`w-full text-left px-4 py-2 rounded-lg transition ${
+                    selectedCategory === cat.value
+                      ? 'bg-elit-red text-white'
+                      : 'bg-gray-100 hover:bg-gray-200 text-elit-dark'
+                  }`}
+                >
+                  {cat.label}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-          {/* Sidebar - Categorias */}
-          <div className="lg:col-span-1">
+          {/* Sidebar - Categorias (Desktop) */}
+          <div className="hidden lg:block lg:col-span-1">
             <div className="bg-white rounded-lg shadow-md p-6 sticky top-4">
               <h3 className="text-lg font-bold mb-6 text-elit-dark">Categorias</h3>
 
