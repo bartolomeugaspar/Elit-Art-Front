@@ -68,12 +68,12 @@ export default function BlogPostPage() {
     if (!post) return
     
     try {
-      let apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'
+      let apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://elit-arte-back.vercel.app/api'
       
-      // Remove /api/ se existir no final para evitar duplicação
-      apiUrl = apiUrl.replace(/\/api\/$/, '').replace(/\/$/, '')
+      // Remove barra final se existir
+      apiUrl = apiUrl.replace(/\/$/, '')
       
-      const response = await fetch(`${apiUrl}/api/blog/${post.id}/like`, {
+      const response = await fetch(`${apiUrl}/blog/${post.id}/like`, {
         method: 'POST',
       })
       
@@ -192,7 +192,7 @@ export default function BlogPostPage() {
       </div>
 
       {/* Featured Image */}
-      <div className="relative h-96 md:h-[500px] bg-gray-200 overflow-hidden">
+      <div className="relative h-48 sm:h-64 md:h-96 lg:h-[500px] bg-gray-200 overflow-hidden">
         <Image
           src={post.featured_image}
           alt={post.title}
@@ -214,15 +214,17 @@ export default function BlogPostPage() {
                 </span>
               </div>
 
-              <h1 className="text-4xl md:text-5xl font-bold mb-4 text-elit-dark">
+              <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 text-elit-dark">
                 {post.title}
               </h1>
 
-              <div className="flex flex-col md:flex-row md:items-center gap-4 text-elit-dark/70 mb-6 pb-6 border-b">
+              <div className="flex flex-col gap-2 text-elit-dark/70 mb-6 pb-6 border-b text-sm sm:text-base">
                 <div className="flex items-center gap-2">
+                  <User size={16} className="sm:w-5 sm:h-5" />
                   <span className="font-semibold">{post.author_name}</span>
                 </div>
                 <div className="flex items-center gap-2">
+                  <Clock size={16} className="sm:w-5 sm:h-5" />
                   {new Date(post.published_at || post.created_at).toLocaleDateString('pt-BR', {
                     year: 'numeric',
                     month: 'long',
@@ -232,46 +234,48 @@ export default function BlogPostPage() {
               </div>
 
               {/* Stats */}
-              <div className="flex items-center gap-6 mb-8">
+              <div className="flex flex-wrap items-center gap-4 sm:gap-6 mb-8 text-sm sm:text-base">
                 <button
                   onClick={handleLike}
                   className={`flex items-center gap-2 transition ${
                     liked ? 'text-elit-red' : 'text-elit-dark/60 hover:text-elit-red'
                   }`}
                 >
-                  <Heart size={20} fill={liked ? 'currentColor' : 'none'} />
+                  <Heart size={18} className="sm:w-5 sm:h-5" fill={liked ? 'currentColor' : 'none'} />
                   <span>{post.likes}</span>
                 </button>
                 <div className="flex items-center gap-2 text-elit-dark/60">
-                  <Eye size={20} />
-                  <span>{post.views} visualizações</span>
+                  <Eye size={18} className="sm:w-5 sm:h-5" />
+                  <span className="hidden sm:inline">{post.views} visualizações</span>
+                  <span className="sm:hidden">{post.views}</span>
                 </div>
                 <button
                   onClick={handleShare}
                   className="flex items-center gap-2 text-elit-dark/60 hover:text-elit-red transition"
                 >
-                  <Share2 size={20} />
-                  <span>Compartilhar</span>
+                  <Share2 size={18} className="sm:w-5 sm:h-5" />
+                  <span className="hidden sm:inline">Compartilhar</span>
+                  <span className="sm:hidden">Compartilhar</span>
                 </button>
               </div>
             </div>
 
             {/* Content */}
-            <div className="prose prose-lg max-w-none mb-12">
-              <p className="text-xl text-elit-dark/80 mb-8 leading-relaxed">
+            <div className="prose prose-sm sm:prose-base md:prose-lg max-w-none mb-12">
+              <p className="text-base sm:text-lg md:text-xl text-elit-dark/80 mb-8 leading-relaxed">
                 {post.excerpt}
               </p>
-              <div className="text-elit-dark/70 leading-relaxed whitespace-pre-wrap">
+              <div className="text-elit-dark/70 leading-relaxed whitespace-pre-wrap text-sm sm:text-base">
                 {post.content}
               </div>
             </div>
 
             {/* Related Posts Section */}
-            <div className="mt-16 pt-8 border-t">
-              <h3 className="text-2xl font-bold mb-6 text-elit-dark">Mais Artigos</h3>
+            <div className="mt-12 sm:mt-16 pt-6 sm:pt-8 border-t">
+              <h3 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 text-elit-dark">Mais Artigos</h3>
               <Link
                 href="/blog"
-                className="inline-flex items-center gap-2 px-6 py-3 bg-elit-red text-white rounded-lg hover:bg-elit-brown transition"
+                className="inline-flex items-center gap-2 px-4 sm:px-6 py-2 sm:py-3 bg-elit-red text-white text-sm sm:text-base rounded-lg hover:bg-elit-brown transition"
               >
                 Ver todos os artigos
               </Link>
