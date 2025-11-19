@@ -25,7 +25,7 @@ export default function TeamSection() {
       role: "Porta-voz",
       area: "Literatura",
       description: "Porta-voz, directora da área da literatura e fundadora. Vencedora do Concurso Literário 'Quem me dera ser onda' 2019.",
-      quote: "Aceitei ser fundadora deste Movimento para ressuscitar a Artista que estava encubada em mim.",
+      quote: "Sou a literatura que dança nas páginas da nossa história angolana.",
       email: "mairisdejesus.mj@gmail.com",
       phone: "936346918"
     },
@@ -74,7 +74,7 @@ export default function TeamSection() {
                   ) : index === 1 ? (
                     <div className="w-24 h-24 mx-auto mb-4 overflow-hidden rounded-full">
                       <img 
-                        src="/jos.jpeg" 
+                        src="/josemara.jpeg" 
                         alt="Josemara Comongo (Maíris de Jesus)" 
                         className="w-full h-full object-cover"
                       />
