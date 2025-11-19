@@ -22,7 +22,6 @@ export default function Header() {
   const moreItems = [
     { label: 'Loja', href: '/loja' },
     { label: 'Blog', href: '/blog' },
-    { label: 'Imprensa', href: '/imprensa' },
     { label: 'Comunidade', href: '/comunidade' }
   ]
 
