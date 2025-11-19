@@ -17,6 +17,10 @@ import {
   Bell,
   FileText,
   Palette,
+  ShoppingCart,
+  BookOpen,
+  MessageCircle,
+  Newspaper,
 } from 'lucide-react';
 import { useToast, ToastContainer } from './Toast';
 
@@ -154,6 +158,31 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
       label: 'Newsletter',
       href: '/admin/newsletter',
       icon: Mail,
+    },
+    {
+      label: 'Galeria',
+      href: '/admin/galeria',
+      icon: Palette,
+    },
+    {
+      label: 'Loja Digital',
+      href: '/admin/loja',
+      icon: ShoppingCart,
+    },
+    {
+      label: 'Blog',
+      href: '/admin/blog',
+      icon: BookOpen,
+    },
+    {
+      label: 'Comunidade',
+      href: '/admin/comunidade',
+      icon: MessageCircle,
+    },
+    {
+      label: 'Imprensa',
+      href: '/admin/imprensa',
+      icon: Newspaper,
     },
     {
       label: 'Logs do Sistema',

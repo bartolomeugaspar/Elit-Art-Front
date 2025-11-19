@@ -1,7 +1,8 @@
 'use client'
 
-import { Users, Mail, Phone, Facebook, Instagram } from 'lucide-react'
+import { Users, Mail, Phone, Facebook, Instagram, ArrowRight } from 'lucide-react'
 import { useArtists } from '@/hooks/useArtists'
+import Link from 'next/link'
 
 export default function TeamSection() {
   const { artists: dynamicArtists, loading: artistsLoading } = useArtists()
@@ -175,6 +176,16 @@ export default function TeamSection() {
             ))}
           </div>
           )}
+        </div>
+
+        {/* Button to Gallery */}
+        <div className="mt-16 text-center">
+          <Link href="/galeria">
+            <button className="inline-flex items-center gap-2 px-8 py-3 bg-elit-red hover:bg-elit-brown text-white font-semibold rounded-lg transition-all duration-300 hover:scale-105 shadow-lg">
+              Ver Obras dos Artistas
+              <ArrowRight size={20} />
+            </button>
+          </Link>
         </div>
       </div>
     </section>

@@ -93,7 +93,7 @@ export default function HeroSection() {
         <div className="max-w-7xl mx-auto py-8 sm:py-12">
           {/* Frase-mestra */}
           <p className="text-base sm:text-lg md:text-xl lg:text-2xl font-light mb-6 sm:mb-8 text-elit-yellow italic animate-fade-in px-4">
-            "Elit'Arte: Onde a essência angolana encontra a expressãoArtística."
+            "Elit'Arte: Onde a essência angolana encontra a expressão Artística."
           </p>
           
           {/* Título Principal */}

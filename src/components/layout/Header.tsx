@@ -1,51 +1,54 @@
 'use client'
 
-import { Menu, X } from 'lucide-react'
+import { Menu, X, ChevronDown } from 'lucide-react'
 import { useState } from 'react'
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false)
+  const pathname = usePathname()
 
   const navigationItems = [
     { label: 'Home', href: '#home' },
     { label: 'Sobre Nós', href: '#sobre' },
     { label: 'Áreas de actuação', href: '#areas' },
     { label: 'Galeria', href: '#galeria' },
-    { label: 'Equipa', href: '#equipa' },
+    { label: 'Artistas', href: '#equipa' },
     { label: 'Eventos', href: '/eventos' }
+  ]
+
+  const moreItems = [
+    { label: 'Loja', href: '/loja' },
+    { label: 'Blog', href: '/blog' },
+    { label: 'Imprensa', href: '/imprensa' },
+    { label: 'Comunidade', href: '/comunidade' }
   ]
 
   const handleNavClick = (href: string) => {
     setIsMenuOpen(false)
     
-    // Check if it's an external page link
-    if (href.startsWith('/')) {
-      window.location.href = href
-      return
-    }
-    
-    // Remove # from href to get the element ID
-    const elementId = href.replace('#', '')
-    const element = document.getElementById(elementId)
-    
-    console.log('Navigating to:', elementId, 'Element found:', !!element)
-    
-    if (element) {
-      // Calculate offset for fixed header (approximately 80px)
-      const headerOffset = 80
-      const elementPosition = element.getBoundingClientRect().top
-      const offsetPosition = elementPosition + window.pageYOffset - headerOffset
+    // Check if it's an anchor link
+    if (href.startsWith('#')) {
+      // Only scroll if we're on the home page
+      if (pathname === '/') {
+        const elementId = href.replace('#', '')
+        const element = document.getElementById(elementId)
+        
+        if (element) {
+          const headerOffset = 80
+          const elementPosition = element.getBoundingClientRect().top
+          const offsetPosition = elementPosition + window.pageYOffset - headerOffset
 
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: 'smooth'
-      })
-    } else {
-      // If element not found and we're not on home page, redirect to home with anchor
-      if (window.location.pathname !== '/') {
-        window.location.href = `/${href}`
+          window.scrollTo({
+            top: offsetPosition,
+            behavior: 'smooth'
+          })
+        }
       } else {
-        console.error('Element not found:', elementId)
+        // If not on home page, navigate to home with anchor
+        window.location.href = `/${href}`
       }
     }
   }
@@ -72,16 +75,48 @@ export default function Header() {
           </div>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-8">
+          <nav className="hidden md:flex items-center space-x-8 relative">
             {navigationItems.map((item, index) => (
-              <button
-                key={index}
-                onClick={() => handleNavClick(item.href)}
-                className="text-sm font-medium text-gray-700 hover:text-elit-red transition-all duration-300 hover:scale-105"
-              >
-                {item.label}
-              </button>
+              item.href.startsWith('/') ? (
+                <Link
+                  key={index}
+                  href={item.href}
+                  className="text-sm font-medium text-gray-700 hover:text-elit-red transition-all duration-300 hover:scale-105"
+                >
+                  {item.label}
+                </Link>
+              ) : (
+                <button
+                  key={index}
+                  onClick={() => handleNavClick(item.href)}
+                  className="text-sm font-medium text-gray-700 hover:text-elit-red transition-all duration-300 hover:scale-105"
+                >
+                  {item.label}
+                </button>
+              )
             ))}
+            <div className="relative inline-block">
+              <button
+                className="text-sm font-medium text-gray-700 hover:text-elit-red transition-all duration-300 hover:scale-105 flex items-center gap-1"
+                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+              >
+                Mais
+                <ChevronDown size={16} className={`ml-1 transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`} />
+              </button>
+              {isDropdownOpen && (
+                <div className="absolute top-full right-(-1) bg-white shadow-lg p-4 w-42 rounded-lg z-10 mt-4">
+                  {moreItems.map((item, index) => (
+                    <Link
+                      key={index}
+                      href={item.href}
+                      className="block w-full text-left text-gray-700 hover:text-elit-red font-medium py-2 transition-colors"
+                    >
+                      {item.label}
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
           </nav>
 
           {/* CTA Buttons */}
@@ -114,14 +149,46 @@ export default function Header() {
           <div className="md:hidden mt-6 pb-6">
             <div className="bg-white rounded-2xl shadow-xl p-6 space-y-4">
               {navigationItems.map((item, index) => (
-                <button
-                  key={index}
-                  onClick={() => handleNavClick(item.href)}
-                  className="block w-full text-left text-gray-700 hover:text-elit-red font-medium py-2 transition-colors"
-                >
-                  {item.label}
-                </button>
+                item.href.startsWith('/') ? (
+                  <Link
+                    key={index}
+                    href={item.href}
+                    className="block w-full text-left text-gray-700 hover:text-elit-red font-medium py-2 transition-colors"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    {item.label}
+                  </Link>
+                ) : (
+                  <button
+                    key={index}
+                    onClick={() => handleNavClick(item.href)}
+                    className="block w-full text-left text-gray-700 hover:text-elit-red font-medium py-2 transition-colors"
+                  >
+                    {item.label}
+                  </button>
+                )
               ))}
+              <button
+                className="block w-full text-left text-gray-700 hover:text-elit-red font-medium py-2 transition-colors"
+                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+              >
+                Mais
+                <ChevronDown size={16} className={`ml-1 transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`} />
+              </button>
+              {isDropdownOpen && (
+                <div className="pt-4 space-y-3">
+                  {moreItems.map((item, index) => (
+                    <Link
+                      key={index}
+                      href={item.href}
+                      className="block w-full text-left text-gray-700 hover:text-elit-red font-medium py-2 transition-colors"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      {item.label}
+                    </Link>
+                  ))}
+                </div>
+              )}
               <div className="pt-4 border-t border-gray-100 space-y-3">
                 <button
                   onClick={() => window.location.href = '/admin/login'}

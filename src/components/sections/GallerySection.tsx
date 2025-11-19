@@ -144,7 +144,7 @@ export default function GallerySection() {
     {
       type: 'image',
       src: '/carimbo.jpeg',
-      alt: 'ExpressãoArtística',
+      alt: 'Expressão Artística',
       category: 'Pintura'
     },
     {

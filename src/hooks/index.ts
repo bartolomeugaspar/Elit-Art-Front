@@ -1,1 +1,6 @@
 export { useEvents, type Event, type Testimonial } from './useEvents'
+export { useBlog } from './useBlog'
+export { useProducts } from './useProducts'
+export { useAuth } from './useAuth'
+export { useArtists } from './useArtists'
+export { useArtworks } from './useArtworks'
