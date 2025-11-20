@@ -111,21 +111,18 @@ export default function EventRegistrationModal({
 
     // Bloquear inscrição em eventos passados
     if (isPast) {
-      console.log('[EventRegistrationModal] Blocked: event is past')
       toast.error('Não é possível se inscrever em eventos que já passaram')
       return
     }
 
     // Validar nome completo
     if (!fullName.trim()) {
-      console.log('[EventRegistrationModal] Validation failed: fullName empty')
       toast.error('Nome completo é obrigatório')
       return
     }
 
     // Validar e-mail
     if (!email.trim()) {
-      console.log('[EventRegistrationModal] Validation failed: email empty')
       toast.error('E-mail é obrigatório')
       return
     }
@@ -212,7 +209,7 @@ export default function EventRegistrationModal({
           // A mensagem já vem em português do backend, não precisa traduzir
           // Apenas garantir que erros antigos em inglês ainda funcionem
           if (errorMessage.includes('already registered') && !errorMessage.includes('pode se inscrever')) {
-            errorMessage = 'Este e-mail já está registrado para este evento. Você pode se inscrever em outros eventos, mas apenas uma vez por evento.'
+            errorMessage = 'Este nome já está registrado para este evento. Você pode se inscrever em outros eventos, mas apenas uma vez por evento.'
           } else if (errorMessage.includes('No available spots')) {
             errorMessage = 'Não há mais vagas disponíveis para este evento'
           } else if (errorMessage.includes('Event not found')) {
