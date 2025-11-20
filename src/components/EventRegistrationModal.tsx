@@ -62,8 +62,12 @@ export default function EventRegistrationModal({
   }
 
   const uploadProof = async (): Promise<string | null> => {
-    if (!paymentProofFile) return null
+    if (!paymentProofFile) {
+      console.log('[EventRegistrationModal] No payment proof file to upload')
+      return null
+    }
 
+    console.log('[EventRegistrationModal] Starting proof upload:', paymentProofFile.name)
     setIsUploadingProof(true)
     const uploadToast = toast.loading('Enviando comprovativo...')
 
@@ -72,6 +76,7 @@ export default function EventRegistrationModal({
       const formData = new FormData()
       formData.append('image', paymentProofFile)
 
+      console.log('[EventRegistrationModal] Uploading to:', `${API_URL}/upload/image`)
       const response = await fetch(`${API_URL}/upload/image`, {
         method: 'POST',
         headers: token ? { Authorization: `Bearer ${token}` } : {},
@@ -79,15 +84,17 @@ export default function EventRegistrationModal({
       })
 
       const data = await response.json()
+      console.log('[EventRegistrationModal] Upload response:', { ok: response.ok, status: response.status, data })
 
       if (response.ok && data.imageUrl) {
         toast.success('Comprovativo enviado!', { id: uploadToast })
+        console.log('[EventRegistrationModal] Proof uploaded successfully:', data.imageUrl)
         return data.imageUrl
       } else {
         throw new Error(data.message || 'Erro ao enviar comprovativo')
       }
     } catch (error) {
-      console.error('Failed to upload proof:', error)
+      console.error('[EventRegistrationModal] Failed to upload proof:', error)
       toast.error(
         error instanceof Error ? error.message : 'Erro ao enviar comprovativo',
         { id: uploadToast }
@@ -100,26 +107,31 @@ export default function EventRegistrationModal({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    console.log('[EventRegistrationModal] Submit started', { eventId, eventTitle, isFree, isPast })
 
     // Bloquear inscrição em eventos passados
     if (isPast) {
+      console.log('[EventRegistrationModal] Blocked: event is past')
       toast.error('Não é possível se inscrever em eventos que já passaram')
       return
     }
 
     // Validar nome completo
     if (!fullName.trim()) {
+      console.log('[EventRegistrationModal] Validation failed: fullName empty')
       toast.error('Nome completo é obrigatório')
       return
     }
 
     // Validar e-mail
     if (!email.trim()) {
+      console.log('[EventRegistrationModal] Validation failed: email empty')
       toast.error('E-mail é obrigatório')
       return
     }
 
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      console.log('[EventRegistrationModal] Validation failed: invalid email format')
       toast.error('Por favor, insira um e-mail válido')
       return
     }
@@ -127,16 +139,19 @@ export default function EventRegistrationModal({
     // Validar pagamento para eventos pagos
     if (!isFree) {
       if (!paymentMethod) {
+        console.log('[EventRegistrationModal] Validation failed: payment method required')
         toast.error('Método de pagamento é obrigatório')
         return
       }
 
       if (!paymentProofFile) {
+        console.log('[EventRegistrationModal] Validation failed: payment proof required')
         toast.error('Comprovativo de pagamento é obrigatório')
         return
       }
     }
 
+    console.log('[EventRegistrationModal] All validations passed, starting submission')
     setIsSubmitting(true)
     const loadingToast = toast.loading('Processando inscrição...')
 
@@ -145,10 +160,13 @@ export default function EventRegistrationModal({
 
       // Upload proof if provided
       if (paymentProofFile) {
+        console.log('[EventRegistrationModal] Uploading payment proof...')
         proofUrl = await uploadProof()
         if (!proofUrl) {
-          throw new Error('Falha ao enviar comprovativo')
+          console.error('[EventRegistrationModal] Proof upload failed')
+          throw new Error('Falha ao enviar comprovativo. Por favor, tente novamente.')
         }
+        console.log('[EventRegistrationModal] Proof uploaded successfully:', proofUrl)
       }
 
       const token = localStorage.getItem('token')
@@ -160,22 +178,53 @@ export default function EventRegistrationModal({
         headers['Authorization'] = `Bearer ${token}`
       }
 
+      const registrationData = {
+        full_name: fullName.trim(),
+        email: email.trim(),
+        payment_method: isFree ? null : paymentMethod,
+        proof_url: proofUrl,
+      }
+
+      console.log('[EventRegistrationModal] Sending registration request:', {
+        url: `${API_URL}/events/${eventId}/register`,
+        data: registrationData
+      })
+
       const response = await fetch(`${API_URL}/events/${eventId}/register`, {
         method: 'POST',
         headers,
-        body: JSON.stringify({
-          full_name: fullName.trim(),
-          email: email.trim(),
-          payment_method: isFree ? null : paymentMethod,
-          proof_url: proofUrl,
-        }),
+        body: JSON.stringify(registrationData),
+      })
+
+      console.log('[EventRegistrationModal] Registration response:', { 
+        ok: response.ok, 
+        status: response.status,
+        statusText: response.statusText 
       })
 
       if (!response.ok) {
-        const error = await response.json()
-        throw new Error(error.message || 'Erro ao se inscrever')
+        let errorMessage = 'Erro ao se inscrever'
+        try {
+          const error = await response.json()
+          errorMessage = error.message || errorMessage
+          console.error('[EventRegistrationModal] Registration error:', error)
+          
+          // Traduzir mensagens de erro do inglês para português
+          if (errorMessage.includes('already registered')) {
+            errorMessage = 'Este e-mail já está registrado para este evento'
+          } else if (errorMessage.includes('No available spots')) {
+            errorMessage = 'Não há mais vagas disponíveis para este evento'
+          } else if (errorMessage.includes('Event not found')) {
+            errorMessage = 'Evento não encontrado'
+          }
+        } catch (parseError) {
+          console.error('[EventRegistrationModal] Failed to parse error response:', parseError)
+        }
+        throw new Error(errorMessage)
       }
 
+      console.log('[EventRegistrationModal] Registration successful!')
+      
       toast.success('Inscrição realizada com sucesso!', {
         id: loadingToast,
         icon: <CheckCircle className="text-green-500" />,
@@ -203,12 +252,11 @@ export default function EventRegistrationModal({
 
       onSuccess()
     } catch (error) {
-      console.error('Failed to register:', error)
-      toast.error(
-        error instanceof Error ? error.message : 'Erro ao se inscrever',
-        { id: loadingToast }
-      )
+      console.error('[EventRegistrationModal] Registration failed:', error)
+      const errorMessage = error instanceof Error ? error.message : 'Erro ao se inscrever. Por favor, tente novamente.'
+      toast.error(errorMessage, { id: loadingToast })
     } finally {
+      console.log('[EventRegistrationModal] Submit finished, resetting isSubmitting')
       setIsSubmitting(false)
     }
   }
@@ -373,7 +421,13 @@ export default function EventRegistrationModal({
                 disabled={isSubmitting || isUploadingProof || isPast}
                 className="flex-1 bg-gradient-to-r from-elit-orange to-elit-gold hover:from-elit-orange/90 hover:to-elit-gold/90 disabled:from-elit-orange/50 disabled:to-elit-gold/50 disabled:cursor-not-allowed text-elit-light px-4 py-1.5 rounded-lg transition duration-200 font-medium text-sm"
               >
-                {isPast ? 'Evento Terminado' : isSubmitting ? 'Processando...' : 'Confirmar'}
+                {isPast 
+                  ? 'Evento Terminado' 
+                  : isUploadingProof 
+                    ? 'Enviando comprovativo...' 
+                    : isSubmitting 
+                      ? 'Processando...' 
+                      : 'Confirmar'}
               </button>
               <button
                 type="button"
