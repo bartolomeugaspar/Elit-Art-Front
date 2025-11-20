@@ -209,7 +209,7 @@ export default function EventRegistrationModal({
           // A mensagem já vem em português do backend, não precisa traduzir
           // Apenas garantir que erros antigos em inglês ainda funcionem
           if (errorMessage.includes('already registered') && !errorMessage.includes('pode se inscrever')) {
-            errorMessage = 'Voce nome já está registrado para este evento. Você pode se inscrever em outros eventos, mas apenas uma vez por evento.'
+            errorMessage = 'Voce nome já está registrado para este evento.'
           } else if (errorMessage.includes('No available spots')) {
             errorMessage = 'Não há mais vagas disponíveis para este evento'
           } else if (errorMessage.includes('Event not found')) {
@@ -262,8 +262,7 @@ export default function EventRegistrationModal({
           fontWeight: '500',
           fontSize: '14px',
           maxWidth: '500px',
-        },
-        icon: '⚠️',
+        }
       })
     } finally {
       console.log('[EventRegistrationModal] Submit finished, resetting isSubmitting')
@@ -297,7 +296,7 @@ export default function EventRegistrationModal({
           {isPast && (
             <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
               <p className="text-red-700 font-semibold text-sm">
-                ⚠️ Este evento já passou e não aceita novas inscrições.
+                Este evento já passou e não aceita novas inscrições.
               </p>
             </div>
           )}
