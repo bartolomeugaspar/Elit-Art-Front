@@ -209,7 +209,7 @@ export default function EventRegistrationModal({
           // A mensagem já vem em português do backend, não precisa traduzir
           // Apenas garantir que erros antigos em inglês ainda funcionem
           if (errorMessage.includes('already registered') && !errorMessage.includes('pode se inscrever')) {
-            errorMessage = 'Este nome já está registrado para este evento. Você pode se inscrever em outros eventos, mas apenas uma vez por evento.'
+            errorMessage = 'Voce nome já está registrado para este evento. Você pode se inscrever em outros eventos, mas apenas uma vez por evento.'
           } else if (errorMessage.includes('No available spots')) {
             errorMessage = 'Não há mais vagas disponíveis para este evento'
           } else if (errorMessage.includes('Event not found')) {
