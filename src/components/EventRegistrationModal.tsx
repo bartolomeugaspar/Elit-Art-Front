@@ -255,7 +255,19 @@ export default function EventRegistrationModal({
     } catch (error) {
       console.error('[EventRegistrationModal] Registration failed:', error)
       const errorMessage = error instanceof Error ? error.message : 'Erro ao se inscrever. Por favor, tente novamente.'
-      toast.error(errorMessage, { id: loadingToast })
+      toast.error(errorMessage, { 
+        id: loadingToast,
+        duration: 6000,
+        style: {
+          background: '#fef2f2',
+          color: '#991b1b',
+          border: '2px solid #fca5a5',
+          fontWeight: '500',
+          fontSize: '14px',
+          maxWidth: '500px',
+        },
+        icon: '⚠️',
+      })
     } finally {
       console.log('[EventRegistrationModal] Submit finished, resetting isSubmitting')
       setIsSubmitting(false)
