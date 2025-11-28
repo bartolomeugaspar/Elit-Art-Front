@@ -170,7 +170,7 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
       icon: ShoppingCart,
     },
     {
-      label: 'Blog',
+      label: 'Revista',
       href: '/admin/blog',
       icon: BookOpen,
     },

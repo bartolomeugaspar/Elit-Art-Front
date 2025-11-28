@@ -484,7 +484,7 @@ export default function AdminDashboard() {
           >
             <div className="flex items-center gap-3 mb-2">
               <BookOpen size={24} className="text-indigo-600 group-hover:scale-110 transition-transform" />
-              <span className="text-indigo-900 font-bold text-sm sm:text-base">Blog</span>
+              <span className="text-indigo-900 font-bold text-sm sm:text-base">Revista</span>
             </div>
             <p className="text-indigo-700 text-xs sm:text-sm">Gerenciar artigos</p>
           </Link>

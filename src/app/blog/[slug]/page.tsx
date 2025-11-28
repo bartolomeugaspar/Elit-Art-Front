@@ -165,7 +165,7 @@ export default function BlogPostPage() {
               className="inline-flex items-center gap-2 px-6 py-2 bg-elit-red text-white rounded-lg hover:bg-elit-brown transition"
             >
               <ArrowLeft size={20} />
-              Voltar ao Blog
+              Voltar a Revista
             </Link>
           </div>
         </div>
