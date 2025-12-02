@@ -6,7 +6,7 @@ export interface User {
   id: string;
   email: string;
   name: string;
-  role: 'admin' | 'Arteist' | 'user';
+  role: 'admin' | 'artista' | 'user';
   created_at?: string;
 }
 

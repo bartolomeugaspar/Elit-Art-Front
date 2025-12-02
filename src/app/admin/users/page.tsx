@@ -9,7 +9,7 @@ interface User {
   id: string;
   email: string;
   name: string;
-  role: 'admin' | 'Arteist' | 'user';
+  role: 'admin' | 'artista' | 'user';
   is_active: boolean;
   created_at: string;
 }
@@ -23,7 +23,7 @@ export default function AdminUsers() {
     name: '',
     email: '',
     password: '',
-    role: 'user' as 'admin' | 'Arteist' | 'user',
+    role: 'user' as 'admin' | 'artista' | 'user',
     is_active: true,
   });
   
@@ -293,11 +293,11 @@ export default function AdminUsers() {
                   <label className="block text-sm font-medium text-slate-700">Função</label>
                   <select
                     value={formData.role}
-                    onChange={(e) => setFormData({ ...formData, role: e.target.value as 'admin' | 'Arteist' | 'user' })}
+                    onChange={(e) => setFormData({ ...formData, role: e.target.value as 'admin' | 'artista' | 'user' })}
                     className="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
                   >
                     <option value="user">Usuário</option>
-                    <option value="Arteist">Artista</option>
+                    <option value="artista">Artista</option>
                     <option value="admin">Admin</option>
                   </select>
                 </div>
@@ -411,12 +411,12 @@ export default function AdminUsers() {
                         className={`px-2.5 py-1 text-xs font-medium rounded-full ${
                           user.role === 'admin'
                             ? 'bg-blue-100 text-blue-800'
-                            : user.role === 'Arteist'
+                            : user.role === 'artista'
                             ? 'bg-purple-100 text-purple-800'
                             : 'bg-slate-100 text-slate-800'
                         }`}
                       >
-                        {user.role === 'admin' ? 'Admin' : user.role === 'Arteist' ? 'Artista' : 'Usuário'}
+                        {user.role === 'admin' ? 'Admin' : user.role === 'artista' ? 'Artista' : 'Usuário'}
                       </span>
                     </td>
                     <td className="px-4 lg:px-6 py-4 whitespace-nowrap">
@@ -492,12 +492,12 @@ export default function AdminUsers() {
                     className={`px-2 py-1 text-xs font-medium rounded-full ${
                       user.role === 'admin'
                         ? 'bg-blue-100 text-blue-800'
-                        : user.role === 'Arteist'
+                        : user.role === 'artista'
                         ? 'bg-purple-100 text-purple-800'
                         : 'bg-slate-100 text-slate-800'
                     }`}
                   >
-                    {user.role === 'admin' ? 'Admin' : user.role === 'Arteist' ? 'Artista' : 'Usuário'}
+                    {user.role === 'admin' ? 'Admin' : user.role === 'artista' ? 'Artista' : 'Usuário'}
                   </span>
                 </div>
                 <div className="flex items-center justify-between gap-2">
@@ -613,7 +613,7 @@ export default function AdminUsers() {
                   <span className="text-sm font-medium text-slate-500">Função</span>
                   <span className="text-sm text-slate-900 font-medium capitalize">
                     {selectedUser.role === 'admin' ? 'Administrador' : 
-                     selectedUser.role === 'Arteist' ? 'Artista' : 'Usuário'}
+                     selectedUser.role === 'artista' ? 'Artista' : 'Usuário'}
                   </span>
                 </div>
                 <div className="flex justify-between py-2 border-b border-slate-100">

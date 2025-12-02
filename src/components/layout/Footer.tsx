@@ -60,7 +60,7 @@ export default function Footer() {
               </p>
               <p className="flex items-start justify-center sm:justify-start text-sm sm:text-base">
                 <span className="text-elit-yellow mr-2 mt-0.5">✉️</span>
-                <span className="break-all">elitArte.angola@gmail.com</span>
+                <span className="break-all">elitarte39@gmail.com</span>
               </p>
               <p className="flex items-center justify-center sm:justify-start text-sm sm:text-base">
                 <span className="text-elit-red mr-2">📱</span>

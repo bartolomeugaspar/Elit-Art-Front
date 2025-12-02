@@ -25,6 +25,8 @@ export default function AdminMessages() {
   const [showReplyModal, setShowReplyModal] = useState(false);
   const [replyText, setReplyText] = useState('');
   const [sendingReply, setSendingReply] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [messageToDelete, setMessageToDelete] = useState<string | null>(null);
 
   const filteredMessages = messages.filter(msg => {
     const matchesSearch = msg.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -81,25 +83,47 @@ export default function AdminMessages() {
     }
   };
 
-  const handleDeleteMessage = async (messageId: string) => {
-    if (!confirm('Tem certeza que deseja excluir esta mensagem?')) return;
+  const handleDeleteClick = (messageId: string) => {
+    setMessageToDelete(messageId);
+    setShowDeleteModal(true);
+  };
+
+  const handleDeleteMessage = async () => {
+    if (!messageToDelete) return;
 
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`${API_URL}/contact/${messageId}`, {
+      const response = await fetch(`${API_URL}/contact/${messageToDelete}`, {
         method: 'DELETE',
         headers: { Authorization: `Bearer ${token}` },
       });
 
       if (response.ok) {
-        toast.success('Mensagem excluída com sucesso!');
+        toast.success('Mensagem excluída com sucesso!', {
+          icon: <CheckCircle className="text-green-500" />,
+          style: {
+            background: '#f0fdf4',
+            color: '#15803d',
+            border: '1px solid #bbf7d0',
+          },
+        });
         fetchMessages();
-        if (selectedMessage?.id === messageId) {
+        if (selectedMessage?.id === messageToDelete) {
           setSelectedMessage(null);
         }
       }
     } catch (error) {
-      toast.error('Erro ao excluir mensagem');
+      toast.error('Erro ao excluir mensagem', {
+        icon: <X className="text-red-500" />,
+        style: {
+          background: '#fef2f2',
+          color: '#b91c1c',
+          border: '1px solid #fecaca',
+        },
+      });
+    } finally {
+      setShowDeleteModal(false);
+      setMessageToDelete(null);
     }
   };
 
@@ -169,7 +193,7 @@ export default function AdminMessages() {
       default:
         return status;
     }
-  };
+  }
 
   return (
     <div className="space-y-6">
@@ -295,8 +319,8 @@ export default function AdminMessages() {
                         <div className="text-xs text-slate-400">{message.phone}</div>
                       )}
                     </td>
-                    <td className="px-6 py-4">
-                      <div className="text-sm text-slate-900 max-w-xs truncate">{message.subject}</div>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="text-sm text-slate-600 truncate max-w-xs">{message.subject}</div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <span className={`px-3 py-1 text-xs font-medium rounded-full ${getStatusColor(message.status)}`}>
@@ -316,7 +340,7 @@ export default function AdminMessages() {
                           <Eye size={18} />
                         </button>
                         <button
-                          onClick={() => handleDeleteMessage(message.id)}
+                          onClick={() => handleDeleteClick(message.id)}
                           className="text-red-600 hover:text-red-900 p-1.5 rounded-full hover:bg-red-50 transition-colors"
                           title="Excluir"
                         >
@@ -376,7 +400,7 @@ export default function AdminMessages() {
                   <Eye size={18} />
                 </button>
                 <button
-                  onClick={() => handleDeleteMessage(message.id)}
+                  onClick={() => handleDeleteClick(message.id)}
                   className="text-red-600 hover:text-red-900 p-2 rounded-lg hover:bg-red-50 transition-colors"
                   title="Excluir"
                 >
@@ -458,8 +482,8 @@ export default function AdminMessages() {
                 <button
                   type="button"
                   onClick={() => {
+                    handleDeleteClick(selectedMessage.id);
                     setSelectedMessage(null);
-                    handleDeleteMessage(selectedMessage.id);
                   }}
                   className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-medium"
                 >
@@ -548,6 +572,41 @@ export default function AdminMessages() {
                   )}
                 </button>
               </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Delete Confirmation Modal */}
+      {showDeleteModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-xl p-6 max-w-md w-full mx-4">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-bold text-slate-900">Confirmar exclusão</h3>
+              <button 
+                onClick={() => setShowDeleteModal(false)}
+                className="text-slate-400 hover:text-slate-600"
+              >
+                <X size={20} />
+              </button>
+            </div>
+            <p className="text-slate-600 mb-6">
+              Tem certeza que deseja excluir esta mensagem? Esta ação não pode ser desfeita.
+            </p>
+            <div className="flex justify-end gap-3">
+              <button
+                onClick={() => setShowDeleteModal(false)}
+                className="px-4 py-2 text-sm font-medium text-slate-600 hover:bg-slate-100 rounded-lg transition"
+              >
+                Cancelar
+              </button>
+              <button
+                onClick={handleDeleteMessage}
+                className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-sm font-medium rounded-lg transition flex items-center gap-2"
+              >
+                <Trash2 size={16} />
+                Excluir
+              </button>
             </div>
           </div>
         </div>
