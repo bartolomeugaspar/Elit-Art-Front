@@ -35,9 +35,12 @@ export default function ContactSection() {
       })
 
       if (!response.ok) {
-        throw new Error('Erro ao enviar mensagem')
+        const errorData = await response.json().catch(() => ({}))
+        const errorMessage = errorData.message || 'Erro ao enviar mensagem'
+        throw new Error(errorMessage)
       }
 
+      const result = await response.json()
       toast.success('Mensagem enviada com sucesso! Entraremos em contacto em breve.')
       setFormData({
         name: '',
@@ -46,8 +49,9 @@ export default function ContactSection() {
         subject: '',
         message: ''
       })
-    } catch (error) {
-      toast.error('Erro ao enviar mensagem. Tente novamente.')
+    } catch (error: any) {
+      const message = error.message || 'Erro ao enviar mensagem. Tente novamente.'
+      toast.error(message)
     } finally {
       setLoading(false)
     }
