@@ -11,8 +11,8 @@ export default function RootLayout({
 }) {
   const pathname = usePathname();
   
-  // Don't apply AdminLayout to login and forgot-password pages
-  const isAuthPage = pathname === '/admin/login' || pathname === '/admin/forgot-password';
+  // Don't apply AdminLayout to login, forgot-password and reset-password pages
+  const isAuthPage = pathname === '/admin/login' || pathname === '/admin/forgot-password' || pathname === '/admin/reset-password';
   
   return (
     <>
