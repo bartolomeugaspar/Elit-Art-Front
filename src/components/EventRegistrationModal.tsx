@@ -24,6 +24,7 @@ export default function EventRegistrationModal({
 }: EventRegistrationModalProps) {
   const [fullName, setFullName] = useState('')
   const [email, setEmail] = useState('')
+  const [phoneNumber, setPhoneNumber] = useState('')
   const [paymentMethod, setPaymentMethod] = useState('')
   const [paymentProofFile, setPaymentProofFile] = useState<File | null>(null)
   const [paymentProofPreview, setPaymentProofPreview] = useState<string | null>(null)
@@ -125,6 +126,19 @@ export default function EventRegistrationModal({
       return
     }
 
+    // Validar número de telefone
+    if (!phoneNumber.trim()) {
+      toast.error('Número de telefone é obrigatório')
+      return
+    }
+
+    // Validar formato do telefone (aceitar vários formatos angolanos)
+    const phoneRegex = /^[\d\s()+-]+$/
+    if (!phoneRegex.test(phoneNumber) || phoneNumber.replace(/\D/g, '').length < 9) {
+      toast.error('Por favor, insira um número de telefone válido')
+      return
+    }
+
     // Validar pagamento para eventos pagos
     if (!isFree) {
       if (!paymentMethod) {
@@ -164,6 +178,7 @@ export default function EventRegistrationModal({
       const registrationData = {
         full_name: fullName.trim(),
         email: email.trim(),
+        phone_number: phoneNumber.trim(),
         payment_method: isFree ? null : paymentMethod,
         proof_url: proofUrl,
       }
@@ -302,6 +317,22 @@ export default function EventRegistrationModal({
               />
             </div>
 
+            {/* Phone Number */}
+            <div>
+              <label htmlFor="phoneNumber" className="block text-sm font-medium text-elit-dark mb-1">
+                Número de Telefone *
+              </label>
+              <input
+                type="tel"
+                id="phoneNumber"
+                value={phoneNumber}
+                onChange={(e) => setPhoneNumber(e.target.value)}
+                placeholder="Ex: +244 923 456 789"
+                className="w-full px-4 py-2 bg-white border border-elit-dark/20 rounded-lg text-elit-dark placeholder-elit-dark/40 focus:outline-none focus:border-elit-orange focus:ring-2 focus:ring-elit-orange/20 transition"
+                required
+              />
+            </div>
+
             {/* Payment Section (only for paid events) */}
             {!isFree && (
               <>
@@ -321,7 +352,6 @@ export default function EventRegistrationModal({
                       required
                     >
                       <option value="">Selecione um método</option>
-                      <option value="M-Pesa">M-Pesa</option>
                       <option value="Bank Transfer">Transferência Bancária</option>
                       <option value="Other">Outro</option>
                     </select>

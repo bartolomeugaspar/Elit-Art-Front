@@ -10,6 +10,7 @@ import {
   Calendar,
   UserCheck,
   Mail,
+  MailOpen,
   LogOut,
   Menu,
   X,
@@ -164,6 +165,11 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
       label: 'Mensagens',
       href: '/admin/newsletter',
       icon: Mail,
+    },
+    {
+      label: 'Newsletter',
+      href: '/admin/newsletter/subscribers',
+      icon: MailOpen,
     },
     {
       label: 'Galeria',

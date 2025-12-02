@@ -5,6 +5,8 @@ import { useEvents } from '@/hooks'
 import { Calendar, MapPin, Clock, ArrowRight, Search, X } from 'lucide-react'
 import Link from 'next/link'
 import { useState, useMemo } from 'react'
+import { API_URL } from '@/lib/api'
+import toast from 'react-hot-toast'
 
 export default function EventosPage() {
   const { getUpcomingEvents, getPastEvents, searchEvents } = useEvents()
@@ -12,6 +14,8 @@ export default function EventosPage() {
   const pastEvents = getPastEvents()
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
+  const [newsletterEmail, setNewsletterEmail] = useState('')
+  const [isSubscribing, setIsSubscribing] = useState(false)
 
   const categories = ['Workshop', 'Exposição', 'Masterclass', 'Networking']
 
@@ -24,6 +28,44 @@ export default function EventosPage() {
 
     return filtered
   }, [searchQuery, selectedCategory, upcomingEvents, searchEvents])
+
+  const handleNewsletterSubscribe = async (e: React.FormEvent) => {
+    e.preventDefault()
+    
+    if (!newsletterEmail || !newsletterEmail.includes('@')) {
+      toast.error('Por favor, insira um email válido')
+      return
+    }
+
+    setIsSubscribing(true)
+    
+    try {
+      const response = await fetch(`${API_URL}/newsletter/subscribe`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email: newsletterEmail }),
+      })
+
+      const data = await response.json()
+
+      if (response.ok) {
+        toast.success('Inscrição realizada com sucesso! Você receberá notificações sobre novos eventos.')
+        setNewsletterEmail('')
+      } else {
+        if (data.message?.includes('already subscribed') || data.error?.includes('already subscribed')) {
+          toast.error('Este email já está inscrito na newsletter')
+        } else {
+          toast.error(data.message || 'Erro ao fazer inscrição')
+        }
+      }
+    } catch (error) {
+      toast.error('Erro ao conectar com o servidor')
+    } finally {
+      setIsSubscribing(false)
+    }
+  }
 
   return (
     <div className="min-h-screen bg-elit-light">
@@ -262,16 +304,31 @@ export default function EventosPage() {
             <p className="text-sm sm:text-base text-elit-light/80 mb-6 md:mb-8">
               Inscreva-se na nossa newsletter para receber informações sobre novos eventos e oportunidades.
             </p>
-            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
+            <form onSubmit={handleNewsletterSubscribe} className="flex flex-col sm:flex-row gap-3 sm:gap-4">
               <input
                 type="email"
                 placeholder="Seu email"
-                className="flex-1 px-4 sm:px-6 py-2.5 sm:py-3 rounded-lg sm:rounded-xl border border-elit-orange bg-elit-light text-elit-dark placeholder-elit-dark/50 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-elit-orange"
+                value={newsletterEmail}
+                onChange={(e) => setNewsletterEmail(e.target.value)}
+                required
+                disabled={isSubscribing}
+                className="flex-1 px-4 sm:px-6 py-2.5 sm:py-3 rounded-lg sm:rounded-xl border border-elit-orange bg-elit-light text-elit-dark placeholder-elit-dark/50 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-elit-orange disabled:opacity-50"
               />
-              <button className="bg-elit-orange hover:bg-elit-gold text-elit-light px-6 sm:px-8 py-2.5 sm:py-3 rounded-lg sm:rounded-xl font-semibold text-sm sm:text-base transition-all duration-300 whitespace-nowrap">
-                Inscrever
+              <button 
+                type="submit"
+                disabled={isSubscribing}
+                className="bg-elit-orange hover:bg-elit-gold text-elit-light px-6 sm:px-8 py-2.5 sm:py-3 rounded-lg sm:rounded-xl font-semibold text-sm sm:text-base transition-all duration-300 whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              >
+                {isSubscribing ? (
+                  <>
+                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                    Inscrevendo...
+                  </>
+                ) : (
+                  'Inscrever'
+                )}
               </button>
-            </div>
+            </form>
           </div>
         </div>
       </section>

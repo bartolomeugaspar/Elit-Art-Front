@@ -165,6 +165,70 @@ export default function AdminEvents() {
     setShowDeleteModal(true);
   };
 
+  const handleDownloadPDF = async (eventId: string, eventTitle: string, detailed: boolean = false) => {
+    const loadingToast = toast.loading('Gerando PDF...');
+    
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        throw new Error('Token não encontrado. Faça login novamente.');
+      }
+      
+      const url = `${API_URL}/events/${eventId}/registrations/pdf${detailed ? '?detailed=true' : ''}`;
+      console.log('Downloading PDF from:', url);
+      
+      const response = await fetch(url, {
+        headers: { 
+          'Authorization': `Bearer ${token}`,
+          'Accept': 'application/pdf'
+        },
+      });
+
+      if (response.ok) {
+        const blob = await response.blob();
+        const downloadUrl = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = downloadUrl;
+        a.download = `inscritos-${eventTitle.replace(/[^a-z0-9]/gi, '-').toLowerCase()}-${new Date().toISOString().split('T')[0]}.pdf`;
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(downloadUrl);
+        document.body.removeChild(a);
+        
+        toast.success('PDF baixado com sucesso!', {
+          id: loadingToast,
+          icon: <CheckCircle className="text-green-500" />,
+          style: {
+            background: '#f0fdf4',
+            color: '#15803d',
+            border: '1px solid #bbf7d0',
+          },
+        });
+      } else {
+        const data = await response.json().catch(() => ({}));
+        toast.error(data.message || 'Erro ao gerar PDF. Verifique se há inscritos neste evento.', {
+          id: loadingToast,
+          icon: <X className="text-red-500" />,
+          style: {
+            background: '#fef2f2',
+            color: '#b91c1c',
+            border: '1px solid #fecaca',
+          },
+        });
+      }
+    } catch (error) {
+      toast.error('Erro ao conectar com o servidor', {
+        id: loadingToast,
+        icon: <X className="text-red-500" />,
+        style: {
+          background: '#fef2f2',
+          color: '#b91c1c',
+          border: '1px solid #fecaca',
+        },
+      });
+    }
+  };
+
   const handleDeleteEvent = async () => {
     if (!eventToDelete) return;
     
@@ -346,6 +410,15 @@ export default function AdminEvents() {
                     <td className="px-4 lg:px-6 py-4 whitespace-nowrap text-right text-xs lg:text-sm font-medium">
                       <div className="flex justify-end space-x-1 lg:space-x-2">
                         <button
+                          onClick={() => handleDownloadPDF(event.id, event.title, false)}
+                          className="text-green-600 hover:text-green-900 p-1.5 rounded-full hover:bg-green-50 transition-colors"
+                          title="Baixar PDF de Inscritos"
+                        >
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                          </svg>
+                        </button>
+                        <button
                           onClick={() => handleViewDetails(event)}
                           className="text-slate-600 hover:text-purple-900 p-1.5 rounded-full hover:bg-slate-100 transition-colors"
                           title="Ver detalhes"
@@ -439,6 +512,15 @@ export default function AdminEvents() {
               </div>
 
               <div className="flex gap-2 justify-end">
+                <button
+                  onClick={() => handleDownloadPDF(event.id, event.title, false)}
+                  className="text-green-600 hover:text-green-900 p-2 rounded-lg hover:bg-green-50 transition-colors"
+                  title="Baixar PDF"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                  </svg>
+                </button>
                 <button
                   onClick={() => handleViewDetails(event)}
                   className="text-slate-600 hover:text-purple-900 p-2 rounded-lg hover:bg-slate-100 transition-colors"
