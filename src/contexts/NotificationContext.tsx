@@ -231,15 +231,28 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
   }, [isAdmin])
 
   const addNotification = (notification: Omit<Notification, 'id' | 'createdAt' | 'read'>) => {
+    if (!isAdmin) return // Só adicionar se for admin
+    
     const newNotification: Notification = {
       ...notification,
       id: `manual-${Date.now()}`,
       createdAt: new Date().toISOString(),
       read: false
     }
-    setNotifications(prev => [newNotification, ...prev])
     
-    // Disparar evento global
+    // Adicionar imediatamente à lista
+    setNotifications(prev => {
+      // Evitar duplicatas
+      const exists = prev.some(n => 
+        n.type === newNotification.type && 
+        n.message === newNotification.message
+      )
+      if (exists) return prev
+      
+      return [newNotification, ...prev]
+    })
+    
+    // Disparar evento global para atualizar também do backend
     window.dispatchEvent(new CustomEvent('newContactMessage'))
   }
 
