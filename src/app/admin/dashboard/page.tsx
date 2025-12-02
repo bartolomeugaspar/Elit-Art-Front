@@ -42,6 +42,15 @@ interface Stats {
     action: string;
     timestamp: string;
   }>;
+  growth?: {
+    users: number;
+    events: number;
+    registrations: number;
+    messages: number;
+    artworks: number;
+    blogPosts: number;
+    artists: number;
+  };
 }
 
 // Skeleton Loader Component
@@ -110,10 +119,22 @@ export default function AdminDashboard() {
       const users = usersData.users || [];
       const events = eventsData.events || [];
       const registrations = registrationsData.registrations || [];
-      const messages = Array.isArray(contactData) ? contactData : [];
+      const messages = contactData.messages || [];
       const artworks = artworksData.artworks || [];
       const blogPosts = blogData.posts || [];
       const artists = artistsData.artists || [];
+
+      // Calcular crescimento (últimas 24h vs total)
+      const yesterday = new Date();
+      yesterday.setDate(yesterday.getDate() - 1);
+
+      const recentUsers = users.filter((u: any) => new Date(u.created_at) > yesterday).length;
+      const recentEvents = events.filter((e: any) => new Date(e.created_at) > yesterday).length;
+      const recentRegistrations = registrations.filter((r: any) => new Date(r.created_at) > yesterday).length;
+      const recentMessages = messages.filter((m: any) => new Date(m.created_at) > yesterday).length;
+      const recentArtworks = artworks.filter((a: any) => new Date(a.created_at) > yesterday).length;
+      const recentBlogPosts = blogPosts.filter((b: any) => new Date(b.created_at) > yesterday).length;
+      const recentArtists = artists.filter((a: any) => new Date(a.created_at) > yesterday).length;
 
       // Contar por role
       const usersByRole: { [key: string]: number } = {};
@@ -146,6 +167,15 @@ export default function AdminDashboard() {
         eventsByCategory,
         registrationsByStatus,
         recentActivity: [],
+        growth: {
+          users: recentUsers,
+          events: recentEvents,
+          registrations: recentRegistrations,
+          messages: recentMessages,
+          artworks: recentArtworks,
+          blogPosts: recentBlogPosts,
+          artists: recentArtists
+        }
       });
     } catch (error) {
     } finally {
@@ -192,7 +222,11 @@ export default function AdminDashboard() {
             <div className="bg-blue-100 p-2.5 rounded-lg group-hover:bg-blue-200 transition-all">
               <Users size={20} className="text-blue-600" />
             </div>
-            <span className="inline-block bg-green-100 text-green-700 text-xs font-bold px-2 py-0.5 rounded-full">+12%</span>
+            {!loading && stats.growth && stats.growth.users > 0 && (
+              <span className="inline-block bg-green-100 text-green-700 text-xs font-bold px-2 py-0.5 rounded-full">
+                +{stats.growth.users} hoje
+              </span>
+            )}
           </div>
           <p className="text-slate-600 text-xs font-medium mb-1">Usuários</p>
           <p className="text-3xl font-bold text-slate-900 mb-1">
@@ -207,7 +241,11 @@ export default function AdminDashboard() {
             <div className="bg-purple-100 p-2.5 rounded-lg group-hover:bg-purple-200 transition-all">
               <Calendar size={20} className="text-purple-600" />
             </div>
-            <span className="inline-block bg-green-100 text-green-700 text-xs font-bold px-2 py-0.5 rounded-full">+8%</span>
+            {!loading && stats.growth && stats.growth.events > 0 && (
+              <span className="inline-block bg-green-100 text-green-700 text-xs font-bold px-2 py-0.5 rounded-full">
+                +{stats.growth.events} hoje
+              </span>
+            )}
           </div>
           <p className="text-slate-600 text-xs font-medium mb-1">Eventos</p>
           <p className="text-3xl font-bold text-slate-900 mb-1">
@@ -222,7 +260,11 @@ export default function AdminDashboard() {
             <div className="bg-green-100 p-2.5 rounded-lg group-hover:bg-green-200 transition-all">
               <UserCheck size={20} className="text-green-600" />
             </div>
-            <span className="inline-block bg-green-100 text-green-700 text-xs font-bold px-2 py-0.5 rounded-full">+15%</span>
+            {!loading && stats.growth && stats.growth.registrations > 0 && (
+              <span className="inline-block bg-green-100 text-green-700 text-xs font-bold px-2 py-0.5 rounded-full">
+                +{stats.growth.registrations} hoje
+              </span>
+            )}
           </div>
           <p className="text-slate-600 text-xs font-medium mb-1">Inscrições</p>
           <p className="text-3xl font-bold text-slate-900 mb-1">
@@ -237,7 +279,11 @@ export default function AdminDashboard() {
             <div className="bg-orange-100 p-2.5 rounded-lg group-hover:bg-orange-200 transition-all">
               <Mail size={20} className="text-orange-600" />
             </div>
-            <span className="inline-block bg-green-100 text-green-700 text-xs font-bold px-2 py-0.5 rounded-full">Contactos</span>
+            {!loading && stats.growth && stats.growth.messages > 0 && (
+              <span className="inline-block bg-green-100 text-green-700 text-xs font-bold px-2 py-0.5 rounded-full">
+                +{stats.growth.messages} hoje
+              </span>
+            )}
           </div>
           <p className="text-slate-600 text-xs font-medium mb-1">Mensagens</p>
           <p className="text-3xl font-bold text-slate-900 mb-1">
@@ -252,7 +298,11 @@ export default function AdminDashboard() {
             <div className="bg-pink-100 p-2.5 rounded-lg group-hover:bg-pink-200 transition-all">
               <Palette size={20} className="text-pink-600" />
             </div>
-            <span className="inline-block bg-blue-100 text-blue-700 text-xs font-bold px-2 py-0.5 rounded-full">Galeria</span>
+            {!loading && stats.growth && stats.growth.artworks > 0 && (
+              <span className="inline-block bg-green-100 text-green-700 text-xs font-bold px-2 py-0.5 rounded-full">
+                +{stats.growth.artworks} hoje
+              </span>
+            )}
           </div>
           <p className="text-slate-600 text-xs font-medium mb-1">Obras de Arte</p>
           <p className="text-3xl font-bold text-slate-900 mb-1">
@@ -267,7 +317,11 @@ export default function AdminDashboard() {
             <div className="bg-indigo-100 p-2.5 rounded-lg group-hover:bg-indigo-200 transition-all">
               <BookOpen size={20} className="text-indigo-600" />
             </div>
-            <span className="inline-block bg-purple-100 text-purple-700 text-xs font-bold px-2 py-0.5 rounded-full">Blog</span>
+            {!loading && stats.growth && stats.growth.blogPosts > 0 && (
+              <span className="inline-block bg-green-100 text-green-700 text-xs font-bold px-2 py-0.5 rounded-full">
+                +{stats.growth.blogPosts} hoje
+              </span>
+            )}
           </div>
           <p className="text-slate-600 text-xs font-medium mb-1">Artigos</p>
           <p className="text-3xl font-bold text-slate-900 mb-1">
@@ -282,7 +336,11 @@ export default function AdminDashboard() {
             <div className="bg-teal-100 p-2.5 rounded-lg group-hover:bg-teal-200 transition-all">
               <Users size={20} className="text-teal-600" />
             </div>
-            <span className="inline-block bg-teal-100 text-teal-700 text-xs font-bold px-2 py-0.5 rounded-full">Artistas</span>
+            {!loading && stats.growth && stats.growth.artists > 0 && (
+              <span className="inline-block bg-green-100 text-green-700 text-xs font-bold px-2 py-0.5 rounded-full">
+                +{stats.growth.artists} hoje
+              </span>
+            )}
           </div>
           <p className="text-slate-600 text-xs font-medium mb-1">Artistas</p>
           <p className="text-3xl font-bold text-slate-900 mb-1">
@@ -297,7 +355,6 @@ export default function AdminDashboard() {
             <div className="bg-amber-100 p-2.5 rounded-lg group-hover:bg-amber-200 transition-all">
               <ShoppingCart size={20} className="text-amber-600" />
             </div>
-            <span className="inline-block bg-amber-100 text-amber-700 text-xs font-bold px-2 py-0.5 rounded-full">Loja</span>
           </div>
           <p className="text-slate-600 text-xs font-medium mb-1">Produtos</p>
           <p className="text-3xl font-bold text-slate-900 mb-1">

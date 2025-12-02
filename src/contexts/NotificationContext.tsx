@@ -33,11 +33,15 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const token = localStorage.getItem('token')
     const user = localStorage.getItem('user')
+    console.log('🔍 Verificando admin:', { token: !!token, user })
     if (token && user) {
       try {
         const userData = JSON.parse(user)
+        console.log('👤 User data:', userData)
         setIsAdmin(userData.role === 'admin')
+        console.log('✅ isAdmin:', userData.role === 'admin')
       } catch (error) {
+        console.error('❌ Erro ao parsear user:', error)
         setIsAdmin(false)
       }
     }
@@ -45,8 +49,13 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
 
   // Buscar notificações do backend
   const refreshNotifications = async () => {
-    if (!isAdmin) return
+    console.log('🔔 refreshNotifications chamado. isAdmin:', isAdmin)
+    if (!isAdmin) {
+      console.log('⚠️ Não é admin, retornando...')
+      return
+    }
 
+    console.log('🚀 Buscando notificações...')
     try {
       const token = localStorage.getItem('token')
       if (!token) return
@@ -56,11 +65,15 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
 
       // 1. Buscar mensagens de contacto não lidas
       try {
+        console.log('📧 Buscando mensagens de contato...', `${API_URL}/contact`)
         const contactRes = await fetch(`${API_URL}/contact`, { headers })
+        console.log('📧 Status:', contactRes.status)
         if (contactRes.ok) {
           const contactData = await contactRes.json()
+          console.log('📧 Dados recebidos:', contactData)
           const messages = contactData.messages || []
           const unreadMessages = messages.filter((msg: any) => msg.status === 'new')
+          console.log('📧 Mensagens não lidas:', unreadMessages.length)
 
           const contactNotifications: Notification[] = unreadMessages.map((msg: any) => ({
             id: `contact-${msg.id}`,
@@ -73,9 +86,11 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
           }))
 
           allNotifications.push(...contactNotifications)
+        } else {
+          console.error('❌ Erro ao buscar contato:', await contactRes.text())
         }
       } catch (error) {
-        // Continuar mesmo se falhar
+        console.error('❌ Exceção ao buscar contato:', error)
       }
 
       // 2. Buscar novas inscrições (últimas 24h)
@@ -195,7 +210,7 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
           allNotifications.push(...userNotifications)
         }
       } catch (error) {
-        // Continuar mesmo se falhar
+        console.error('❌ Exceção ao buscar usuários:', error)
       }
 
       // Ordenar por data (mais recente primeiro)
@@ -203,9 +218,11 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
         new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
       )
 
+      console.log('✅ Notificações coletadas:', allNotifications.length)
+      console.log('📋 Notificações:', allNotifications)
       setNotifications(allNotifications)
     } catch (error) {
-      // Silenciar erros de notificação
+      console.error('❌ Erro ao buscar notificações:', error)
     }
   }
 
