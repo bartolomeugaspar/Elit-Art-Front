@@ -112,6 +112,18 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
     }
   }, [isAdmin])
 
+  // Escutar eventos de novas mensagens
+  useEffect(() => {
+    const handleNewContactMessage = () => {
+      if (isAdmin) {
+        refreshNotifications()
+      }
+    }
+
+    window.addEventListener('newContactMessage', handleNewContactMessage)
+    return () => window.removeEventListener('newContactMessage', handleNewContactMessage)
+  }, [isAdmin])
+
   const addNotification = (notification: Omit<Notification, 'id' | 'createdAt' | 'read'>) => {
     const newNotification: Notification = {
       ...notification,
@@ -120,6 +132,9 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
       read: false
     }
     setNotifications(prev => [newNotification, ...prev])
+    
+    // Disparar evento global
+    window.dispatchEvent(new CustomEvent('newContactMessage'))
   }
 
   const markAsRead = (id: string) => {

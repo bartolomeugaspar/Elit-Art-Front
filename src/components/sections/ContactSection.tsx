@@ -45,7 +45,7 @@ export default function ContactSection() {
       const result = await response.json()
       toast.success('Mensagem enviada com sucesso! Entraremos em contacto em breve.')
       
-      // Adicionar notificação para admins
+      // Adicionar notificação local para admins
       addNotification({
         type: 'contact',
         title: 'Nova Mensagem de Contacto',
@@ -53,8 +53,19 @@ export default function ContactSection() {
         link: '/admin/newsletter'
       })
       
-      // Atualizar lista de notificações
-      await refreshNotifications()
+      // Disparar evento global para atualizar notificações em tempo real
+      window.dispatchEvent(new CustomEvent('newContactMessage', {
+        detail: {
+          name: formData.name,
+          email: formData.email,
+          subject: formData.subject
+        }
+      }))
+      
+      // Atualizar lista de notificações do servidor
+      setTimeout(() => {
+        refreshNotifications()
+      }, 1000)
       
       setFormData({
         name: '',
