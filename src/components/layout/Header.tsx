@@ -1,14 +1,30 @@
 'use client'
 
 import { Menu, X, ChevronDown } from 'lucide-react'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import NotificationBell from '../NotificationBell'
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
+  const [isAdmin, setIsAdmin] = useState(false)
   const pathname = usePathname()
+
+  // Verificar se usuário é admin
+  useEffect(() => {
+    const token = localStorage.getItem('token')
+    const user = localStorage.getItem('user')
+    if (token && user) {
+      try {
+        const userData = JSON.parse(user)
+        setIsAdmin(userData.role === 'admin')
+      } catch (error) {
+        setIsAdmin(false)
+      }
+    }
+  }, [])
 
   const navigationItems = [
     { label: 'Home', href: '#home' },
@@ -121,11 +137,12 @@ export default function Header() {
 
           {/* CTA Buttons */}
           <div className="hidden md:flex items-center space-x-4">
+            {isAdmin && <NotificationBell />}
             <button
-              onClick={() => window.location.href = '/admin/login'}
+              onClick={() => window.location.href = isAdmin ? '/admin/dashboard' : '/admin/login'}
               className="bg-gray-200 hover:bg-gray-300 text-gray-900 px-6 py-2 rounded-full text-sm font-semibold transition-all duration-300 hover:scale-105"
             >
-              Login
+              {isAdmin ? 'Admin' : 'Login'}
             </button>
             <button
               onClick={() => handleNavClick('#contacto')}

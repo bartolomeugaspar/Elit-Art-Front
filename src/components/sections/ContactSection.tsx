@@ -3,11 +3,13 @@
 import { useState } from 'react'
 import { Mail, Phone, MapPin, Facebook, Instagram, Youtube, MessageCircle } from 'lucide-react'
 import toast from 'react-hot-toast'
+import { useNotifications } from '@/hooks/useNotifications'
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'
 
 export default function ContactSection() {
   const [loading, setLoading] = useState(false)
+  const { addNotification, refreshNotifications } = useNotifications()
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -42,6 +44,18 @@ export default function ContactSection() {
 
       const result = await response.json()
       toast.success('Mensagem enviada com sucesso! Entraremos em contacto em breve.')
+      
+      // Adicionar notificação para admins
+      addNotification({
+        type: 'contact',
+        title: 'Nova Mensagem de Contacto',
+        message: `${formData.name}: ${formData.subject}`,
+        link: '/admin/newsletter'
+      })
+      
+      // Atualizar lista de notificações
+      await refreshNotifications()
+      
       setFormData({
         name: '',
         email: '',

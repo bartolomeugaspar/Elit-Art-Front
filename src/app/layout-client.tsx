@@ -1,6 +1,7 @@
 'use client'
 
 import { BackgroundMusicWrapper } from '@/components/BackgroundMusicWrapper'
+import { NotificationProvider } from '@/contexts/NotificationContext'
 import { Toaster } from 'react-hot-toast'
 
 export default function RootLayoutClient({
@@ -9,7 +10,7 @@ export default function RootLayoutClient({
   children: React.ReactNode
 }) {
   return (
-    <>
+    <NotificationProvider>
       {children}
       <BackgroundMusicWrapper />
       <Toaster 
@@ -37,6 +38,6 @@ export default function RootLayoutClient({
           },
         }}
       />
-    </>
+    </NotificationProvider>
   )
 }

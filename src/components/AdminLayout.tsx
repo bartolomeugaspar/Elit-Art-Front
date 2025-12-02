@@ -22,6 +22,7 @@ import {
   MessageCircle,
 } from 'lucide-react';
 import { useToast, ToastContainer } from './Toast';
+import NotificationBell from './NotificationBell';
 
 export function AdminLayout({ children }: { children: React.ReactNode }) {
   const { toasts, showToast, removeToast } = useToast();
@@ -300,32 +301,7 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
               {/* Right Section */}
               <div className="flex items-center space-x-4">
                 {/* Notifications */}
-                <button 
-                  onClick={async () => {
-                    router.push('/admin/registrations');
-                    // Resetar contador após navegar
-                    setTimeout(() => {
-                      setNotificationCount(0);
-                    }, 500);
-                  }}
-                  className={`p-2 sm:p-2.5 rounded-full transition-all duration-300 ${
-                    hasNewRegistration 
-                      ? 'bg-red-100 text-red-600 animate-pulse' 
-                      : notificationCount > 0
-                      ? 'bg-red-50 text-red-600 hover:bg-red-100'
-                      : 'text-gray-500 hover:text-gray-600 hover:bg-gray-50'
-                  } focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500`}
-                  title={`${notificationCount} nova(s) inscrição(ões)`}
-                >
-                  <div className="relative">
-                    <Bell size={20} className="sm:w-6 sm:h-6" />
-                    {notificationCount > 0 && (
-                      <span className="absolute -top-2 -right-2 w-6 h-6 bg-red-600 text-white text-xs font-bold rounded-full flex items-center justify-center shadow-lg">
-                        {notificationCount > 99 ? '99+' : notificationCount}
-                      </span>
-                    )}
-                  </div>
-                </button>
+                <NotificationBell />
 
                 {/* User Profile */}
                 <div className="relative group">
