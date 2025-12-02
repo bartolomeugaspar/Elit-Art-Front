@@ -168,19 +168,10 @@ export default function EventRegistrationModal({
         proof_url: proofUrl,
       }
 
-        url: `${API_URL}/events/${eventId}/register`,
-        data: registrationData
-      })
-
       const response = await fetch(`${API_URL}/events/${eventId}/register`, {
         method: 'POST',
         headers,
         body: JSON.stringify(registrationData),
-      })
-
-        ok: response.ok, 
-        status: response.status,
-        statusText: response.statusText 
       })
 
       if (!response.ok) {
