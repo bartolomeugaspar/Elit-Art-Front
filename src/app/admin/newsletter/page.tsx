@@ -22,6 +22,9 @@ export default function AdminMessages() {
   const [selectedMessage, setSelectedMessage] = useState<ContactMessage | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('all');
+  const [showReplyModal, setShowReplyModal] = useState(false);
+  const [replyText, setReplyText] = useState('');
+  const [sendingReply, setSendingReply] = useState(false);
 
   const filteredMessages = messages.filter(msg => {
     const matchesSearch = msg.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -94,6 +97,46 @@ export default function AdminMessages() {
       }
     } catch (error) {
       toast.error('Erro ao excluir mensagem');
+    }
+  };
+
+  const handleReplyMessage = (message: ContactMessage) => {
+    setSelectedMessage(message);
+    setShowReplyModal(true);
+    setReplyText('');
+  };
+
+  const handleSendReply = async () => {
+    if (!selectedMessage || !replyText.trim()) {
+      toast.error('Por favor, escreva uma resposta');
+      return;
+    }
+
+    setSendingReply(true);
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch(`${API_URL}/contact/${selectedMessage.id}/reply`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ reply: replyText }),
+      });
+
+      if (response.ok) {
+        toast.success('Resposta enviada com sucesso!');
+        setShowReplyModal(false);
+        setReplyText('');
+        fetchMessages();
+        setSelectedMessage(null);
+      } else {
+        toast.error('Erro ao enviar resposta');
+      }
+    } catch (error) {
+      toast.error('Erro ao enviar resposta');
+    } finally {
+      setSendingReply(false);
     }
   };
 
@@ -401,13 +444,14 @@ export default function AdminMessages() {
               </div>
 
               <div className="flex justify-end space-x-3 pt-4 border-t border-slate-200">
-                <a
-                  href={`mailto:${selectedMessage.email}?subject=Re: ${selectedMessage.subject}`}
+                <button
+                  type="button"
+                  onClick={() => handleReplyMessage(selectedMessage)}
                   className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium flex items-center gap-2"
                 >
                   <Mail size={18} />
-                  Responder por Email
-                </a>
+                  Responder
+                </button>
                 <button
                   type="button"
                   onClick={() => {
@@ -417,6 +461,88 @@ export default function AdminMessages() {
                   className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-medium"
                 >
                   Excluir
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Reply Modal */}
+      {showReplyModal && selectedMessage && (
+        <div 
+          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50"
+          onClick={() => setShowReplyModal(false)}
+        >
+          <div 
+            className="bg-white rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="p-6">
+              <div className="flex justify-between items-start mb-6">
+                <div>
+                  <h3 className="text-2xl font-bold text-slate-900">Responder Mensagem</h3>
+                  <p className="text-slate-600 mt-1">Para: {selectedMessage.name} ({selectedMessage.email})</p>
+                  <p className="text-sm text-slate-500 mt-1">Assunto: Re: {selectedMessage.subject}</p>
+                </div>
+                <button
+                  onClick={() => setShowReplyModal(false)}
+                  className="text-slate-400 hover:text-slate-500 transition-colors"
+                  title="Fechar"
+                >
+                  <X size={24} />
+                </button>
+              </div>
+
+              {/* Original Message */}
+              <div className="bg-slate-50 border border-slate-200 rounded-lg p-4 mb-4">
+                <p className="text-xs text-slate-500 mb-2">Mensagem original:</p>
+                <p className="text-sm text-slate-700 whitespace-pre-line">
+                  {selectedMessage.message}
+                </p>
+              </div>
+
+              {/* Reply Textarea */}
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-slate-700 mb-2">
+                  Sua Resposta *
+                </label>
+                <textarea
+                  value={replyText}
+                  onChange={(e) => setReplyText(e.target.value)}
+                  placeholder="Escreva sua resposta aqui..."
+                  className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none text-slate-900"
+                  rows={8}
+                  required
+                />
+              </div>
+
+              <div className="flex justify-end space-x-3 pt-4 border-t border-slate-200">
+                <button
+                  type="button"
+                  onClick={() => setShowReplyModal(false)}
+                  className="px-4 py-2 bg-slate-200 text-slate-700 rounded-lg hover:bg-slate-300 transition-colors font-medium"
+                  disabled={sendingReply}
+                >
+                  Cancelar
+                </button>
+                <button
+                  type="button"
+                  onClick={handleSendReply}
+                  disabled={sendingReply || !replyText.trim()}
+                  className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {sendingReply ? (
+                    <>
+                      <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                      Enviando...
+                    </>
+                  ) : (
+                    <>
+                      <Mail size={18} />
+                      Enviar Resposta
+                    </>
+                  )}
                 </button>
               </div>
             </div>
