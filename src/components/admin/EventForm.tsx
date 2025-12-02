@@ -312,6 +312,7 @@ export default function EventForm({
       const data = await response.json();
 
       if (response.ok) {
+        onSuccess();
         toast.success(
           isEditing ? 'Evento atualizado com sucesso!' : 'Evento criado com sucesso!', 
           {
@@ -325,7 +326,6 @@ export default function EventForm({
             duration: 3000,
           }
         );
-        onSuccess();
       } else {
         throw new Error(data.message || 'Erro ao salvar evento');
       }

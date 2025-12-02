@@ -125,6 +125,11 @@ export default function AdminUsers() {
       const data = await response.json();
 
       if (response.ok) {
+        setFormData({ id: '', name: '', email: '', password: '', role: 'user', is_active: true });
+        setShowForm(false);
+        setIsEditing(false);
+        fetchUsers();
+        
         toast.success(
           isEditing ? 'Usuário atualizado com sucesso!' : 'Usuário criado com sucesso!', 
           {
@@ -138,11 +143,6 @@ export default function AdminUsers() {
             duration: 3000,
           }
         );
-        
-        setFormData({ id: '', name: '', email: '', password: '', role: 'user' });
-        setShowForm(false);
-        setIsEditing(false);
-        fetchUsers();
       } else {
         throw new Error(data.message || 'Erro ao salvar usuário');
       }
@@ -275,20 +275,19 @@ export default function AdminUsers() {
                   />
                 </div>
                 
-                <div className="space-y-2">
-                  <label className="block text-sm font-medium text-slate-700">
-                    {isEditing ? 'Nova Senha' : 'Senha'}
-                    {isEditing && <span className="text-slate-400 ml-1 font-normal">(opcional)</span>}
-                  </label>
-                  <input
-                    type="password"
-                    placeholder={isEditing ? "Deixe em branco para manter a senha atual" : "Digite uma senha"}
-                    value={formData.password}
-                    onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                    className="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
-                    required={!isEditing}
-                  />
-                </div>
+                {!isEditing && (
+                  <div className="space-y-2">
+                    <label className="block text-sm font-medium text-slate-700">Senha</label>
+                    <input
+                      type="password"
+                      placeholder="Digite uma senha"
+                      value={formData.password}
+                      onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                      className="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                      required
+                    />
+                  </div>
+                )}
                 
                 <div className="space-y-2">
                   <label className="block text-sm font-medium text-slate-700">Função</label>

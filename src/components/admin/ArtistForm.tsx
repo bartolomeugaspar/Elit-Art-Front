@@ -114,11 +114,11 @@ export default function ArtistForm({ onSuccess, onCancel, initialData, isEditing
       })
 
       if (response.ok) {
+        onSuccess()
         toast.success(
           isEditing ? 'Artista atualizado com sucesso!' : 'Artista criado com sucesso!',
           { duration: 3000 }
         )
-        onSuccess()
       } else {
         throw new Error('Erro ao salvar artista')
       }
