@@ -52,25 +52,34 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
       if (!token) return
 
       const headers = { Authorization: `Bearer ${token}` }
+      const allNotifications: Notification[] = []
 
-      // Buscar mensagens não lidas
-      const contactRes = await fetch(`${API_URL}/contact`, { headers })
-      if (contactRes.ok) {
-        const contactData = await contactRes.json()
-        const messages = contactData.messages || []
-        const unreadMessages = messages.filter((msg: any) => msg.status === 'new')
+      // 1. Buscar mensagens de contacto não lidas
+      try {
+        const contactRes = await fetch(`${API_URL}/contact`, { headers })
+        if (contactRes.ok) {
+          const contactData = await contactRes.json()
+          const messages = contactData.messages || []
+          const unreadMessages = messages.filter((msg: any) => msg.status === 'new')
 
-        const contactNotifications: Notification[] = unreadMessages.map((msg: any) => ({
-          id: `contact-${msg.id}`,
-          type: 'contact' as const,
-          title: 'Nova Mensagem de Contacto',
-          message: `${msg.name}: ${msg.subject}`,
-          read: false,
-          createdAt: msg.created_at,
-          link: '/admin/newsletter'
-        }))
+          const contactNotifications: Notification[] = unreadMessages.map((msg: any) => ({
+            id: `contact-${msg.id}`,
+            type: 'contact' as const,
+            title: 'Nova Mensagem de Contacto',
+            message: `${msg.name}: ${msg.subject}`,
+            read: false,
+            createdAt: msg.created_at,
+            link: '/admin/newsletter'
+          }))
 
-        // Buscar novas inscrições (últimas 24h)
+          allNotifications.push(...contactNotifications)
+        }
+      } catch (error) {
+        // Continuar mesmo se falhar
+      }
+
+      // 2. Buscar novas inscrições (últimas 24h)
+      try {
         const registrationsRes = await fetch(`${API_URL}/registrations`, { headers })
         if (registrationsRes.ok) {
           const regData = await registrationsRes.json()
@@ -93,11 +102,108 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
             link: '/admin/registrations'
           }))
 
-          setNotifications([...contactNotifications, ...regNotifications])
-        } else {
-          setNotifications(contactNotifications)
+          allNotifications.push(...regNotifications)
         }
+      } catch (error) {
+        // Continuar mesmo se falhar
       }
+
+      // 3. Buscar novos comentários na comunidade (últimas 24h)
+      try {
+        const forumRes = await fetch(`${API_URL}/forum/topics`, { headers })
+        if (forumRes.ok) {
+          const forumData = await forumRes.json()
+          const topics = forumData.topics || []
+          const yesterday = new Date()
+          yesterday.setDate(yesterday.getDate() - 1)
+
+          const recentTopics = topics.filter((topic: any) => {
+            const topicDate = new Date(topic.created_at)
+            return topicDate > yesterday
+          })
+
+          const topicNotifications: Notification[] = recentTopics.slice(0, 5).map((topic: any) => ({
+            id: `topic-${topic.id}`,
+            type: 'comment' as const,
+            title: 'Novo Tópico na Comunidade',
+            message: `${topic.author_name}: ${topic.title}`,
+            read: false,
+            createdAt: topic.created_at,
+            link: '/admin/comunidade'
+          }))
+
+          allNotifications.push(...topicNotifications)
+        }
+      } catch (error) {
+        // Continuar mesmo se falhar
+      }
+
+      // 4. Buscar novas encomendas (últimas 24h)
+      try {
+        const ordersRes = await fetch(`${API_URL}/orders`, { headers })
+        if (ordersRes.ok) {
+          const ordersData = await ordersRes.json()
+          const orders = ordersData.orders || []
+          const yesterday = new Date()
+          yesterday.setDate(yesterday.getDate() - 1)
+
+          const recentOrders = orders.filter((order: any) => {
+            const orderDate = new Date(order.created_at)
+            return orderDate > yesterday && order.status === 'pending'
+          })
+
+          const orderNotifications: Notification[] = recentOrders.map((order: any) => ({
+            id: `order-${order.id}`,
+            type: 'order' as const,
+            title: 'Nova Encomenda',
+            message: `${order.customer_name} - ${order.total_amount} Kz`,
+            read: false,
+            createdAt: order.created_at,
+            link: '/admin/loja'
+          }))
+
+          allNotifications.push(...orderNotifications)
+        }
+      } catch (error) {
+        // Continuar mesmo se falhar
+      }
+
+      // 5. Buscar novos usuários (últimas 24h)
+      try {
+        const usersRes = await fetch(`${API_URL}/users`, { headers })
+        if (usersRes.ok) {
+          const usersData = await usersRes.json()
+          const users = usersData.users || []
+          const yesterday = new Date()
+          yesterday.setDate(yesterday.getDate() - 1)
+
+          const recentUsers = users.filter((user: any) => {
+            const userDate = new Date(user.created_at)
+            return userDate > yesterday
+          })
+
+          const userNotifications: Notification[] = recentUsers.slice(0, 5).map((user: any) => ({
+            id: `user-${user.id}`,
+            type: 'general' as const,
+            title: 'Novo Usuário Registrado',
+            message: `${user.name} (${user.email})`,
+            read: false,
+            createdAt: user.created_at,
+            link: '/admin/users'
+          }))
+
+          allNotifications.push(...userNotifications)
+        }
+      } catch (error) {
+        // Continuar mesmo se falhar
+      }
+
+      // Ordenar por data (mais recente primeiro)
+      allNotifications.sort((a, b) => 
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      )
+
+      setNotifications(allNotifications)
     } catch (error) {
       // Silenciar erros de notificação
     }
