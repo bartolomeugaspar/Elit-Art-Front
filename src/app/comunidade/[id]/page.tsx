@@ -183,139 +183,183 @@ export default function TopicDetailPage() {
       </div>
 
       {/* Main Content */}
-      <div className="py-12 md:py-16 pb-24 md:pb-32">
+      <div className="py-8 md:py-12 pb-24 md:pb-32 bg-gray-50">
         <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto">
-            {/* Topic Header */}
-            <div className="bg-white rounded-lg shadow-md p-8 mb-8">
-              <div className="flex items-start justify-between mb-4">
-                <div className="flex-1">
-                  <div className="flex items-center gap-3 mb-4">
-                    <span className={`inline-block px-3 py-1 rounded-full text-sm font-semibold ${getCategoryColor(topic.category)}`}>
-                      {getCategoryLabel(topic.category)}
-                    </span>
-                    {topic.is_pinned && (
-                      <span className="inline-block px-3 py-1 bg-yellow-100 text-yellow-800 rounded-full text-sm font-semibold">
-                        📌 Fixado
-                      </span>
-                    )}
-                    {topic.is_closed && (
-                      <span className="inline-block px-3 py-1 bg-gray-100 text-gray-800 rounded-full text-sm font-semibold">
-                        🔒 Fechado
-                      </span>
-                    )}
+          <div className="max-w-2xl mx-auto">
+            {/* Main Post Card - Estilo Facebook */}
+            <div className="bg-white rounded-lg shadow mb-4">
+              {/* Author Info */}
+              <div className="p-4 border-b">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-elit-red to-elit-orange flex items-center justify-center text-white font-bold">
+                    {topic.author_name.charAt(0).toUpperCase()}
                   </div>
-
-                  <h1 className="text-4xl font-bold text-elit-dark mb-4">
-                    {topic.title}
-                  </h1>
-
-                  <div className="flex flex-col md:flex-row md:items-center gap-4 text-elit-dark/70 mb-6 pb-6 border-b">
+                  <div className="flex-1">
                     <div className="flex items-center gap-2">
-                      <span className="font-semibold">{topic.author_name}</span>
+                      <p className="font-semibold text-elit-dark">{topic.author_name}</p>
+                      <span className={`inline-block px-2 py-0.5 rounded text-xs font-semibold ${getCategoryColor(topic.category)}`}>
+                        {getCategoryLabel(topic.category)}
+                      </span>
                     </div>
-                    <div className="flex items-center gap-2">
-                      {new Date(topic.created_at).toLocaleDateString('pt-BR', {
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric',
-                      })}
+                    <div className="flex items-center gap-2 text-xs text-elit-dark/60">
+                      <span>
+                        {new Date(topic.created_at).toLocaleDateString('pt-BR', {
+                          day: 'numeric',
+                          month: 'long',
+                          year: 'numeric',
+                        })}
+                      </span>
+                      {topic.is_pinned && <span className="text-yellow-600">• 📌 Fixado</span>}
+                      {topic.is_closed && <span className="text-red-600">• 🔒 Fechado</span>}
                     </div>
                   </div>
                 </div>
               </div>
 
-              {/* Stats */}
-              <div className="flex flex-wrap items-center gap-6">
-                <div className="flex items-center gap-2 text-elit-dark/60">
-                  <Eye size={20} />
-                  <span>{topic.views} visualizações</span>
-                </div>
-                <div className="flex items-center gap-2 text-elit-dark/60">
-                  <MessageCircle size={20} />
-                  <span>{topic.replies_count} respostas</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Topic Description */}
-            <div className="bg-white rounded-lg shadow-md p-8 mb-8">
-              <div className="prose prose-lg max-w-none">
-                <p className="text-elit-dark/80 leading-relaxed whitespace-pre-wrap">
+              {/* Post Content */}
+              <div className="p-4">
+                <h1 className="text-xl md:text-2xl font-bold text-elit-dark mb-3">
+                  {topic.title}
+                </h1>
+                <p className="text-elit-dark leading-relaxed whitespace-pre-wrap">
                   {topic.description}
                 </p>
               </div>
+
+              {/* Stats Bar */}
+              <div className="px-4 py-2 border-t border-b flex items-center justify-between text-sm text-elit-dark/60">
+                <div className="flex items-center gap-4">
+                  <span className="flex items-center gap-1">
+                    <Eye size={16} />
+                    {topic.views} visualizações
+                  </span>
+                </div>
+                <span className="flex items-center gap-1">
+                  {replies.length} {replies.length === 1 ? 'comentário' : 'comentários'}
+                </span>
+              </div>
+
+              {/* Action Buttons (opcional) */}
+              <div className="px-4 py-2 flex items-center gap-2">
+                <button className="flex-1 py-2 hover:bg-gray-100 rounded-lg transition text-elit-dark/70 font-semibold text-sm">
+                  👍 Curtir
+                </button>
+                <button className="flex-1 py-2 hover:bg-gray-100 rounded-lg transition text-elit-dark/70 font-semibold text-sm">
+                  💬 Comentar
+                </button>
+                <button className="flex-1 py-2 hover:bg-gray-100 rounded-lg transition text-elit-dark/70 font-semibold text-sm">
+                  ↗️ Compartilhar
+                </button>
+              </div>
             </div>
 
-            {/* Replies Section */}
-            <div className="bg-white rounded-lg shadow-md p-8 mb-8">
-              <h2 className="text-2xl font-bold text-elit-dark mb-6">
-                Respostas ({replies.length})
-              </h2>
-
+            {/* Comments Section - Estilo Facebook */}
+            <div className="bg-white rounded-lg shadow">
               {replies.length === 0 ? (
-                <p className="text-elit-dark/60 text-center py-8">
-                  Nenhuma resposta ainda. Seja o primeiro a responder!
-                </p>
+                <div className="p-6 text-center text-elit-dark/60">
+                  Nenhum comentário ainda. Seja o primeiro a comentar!
+                </div>
               ) : (
-                <div className="space-y-6">
-                  {replies.map((reply) => (
-                    <div key={reply.id} className="border-l-4 border-elit-red pl-6 py-4">
-                      <div className="flex items-start justify-between mb-2">
-                        <div>
-                          <p className="font-semibold text-elit-dark">{reply.author_name}</p>
-                          <p className="text-sm text-elit-dark/60">
-                            {new Date(reply.created_at).toLocaleDateString('pt-BR', {
-                              year: 'numeric',
-                              month: 'long',
-                              day: 'numeric',
-                              hour: '2-digit',
-                              minute: '2-digit',
-                            })}
-                          </p>
+                <div>
+                  {replies.map((reply, index) => (
+                    <div key={reply.id} className={`p-4 ${index !== 0 ? 'border-t' : ''} hover:bg-gray-50 transition`}>
+                      <div className="flex gap-3">
+                        {/* Avatar */}
+                        <div className="flex-shrink-0">
+                          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-elit-dark to-elit-brown flex items-center justify-center text-white font-bold text-sm">
+                            {reply.author_name.charAt(0).toUpperCase()}
+                          </div>
                         </div>
-                        <button className="flex items-center gap-1 text-elit-dark/60 hover:text-elit-red transition">
-                          <Heart size={18} />
-                          <span className="text-sm">{reply.likes}</span>
-                        </button>
+
+                        {/* Content */}
+                        <div className="flex-1 min-w-0">
+                          <div className="bg-gray-100 rounded-2xl px-4 py-2.5">
+                            <p className="font-semibold text-elit-dark text-sm mb-1">
+                              {reply.author_name}
+                            </p>
+                            <p className="text-elit-dark text-sm leading-relaxed break-words">
+                              {reply.content}
+                            </p>
+                          </div>
+
+                          {/* Actions */}
+                          <div className="flex items-center gap-4 mt-1 px-2 text-xs">
+                            <button className="text-elit-dark/60 hover:underline font-semibold hover:text-elit-red transition">
+                              Curtir
+                            </button>
+                            <button className="text-elit-dark/60 hover:underline font-semibold hover:text-elit-red transition">
+                              Responder
+                            </button>
+                            <span className="text-elit-dark/50">
+                              {new Date(reply.created_at).toLocaleDateString('pt-BR', {
+                                day: 'numeric',
+                                month: 'short',
+                                year: new Date(reply.created_at).getFullYear() !== new Date().getFullYear() ? 'numeric' : undefined,
+                              })} às {new Date(reply.created_at).toLocaleTimeString('pt-BR', {
+                                hour: '2-digit',
+                                minute: '2-digit',
+                              })}
+                            </span>
+                            {reply.likes > 0 && (
+                              <span className="flex items-center gap-1 text-elit-red font-semibold ml-auto">
+                                ❤️ {reply.likes}
+                              </span>
+                            )}
+                          </div>
+                        </div>
                       </div>
-                      <p className="text-elit-dark/80 leading-relaxed">
-                        {reply.content}
-                      </p>
                     </div>
                   ))}
                 </div>
               )}
             </div>
 
-            {/* Reply Form */}
+            {/* Comment Input - Estilo Facebook */}
             {!topic.is_closed ? (
-              <div className="bg-white rounded-lg shadow-md p-8">
-                <h3 className="text-xl font-bold text-elit-dark mb-6">Enviar Resposta</h3>
+              <div className="bg-white rounded-lg shadow mt-4 p-4">
                 <form onSubmit={handleSubmitReply}>
-                  <textarea
-                    value={replyContent}
-                    onChange={(e) => setReplyContent(e.target.value)}
-                    placeholder="Escreva sua resposta aqui..."
-                    className="w-full text-elit-dark px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-elit-red resize-none"
-                    rows={5}
-                  />
-                  <div className="mt-4 flex justify-end">
-                    <button
-                      type="submit"
-                      disabled={submittingReply || !replyContent.trim()}
-                      className="flex items-center gap-2 px-6 py-3 bg-elit-red text-white rounded-lg hover:bg-elit-brown transition disabled:opacity-50 disabled:cursor-not-allowed font-semibold"
-                    >
-                      <Send size={20} />
-                      Enviar Resposta
-                    </button>
+                  <div className="flex gap-2">
+                    {/* Avatar */}
+                    <div className="flex-shrink-0">
+                      <div className="w-8 h-8 rounded-full bg-gradient-to-br from-gray-400 to-gray-600 flex items-center justify-center text-white font-bold text-sm">
+                        U
+                      </div>
+                    </div>
+
+                    {/* Input */}
+                    <div className="flex-1">
+                      <div className="relative">
+                        <input
+                          type="text"
+                          value={replyContent}
+                          onChange={(e) => setReplyContent(e.target.value)}
+                          placeholder="Escreva um comentário..."
+                          className="w-full text-elit-dark text-sm px-4 py-2 bg-gray-100 border-none rounded-full focus:outline-none focus:ring-2 focus:ring-elit-red"
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter' && !e.shiftKey) {
+                              e.preventDefault()
+                              handleSubmitReply(e)
+                            }
+                          }}
+                        />
+                        {replyContent.trim() && (
+                          <button
+                            type="submit"
+                            disabled={submittingReply}
+                            className="absolute right-2 top-1/2 -translate-y-1/2 text-elit-red hover:text-elit-brown transition disabled:opacity-50"
+                          >
+                            <Send size={18} />
+                          </button>
+                        )}
+                      </div>
+                    </div>
                   </div>
                 </form>
               </div>
             ) : (
-              <div className="bg-gray-50 rounded-lg border border-gray-200 p-8 text-center">
+              <div className="bg-white rounded-lg shadow mt-4 p-6 text-center border-2 border-gray-200">
                 <p className="text-gray-600 font-semibold">
-                  🔒 Este tópico foi fechado e não aceita mais respostas.
+                  🔒 Este tópico foi fechado e não aceita mais comentários.
                 </p>
               </div>
             )}

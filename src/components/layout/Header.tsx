@@ -27,6 +27,7 @@ export default function Header() {
 
   const handleNavClick = (href: string) => {
     setIsMenuOpen(false)
+    setIsDropdownOpen(false)
     
     // Check if it's an anchor link
     if (href.startsWith('#')) {
