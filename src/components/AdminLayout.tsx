@@ -2,7 +2,7 @@
 
 import { useAuth } from '@/hooks/useAuth';
 import { useRouter, usePathname } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import Link from 'next/link';
 import {
   LayoutDashboard,
@@ -35,7 +35,22 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
   const [hasNewRegistration, setHasNewRegistration] = useState(false);
   const [notificationCount, setNotificationCount] = useState(0);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
+  const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
+  const profileDropdownRef = useRef<HTMLDivElement>(null);
 
+  // Fechar dropdown ao clicar fora
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (profileDropdownRef.current && !profileDropdownRef.current.contains(event.target as Node)) {
+        setIsProfileDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   // Buscar inscrições com status "registered" ao montar o componente
   useEffect(() => {
@@ -304,8 +319,14 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
                 <NotificationBell />
 
                 {/* User Profile */}
-                <div className="relative group">
-                  <button className="flex items-center space-x-2 sm:space-x-3 focus:outline-none">
+                <div 
+                  className="relative" 
+                  ref={profileDropdownRef}
+                >
+                  <button 
+                    onClick={() => setIsProfileDropdownOpen(!isProfileDropdownOpen)}
+                    className="flex items-center space-x-2 sm:space-x-3 focus:outline-none hover:opacity-80 transition-opacity"
+                  >
                     <div className="flex-shrink-0">
                       <div className="relative">
                         <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-gradient-to-br from-blue-600 to-indigo-600 flex items-center justify-center text-white font-medium text-xs sm:text-sm">
@@ -321,17 +342,31 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
                   </button>
                   
                   {/* Dropdown Menu */}
-                  <div className="hidden group-hover:block absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 ring-1 ring-black ring-opacity-5 z-50">
-                    <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Meu Perfil</a>
-                    <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Configurações</a>
-                    <div className="border-t border-gray-100 my-1"></div>
-                    <button 
-                      onClick={logout}
-                      className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50"
-                    >
-                      Sair
-                    </button>
-                  </div>
+                  {isProfileDropdownOpen && (
+                    <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 ring-1 ring-black ring-opacity-5 z-50">
+                      <Link 
+                        href="/admin/profile" 
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer"
+                        onClick={() => setIsProfileDropdownOpen(false)}
+                      >
+                        Meu Perfil
+                      </Link>
+                      <Link 
+                        href="/admin/settings" 
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer"
+                        onClick={() => setIsProfileDropdownOpen(false)}
+                      >
+                        Configurações
+                      </Link>
+                      <div className="border-t border-gray-100 my-1"></div>
+                      <button 
+                        onClick={logout}
+                        className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50"
+                      >
+                        Sair
+                      </button>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>

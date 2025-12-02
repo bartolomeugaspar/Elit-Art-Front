@@ -7,6 +7,7 @@ export interface User {
   email: string;
   name: string;
   role: 'admin' | 'Arteist' | 'user';
+  created_at?: string;
 }
 
 export function useAuth(onLogout?: (message: string) => void) {
