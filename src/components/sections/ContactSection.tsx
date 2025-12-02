@@ -1,6 +1,65 @@
+'use client'
+
+import { useState } from 'react'
 import { Mail, Phone, MapPin, Facebook, Instagram, Youtube, MessageCircle } from 'lucide-react'
+import toast from 'react-hot-toast'
+
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'
 
 export default function ContactSection() {
+  const [loading, setLoading] = useState(false)
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    subject: '',
+    message: ''
+  })
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    
+    if (!formData.name || !formData.email || !formData.subject || !formData.message) {
+      toast.error('Por favor, preencha todos os campos obrigatórios')
+      return
+    }
+
+    setLoading(true)
+    try {
+      const response = await fetch(`${API_URL}/contact`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+      })
+
+      if (!response.ok) {
+        throw new Error('Erro ao enviar mensagem')
+      }
+
+      toast.success('Mensagem enviada com sucesso! Entraremos em contacto em breve.')
+      setFormData({
+        name: '',
+        email: '',
+        phone: '',
+        subject: '',
+        message: ''
+      })
+    } catch (error) {
+      toast.error('Erro ao enviar mensagem. Tente novamente.')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    })
+  }
+
   const contactInfo = [
     {
       icon: Mail,
@@ -64,36 +123,65 @@ export default function ContactSection() {
           {/* Contact Form */}
           <div>
             <h3 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8 text-center lg:text-left">Envie uma Mensagem</h3>
-            <form className="space-y-4 sm:space-y-6">
+            <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
               <div>
-                <label className="block text-elit-yellow font-medium mb-2 text-sm sm:text-base">Nome</label>
+                <label className="block text-elit-yellow font-medium mb-2 text-sm sm:text-base">Nome *</label>
                 <input
                   type="text"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  required
                   className="w-full px-3 sm:px-4 py-2 sm:py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/50 focus:border-elit-yellow focus:outline-none text-sm sm:text-base"
                   placeholder="Seu nome completo"
                 />
               </div>
               <div>
-                <label className="block text-elit-yellow font-medium mb-2 text-sm sm:text-base">Email</label>
+                <label className="block text-elit-yellow font-medium mb-2 text-sm sm:text-base">Email *</label>
                 <input
                   type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  required
                   className="w-full px-3 sm:px-4 py-2 sm:py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/50 focus:border-elit-yellow focus:outline-none text-sm sm:text-base"
                   placeholder="seu@email.com"
                 />
               </div>
               <div>
-                <label className="block text-elit-yellow font-medium mb-2 text-sm sm:text-base">Assunto</label>
-                <select className="w-full px-3 sm:px-4 py-2 sm:py-3 bg-white/10 border border-white/20 rounded-lg text-white focus:border-elit-yellow focus:outline-none text-sm sm:text-base">
+                <label className="block text-elit-yellow font-medium mb-2 text-sm sm:text-base">Telefone</label>
+                <input
+                  type="tel"
+                  name="phone"
+                  value={formData.phone}
+                  onChange={handleChange}
+                  className="w-full px-3 sm:px-4 py-2 sm:py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/50 focus:border-elit-yellow focus:outline-none text-sm sm:text-base"
+                  placeholder="+244 000 000 000"
+                />
+              </div>
+              <div>
+                <label className="block text-elit-yellow font-medium mb-2 text-sm sm:text-base">Assunto *</label>
+                <select 
+                  name="subject"
+                  value={formData.subject}
+                  onChange={handleChange}
+                  required
+                  className="w-full px-3 sm:px-4 py-2 sm:py-3 bg-white/10 border border-white/20 rounded-lg text-white focus:border-elit-yellow focus:outline-none text-sm sm:text-base"
+                >
                   <option value="">Selecione um assunto</option>
-                  <option value="parceria">Parceria</option>
-                  <option value="financiamento">Financiamento</option>
-                  <option value="pArteicipacao">PArteicipacção</option>
-                  <option value="informacoes">Informações Gerais</option>
+                  <option value="Parceria">Parceria</option>
+                  <option value="Financiamento">Financiamento</option>
+                  <option value="Participação">Participação</option>
+                  <option value="Informações Gerais">Informações Gerais</option>
                 </select>
               </div>
               <div>
-                <label className="block text-elit-yellow font-medium mb-2 text-sm sm:text-base">Mensagem</label>
+                <label className="block text-elit-yellow font-medium mb-2 text-sm sm:text-base">Mensagem *</label>
                 <textarea
+                  name="message"
+                  value={formData.message}
+                  onChange={handleChange}
+                  required
                   rows={4}
                   className="w-full px-3 sm:px-4 py-2 sm:py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/50 focus:border-elit-yellow focus:outline-none resize-none text-sm sm:text-base"
                   placeholder="Escreva sua mensagem aqui..."
@@ -101,9 +189,10 @@ export default function ContactSection() {
               </div>
               <button
                 type="submit"
-                className="w-full bg-gradient-to-r from-elit-red to-elit-yellow text-white font-bold py-3 sm:py-4 px-6 rounded-lg hover:from-elit-yellow hover:to-elit-red transition-all transform hover:scale-105 text-sm sm:text-base"
+                disabled={loading}
+                className="w-full bg-gradient-to-r from-elit-red to-elit-yellow text-white font-bold py-3 sm:py-4 px-6 rounded-lg hover:from-elit-yellow hover:to-elit-red transition-all transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none text-sm sm:text-base"
               >
-                Enviar Mensagem
+                {loading ? 'Enviando...' : 'Enviar Mensagem'}
               </button>
             </form>
           </div>

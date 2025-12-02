@@ -54,7 +54,6 @@ export default function AdminUsers() {
         setUsers(data.users || []);
       }
     } catch (error) {
-      console.error('Failed to fetch users:', error);
     } finally {
       setLoading(false);
     }
@@ -145,7 +144,6 @@ export default function AdminUsers() {
         throw new Error(data.message || 'Erro ao salvar usuário');
       }
     } catch (error) {
-      console.error('Failed to save user:', error);
       toast.error(
         error instanceof Error ? error.message : 'Erro ao salvar usuário',
         {
@@ -199,7 +197,6 @@ export default function AdminUsers() {
           border: '1px solid #fecaca',
         },
       });
-      console.error('Falha ao excluir usuário:', error);
     } finally {
       setShowDeleteModal(false);
       setUserToDelete(null);

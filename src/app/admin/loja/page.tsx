@@ -50,7 +50,6 @@ export default function LojaAdminPage() {
         setProducts(data.products || [])
       }
     } catch (error) {
-      console.error('Erro ao carregar produtos:', error)
       toast.error('Erro ao carregar produtos')
     } finally {
       setLoading(false)
@@ -119,7 +118,6 @@ export default function LojaAdminPage() {
         throw new Error(data.message || 'Erro ao enviar imagem')
       }
     } catch (error) {
-      console.error('Failed to upload image:', error)
       toast.error(
         error instanceof Error ? error.message : 'Erro ao enviar imagem',
         {
@@ -187,7 +185,6 @@ export default function LojaAdminPage() {
         throw new Error(data.message || 'Erro ao criar produto')
       }
     } catch (error) {
-      console.error('Erro ao criar produto:', error)
       toast.error(
         error instanceof Error ? error.message : 'Erro ao criar produto',
         {
@@ -241,7 +238,6 @@ export default function LojaAdminPage() {
           border: '1px solid #fecaca',
         },
       })
-      console.error('Erro ao deletar:', error)
     } finally {
       setShowDeleteModal(false)
       setProductToDelete(null)

@@ -57,7 +57,6 @@ export default function AdminRegistrations() {
         setRegistrations(data.registrations || []);
       }
     } catch (error) {
-      console.error('Failed to fetch registrations:', error);
     } finally {
       setLoading(false);
     }
@@ -96,11 +95,9 @@ export default function AdminRegistrations() {
         showToast(`Inscrição ${statusLabel} com sucesso!`, 'success');
       } else {
         showToast('Erro ao atualizar inscrição', 'error');
-        console.error('Failed to update status:', response.statusText);
       }
     } catch (error) {
       showToast('Erro ao atualizar inscrição', 'error');
-      console.error('Failed to update registration status:', error);
     }
   };
 
@@ -128,7 +125,6 @@ export default function AdminRegistrations() {
         showToast('Erro ao deletar inscrição', 'error');
       }
     } catch (error) {
-      console.error('Failed to delete registration:', error);
       showToast('Erro ao deletar inscrição', 'error');
     } finally {
       setShowDeleteModal(false);

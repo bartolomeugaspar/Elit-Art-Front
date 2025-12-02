@@ -24,7 +24,6 @@ export default function BackgroundMusic() {
         setIsPlaying(true)
       } catch (error) {
         // Auto-play bloqueado pelo browser, tentar novamente com interacção do usuário
-        console.log('Auto-play bloqueado. Tentando novamente...')
         
         // Adicionar listener para primeira interacção do usuário
         const handleUserInteraction = async () => {
@@ -36,7 +35,6 @@ export default function BackgroundMusic() {
             document.removeEventListener('touchstart', handleUserInteraction)
             document.removeEventListener('keydown', handleUserInteraction)
           } catch (err) {
-            console.error('Erro ao reproduzir áudio:', err)
           }
         }
 
@@ -75,7 +73,6 @@ export default function BackgroundMusic() {
         setIsPlaying(true)
       }
     } catch (error) {
-      console.error('Erro ao controlar áudio:', error)
     }
   }
 

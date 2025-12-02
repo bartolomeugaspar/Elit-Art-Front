@@ -72,7 +72,6 @@ export default function GaleriaAdminPage() {
         setArtworks(data.artworks || [])
       }
     } catch (error) {
-      console.error('Erro ao carregar obras:', error)
       toast.error('Erro ao carregar obras')
     } finally {
       setLoading(false)
@@ -121,7 +120,6 @@ export default function GaleriaAdminPage() {
           border: '1px solid #fecaca',
         },
       })
-      console.error('Erro ao deletar:', error)
     } finally {
       setShowDeleteModal(false)
       setArtworkToDelete(null)
@@ -177,7 +175,6 @@ export default function GaleriaAdminPage() {
         throw new Error(data.message || 'Erro ao enviar imagem')
       }
     } catch (error) {
-      console.error('Failed to upload image:', error)
       toast.error(error instanceof Error ? error.message : 'Erro ao enviar imagem', {
         id: uploadToast,
         icon: <X className="text-red-500" />,
@@ -203,7 +200,6 @@ export default function GaleriaAdminPage() {
         toast.error('Erro ao carregar obra')
       }
     } catch (error) {
-      console.error('Erro ao buscar obra:', error)
       toast.error('Erro ao carregar obra')
     }
   }
@@ -232,7 +228,6 @@ export default function GaleriaAdminPage() {
         toast.error('Erro ao carregar obra para edição')
       }
     } catch (error) {
-      console.error('Erro ao buscar obra:', error)
       toast.error('Erro ao carregar obra para edição')
     }
   }
@@ -301,7 +296,6 @@ export default function GaleriaAdminPage() {
       }
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Erro ao salvar obra'
-      console.error('Erro ao salvar obra:', errorMessage, error)
       toast.error(errorMessage, {
         id: loadingToast,
         icon: <X className="text-red-500" />,

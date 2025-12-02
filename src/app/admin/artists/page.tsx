@@ -48,7 +48,6 @@ export default function AdminArtists() {
         setArtists(data.artists || [])
       }
     } catch (error) {
-      console.error('Failed to fetch artists:', error)
       toast.error('Erro ao carregar artistas')
     } finally {
       setLoading(false)
@@ -100,7 +99,6 @@ export default function AdminArtists() {
         toast.error('Erro ao carregar artista para edição')
       }
     } catch (error) {
-      console.error('Erro ao buscar artista:', error)
       toast.error('Erro ao carregar artista para edição')
     }
   }

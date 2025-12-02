@@ -56,7 +56,6 @@ export default function BlogAdminPage() {
         setPosts(data.posts || [])
       }
     } catch (error) {
-      console.error('Erro ao carregar posts:', error)
       toast.error('Erro ao carregar posts')
     } finally {
       setLoading(false)
@@ -105,7 +104,6 @@ export default function BlogAdminPage() {
           border: '1px solid #fecaca',
         },
       })
-      console.error('Erro ao deletar:', error)
     } finally {
       setShowDeleteModal(false)
       setPostToDelete(null)
@@ -174,7 +172,6 @@ export default function BlogAdminPage() {
         throw new Error(data.message || 'Erro ao enviar imagem')
       }
     } catch (error) {
-      console.error('Failed to upload image:', error)
       toast.error(error instanceof Error ? error.message : 'Erro ao enviar imagem', {
         id: uploadToast,
         icon: <X className="text-red-500" />,
@@ -200,7 +197,6 @@ export default function BlogAdminPage() {
         toast.error('Erro ao carregar artigo')
       }
     } catch (error) {
-      console.error('Erro ao buscar artigo:', error)
       toast.error('Erro ao carregar artigo')
     }
   }
@@ -229,7 +225,6 @@ export default function BlogAdminPage() {
         toast.error('Erro ao carregar artigo para edição')
       }
     } catch (error) {
-      console.error('Erro ao buscar artigo:', error)
       toast.error('Erro ao carregar artigo para edição')
     }
   }
@@ -298,7 +293,6 @@ export default function BlogAdminPage() {
       }
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Erro ao salvar artigo'
-      console.error('Erro ao salvar artigo:', errorMessage, error)
       toast.error(errorMessage, {
         id: loadingToast,
         icon: <X className="text-red-500" />,

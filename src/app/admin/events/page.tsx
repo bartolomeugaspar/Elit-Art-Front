@@ -28,7 +28,6 @@ const formatDate = (dateString: string | null | undefined) => {
   }
 
   try {
-    console.log('[formatDate] Input:', dateString);
     
     // Tenta múltiplos formatos
     let date: Date | null = null;
@@ -43,7 +42,6 @@ const formatDate = (dateString: string | null | undefined) => {
       
       // Regex para capturar: "10 de Janeiro, 2025"
       const match = dateString.match(/(\d+)\s+de\s+([a-záéíóúãõç]+),?\s+(\d{4})/i);
-      console.log('[formatDate] Regex match:', match);
       
       if (match) {
         const day = parseInt(match[1]);
@@ -51,37 +49,29 @@ const formatDate = (dateString: string | null | undefined) => {
         const year = parseInt(match[3]);
         const month = meses[monthName];
         
-        console.log('[formatDate] Parsed:', { day, monthName, year, month });
         
         if (month !== undefined && !isNaN(day) && !isNaN(year) && year > 0) {
           date = new Date(year, month, day);
-          console.log('[formatDate] Date criada:', date, 'Valid:', !isNaN(date.getTime()));
         } else {
-          console.log('[formatDate] Validation failed:', { monthUndefined: month === undefined, dayNaN: isNaN(day), yearNaN: isNaN(year), yearZero: year <= 0 });
         }
       } else {
-        console.log('[formatDate] Regex did not match');
       }
     }
     // Tenta formato ISO (2024-01-15T10:30:00)
     else if (dateString.includes('T') || dateString.includes('-')) {
       date = new Date(dateString);
-      console.log('[formatDate] ISO format:', date);
     }
     // Tenta formato DD/MM/YYYY
     else if (dateString.includes('/')) {
       const [day, month, year] = dateString.split('/');
       date = new Date(`${year}-${month}-${day}`);
-      console.log('[formatDate] DD/MM/YYYY format:', date);
     }
     // Tenta formato YYYY-MM-DD
     else if (dateString.match(/^\d{4}-\d{2}-\d{2}$/)) {
       date = new Date(dateString);
-      console.log('[formatDate] YYYY-MM-DD format:', date);
     }
 
     if (!date || isNaN(date.getTime())) {
-      console.error('[formatDate] Data inválida após parsing:', dateString, date);
       return 'Data inválida';
     }
 
@@ -91,10 +81,8 @@ const formatDate = (dateString: string | null | undefined) => {
       year: 'numeric',
     });
     
-    console.log('[formatDate] Output:', formatted);
     return formatted;
   } catch (error) {
-    console.error('Erro ao formatar data:', dateString, error);
     return 'Data inválida';
   }
 };
@@ -132,7 +120,6 @@ export default function AdminEvents() {
         setEvents(data.events || []);
       }
     } catch (error) {
-      console.error('Failed to fetch events:', error);
     } finally {
       setLoading(false);
     }
@@ -206,7 +193,6 @@ export default function AdminEvents() {
         throw new Error('Falha ao excluir evento');
       }
     } catch (error) {
-      console.error('Failed to delete event:', error);
       toast.error('Erro ao excluir evento', {
         id: loadingToast,
         icon: <X className="text-red-500" />,

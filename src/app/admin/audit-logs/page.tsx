@@ -76,10 +76,8 @@ export default function AuditLogsPage() {
         setLogs(data.data || []);
         setTotalPages(Math.ceil((data.pagination?.total || 0) / itemsPerPage));
       } else {
-        console.error('Error fetching audit logs:', data.message);
       }
     } catch (error) {
-      console.error('Error:', error);
     } finally {
       setLoading(false);
     }
@@ -164,7 +162,6 @@ export default function AuditLogsPage() {
         suspiciousActivities,
       });
     } catch (error) {
-      console.error('Erro ao calcular estatísticas:', error);
     }
   };
 

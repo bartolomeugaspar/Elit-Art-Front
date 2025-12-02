@@ -160,7 +160,6 @@ export default function EventForm({
         throw new Error(data.message || 'Erro ao enviar imagem');
       }
     } catch (error) {
-      console.error('Failed to upload image:', error);
       toast.error(
         error instanceof Error ? error.message : 'Erro ao enviar imagem',
         {
@@ -227,7 +226,6 @@ export default function EventForm({
         throw new Error(data.message || 'Erro ao enviar imagem');
       }
     } catch (error) {
-      console.error('Failed to upload image from URL:', error);
       toast.error(
         error instanceof Error ? error.message : 'Erro ao enviar imagem',
         {
@@ -332,7 +330,6 @@ export default function EventForm({
         throw new Error(data.message || 'Erro ao salvar evento');
       }
     } catch (error) {
-      console.error('Failed to save event:', error);
       toast.error(
         error instanceof Error ? error.message : 'Erro ao salvar evento',
         {

@@ -63,11 +63,9 @@ export default function EventRegistrationModal({
 
   const uploadProof = async (): Promise<string | null> => {
     if (!paymentProofFile) {
-      console.log('[EventRegistrationModal] No payment proof file to upload')
       return null
     }
 
-    console.log('[EventRegistrationModal] Starting proof upload:', paymentProofFile.name)
     setIsUploadingProof(true)
     const uploadToast = toast.loading('Enviando comprovativo...')
 
@@ -76,7 +74,6 @@ export default function EventRegistrationModal({
       const formData = new FormData()
       formData.append('image', paymentProofFile)
 
-      console.log('[EventRegistrationModal] Uploading to:', `${API_URL}/upload/image`)
       const response = await fetch(`${API_URL}/upload/image`, {
         method: 'POST',
         headers: token ? { Authorization: `Bearer ${token}` } : {},
@@ -84,17 +81,14 @@ export default function EventRegistrationModal({
       })
 
       const data = await response.json()
-      console.log('[EventRegistrationModal] Upload response:', { ok: response.ok, status: response.status, data })
 
       if (response.ok && data.imageUrl) {
         toast.success('Comprovativo enviado!', { id: uploadToast })
-        console.log('[EventRegistrationModal] Proof uploaded successfully:', data.imageUrl)
         return data.imageUrl
       } else {
         throw new Error(data.message || 'Erro ao enviar comprovativo')
       }
     } catch (error) {
-      console.error('[EventRegistrationModal] Failed to upload proof:', error)
       toast.error(
         error instanceof Error ? error.message : 'Erro ao enviar comprovativo',
         { id: uploadToast }
@@ -107,7 +101,6 @@ export default function EventRegistrationModal({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    console.log('[EventRegistrationModal] Submit started', { eventId, eventTitle, isFree, isPast })
 
     // Bloquear inscrição em eventos passados
     if (isPast) {
@@ -128,7 +121,6 @@ export default function EventRegistrationModal({
     }
 
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      console.log('[EventRegistrationModal] Validation failed: invalid email format')
       toast.error('Por favor, insira um e-mail válido')
       return
     }
@@ -136,19 +128,16 @@ export default function EventRegistrationModal({
     // Validar pagamento para eventos pagos
     if (!isFree) {
       if (!paymentMethod) {
-        console.log('[EventRegistrationModal] Validation failed: payment method required')
         toast.error('Método de pagamento é obrigatório')
         return
       }
 
       if (!paymentProofFile) {
-        console.log('[EventRegistrationModal] Validation failed: payment proof required')
         toast.error('Comprovativo de pagamento é obrigatório')
         return
       }
     }
 
-    console.log('[EventRegistrationModal] All validations passed, starting submission')
     setIsSubmitting(true)
     const loadingToast = toast.loading('Processando inscrição...')
 
@@ -157,13 +146,10 @@ export default function EventRegistrationModal({
 
       // Upload proof if provided
       if (paymentProofFile) {
-        console.log('[EventRegistrationModal] Uploading payment proof...')
         proofUrl = await uploadProof()
         if (!proofUrl) {
-          console.error('[EventRegistrationModal] Proof upload failed')
           throw new Error('Falha ao enviar comprovativo. Por favor, tente novamente.')
         }
-        console.log('[EventRegistrationModal] Proof uploaded successfully:', proofUrl)
       }
 
       const token = localStorage.getItem('token')
@@ -182,7 +168,6 @@ export default function EventRegistrationModal({
         proof_url: proofUrl,
       }
 
-      console.log('[EventRegistrationModal] Sending registration request:', {
         url: `${API_URL}/events/${eventId}/register`,
         data: registrationData
       })
@@ -193,7 +178,6 @@ export default function EventRegistrationModal({
         body: JSON.stringify(registrationData),
       })
 
-      console.log('[EventRegistrationModal] Registration response:', { 
         ok: response.ok, 
         status: response.status,
         statusText: response.statusText 
@@ -204,7 +188,6 @@ export default function EventRegistrationModal({
         try {
           const error = await response.json()
           errorMessage = error.message || errorMessage
-          console.error('[EventRegistrationModal] Registration error:', error)
           
           // A mensagem já vem em português do backend, não precisa traduzir
           // Apenas garantir que erros antigos em inglês ainda funcionem
@@ -216,12 +199,10 @@ export default function EventRegistrationModal({
             errorMessage = 'Evento não encontrado'
           }
         } catch (parseError) {
-          console.error('[EventRegistrationModal] Failed to parse error response:', parseError)
         }
         throw new Error(errorMessage)
       }
 
-      console.log('[EventRegistrationModal] Registration successful!')
       
       toast.success('Inscrição realizada com sucesso!', {
         id: loadingToast,
@@ -234,7 +215,6 @@ export default function EventRegistrationModal({
       })
 
       // Disparar evento de notificação para o header
-      console.log('[EventRegistrationModal] Disparando evento de nova inscrição:', { fullName, email, eventTitle });
       
       // Disparar evento com pequeno delay para garantir que o listener está pronto
       setTimeout(() => {
@@ -245,12 +225,10 @@ export default function EventRegistrationModal({
             eventTitle: eventTitle
           }
         }));
-        console.log('[EventRegistrationModal] Evento disparado com sucesso');
       }, 100);
 
       onSuccess()
     } catch (error) {
-      console.error('[EventRegistrationModal] Registration failed:', error)
       const errorMessage = error instanceof Error ? error.message : 'Erro ao se inscrever. Por favor, tente novamente.'
       toast.error(errorMessage, { 
         id: loadingToast,
@@ -265,7 +243,6 @@ export default function EventRegistrationModal({
         }
       })
     } finally {
-      console.log('[EventRegistrationModal] Submit finished, resetting isSubmitting')
       setIsSubmitting(false)
     }
   }

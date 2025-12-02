@@ -20,7 +20,6 @@ import {
   ShoppingCart,
   BookOpen,
   MessageCircle,
-  Newspaper,
 } from 'lucide-react';
 import { useToast, ToastContainer } from './Toast';
 
@@ -36,7 +35,6 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
   const [notificationCount, setNotificationCount] = useState(0);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
 
-  console.log('[AdminLayout] Renderizado com notificationCount:', notificationCount);
 
   // Buscar inscrições com status "registered" ao montar o componente
   useEffect(() => {
@@ -55,11 +53,9 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
           const data = await response.json();
           const registrations = data.registrations || [];
           const registeredCount = registrations.filter((reg: any) => reg.status === 'registered').length;
-          console.log('[AdminLayout] Inscrições com status "registered":', registeredCount);
           setNotificationCount(registeredCount);
         }
       } catch (error) {
-        console.error('[AdminLayout] Erro ao buscar inscrições:', error);
       }
     };
 
@@ -71,12 +67,10 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
     const handleNewRegistration = (event: Event) => {
       const customEvent = event as CustomEvent;
       const { name, email, eventTitle } = customEvent.detail;
-      console.log('[AdminLayout] Nova inscrição recebida:', customEvent.detail);
       
       setHasNewRegistration(true);
       setNotificationCount(prev => {
         const newCount = prev + 1;
-        console.log('[AdminLayout] Contagem atualizada:', newCount);
         return newCount;
       });
       
@@ -90,10 +84,8 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
     }
 
     window.addEventListener('newRegistration', handleNewRegistration);
-    console.log('[AdminLayout] Listener de notificações adicionado');
     return () => {
       window.removeEventListener('newRegistration', handleNewRegistration);
-      console.log('[AdminLayout] Listener de notificações removido');
     };
   }, []);
 
@@ -106,9 +98,7 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
   };
 
   useEffect(() => {
-    console.log('[AdminLayout] Estado:', { loading, user: user?.email, role: user?.role, isLoggingOut });
     if (!loading && (!user || user.role !== 'admin') && !isLoggingOut) {
-      console.log('[AdminLayout] Redirecionando para login');
       router.push('/admin/login');
     }
   }, [user, loading, router, isLoggingOut]);
@@ -155,7 +145,7 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
       icon: UserCheck,
     },
     {
-      label: 'Newsletter',
+      label: 'Mensagens',
       href: '/admin/newsletter',
       icon: Mail,
     },
@@ -178,11 +168,6 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
       label: 'Comunidade',
       href: '/admin/comunidade',
       icon: MessageCircle,
-    },
-    {
-      label: 'Imprensa',
-      href: '/admin/imprensa',
-      icon: Newspaper,
     },
     {
       label: 'Logs do Sistema',

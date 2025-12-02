@@ -87,7 +87,6 @@ export default function ArtistForm({ onSuccess, onCancel, initialData, isEditing
         throw new Error(data.message || 'Erro ao enviar imagem')
       }
     } catch (error) {
-      console.error('Failed to upload image:', error)
       toast.error(error instanceof Error ? error.message : 'Erro ao fazer upload', {
         id: uploadToast,
       })

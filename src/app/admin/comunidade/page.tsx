@@ -56,7 +56,6 @@ export default function ComunidadeAdminPage() {
         setTopics(data.topics || [])
       }
     } catch (error) {
-      console.error('Erro ao carregar tópicos:', error)
       toast.error('Erro ao carregar tópicos')
     } finally {
       setLoading(false)
@@ -105,7 +104,6 @@ export default function ComunidadeAdminPage() {
           border: '1px solid #fecaca',
         },
       })
-      console.error('Erro ao deletar:', error)
     } finally {
       setShowDeleteModal(false)
       setTopicToDelete(null)
@@ -153,7 +151,6 @@ export default function ComunidadeAdminPage() {
         throw new Error(data.message || 'Erro ao criar tópico')
       }
     } catch (error) {
-      console.error('Erro ao criar tópico:', error)
       toast.error(error instanceof Error ? error.message : 'Erro ao criar tópico', {
         id: loadingToast,
         icon: <X className="text-red-500" />,

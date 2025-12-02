@@ -1,233 +1,282 @@
 'use client';
 
 import { useEffect, useState, useCallback } from 'react';
-import { Trash2, Mail, Send } from 'lucide-react';
+import { Trash2, Mail, Eye, X, CheckCircle, Clock, Search } from 'lucide-react';
 import { API_URL } from '@/lib/api';
+import toast from 'react-hot-toast';
 
-interface NewsletterSubscriber {
+interface ContactMessage {
   id: string;
+  name: string;
   email: string;
-  subscribed_at: string;
+  phone?: string;
+  subject: string;
+  message: string;
+  status: 'new' | 'read' | 'replied';
+  created_at: string;
 }
 
-export default function AdminNewsletter() {
-  const [subscribers, setSubscribers] = useState<NewsletterSubscriber[]>([]);
-  const [totalUsers, setTotalUsers] = useState(0);
+export default function AdminMessages() {
+  const [messages, setMessages] = useState<ContactMessage[]>([]);
   const [loading, setLoading] = useState(true);
-  const [showEmailForm, setShowEmailForm] = useState(false);
-  const [emailData, setEmailData] = useState({
-    subject: '',
-    message: '',
+  const [selectedMessage, setSelectedMessage] = useState<ContactMessage | null>(null);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [statusFilter, setStatusFilter] = useState<string>('all');
+
+  const filteredMessages = messages.filter(msg => {
+    const matchesSearch = msg.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         msg.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         msg.subject.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesStatus = statusFilter === 'all' || msg.status === statusFilter;
+    return matchesSearch && matchesStatus;
   });
 
-  const fetchSubscribers = useCallback(async () => {
+  const fetchMessages = useCallback(async () => {
     try {
       const token = localStorage.getItem('token');
-      
-      // Buscar inscritos da newsletter
-      const newsletterRes = await fetch(`${API_URL}/newsletter`, {
+      const response = await fetch(`${API_URL}/contact`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
-      // Buscar total de usuários
-      const usersRes = await fetch(`${API_URL}/users`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-
-      if (newsletterRes.ok) {
-        const data = await newsletterRes.json();
-        setSubscribers(data.subscribers || []);
-      }
-
-      if (usersRes.ok) {
-        const usersData = await usersRes.json();
-        setTotalUsers(usersData.users?.length || 0);
+      if (response.ok) {
+        const data = await response.json();
+        setMessages(data.messages || []);
       }
     } catch (error) {
-      console.error('Failed to fetch data:', error);
+      toast.error('Erro ao carregar mensagens');
     } finally {
       setLoading(false);
     }
   }, []);
 
   useEffect(() => {
-    fetchSubscribers();
-  }, [fetchSubscribers]);
+    fetchMessages();
+  }, [fetchMessages]);
 
-  const handleDeleteSubscriber = async (subscriberId: string) => {
-    if (!confirm('Tem certeza que deseja remover este inscrito?')) return;
+  const handleViewMessage = async (message: ContactMessage) => {
+    setSelectedMessage(message);
+    
+    // Marcar como lida
+    if (message.status === 'new') {
+      try {
+        const token = localStorage.getItem('token');
+        await fetch(`${API_URL}/contact/${message.id}/read`, {
+          method: 'PATCH',
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        
+        // Atualizar status localmente
+        setMessages(prev => prev.map(m => 
+          m.id === message.id ? { ...m, status: 'read' as const } : m
+        ));
+      } catch (error) {
+        // Silently fail
+      }
+    }
+  };
+
+  const handleDeleteMessage = async (messageId: string) => {
+    if (!confirm('Tem certeza que deseja excluir esta mensagem?')) return;
 
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`${API_URL}/newsletter/${subscriberId}`, {
+      const response = await fetch(`${API_URL}/contact/${messageId}`, {
         method: 'DELETE',
         headers: { Authorization: `Bearer ${token}` },
       });
 
       if (response.ok) {
-        fetchSubscribers();
+        toast.success('Mensagem excluída com sucesso!');
+        fetchMessages();
+        if (selectedMessage?.id === messageId) {
+          setSelectedMessage(null);
+        }
       }
     } catch (error) {
-      console.error('Failed to delete subscriber:', error);
+      toast.error('Erro ao excluir mensagem');
     }
   };
 
-  const handleSendEmail = async (e: React.FormEvent) => {
-    e.preventDefault();
-    try {
-      const token = localStorage.getItem('token');
-      const response = await fetch(`${API_URL}/newsletter/send`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(emailData),
-      });
+  const newMessagesCount = messages.filter(m => m.status === 'new').length;
 
-      if (response.ok) {
-        alert('Email enviado com sucesso!');
-        setEmailData({ subject: '', message: '' });
-        setShowEmailForm(false);
-      }
-    } catch (error) {
-      console.error('Failed to send email:', error);
-      alert('Erro ao enviar email');
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'new':
+        return 'bg-blue-100 text-blue-800';
+      case 'read':
+        return 'bg-gray-100 text-gray-800';
+      case 'replied':
+        return 'bg-green-100 text-green-800';
+      default:
+        return 'bg-gray-100 text-gray-800';
+    }
+  };
+
+  const getStatusLabel = (status: string) => {
+    switch (status) {
+      case 'new':
+        return 'Nova';
+      case 'read':
+        return 'Lida';
+      case 'replied':
+        return 'Respondida';
+      default:
+        return status;
     }
   };
 
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex justify-between items-center">
-        <div>
-          <h1 className="text-3xl font-bold text-slate-900">Gerenciamento de Newsletter</h1>
-          <p className="text-slate-600 mt-1">Total de {subscribers.length} inscritos</p>
-        </div>
-        <button
-          onClick={() => setShowEmailForm(!showEmailForm)}
-          className="flex items-center gap-2 bg-gradient-to-r from-orange-600 to-orange-500 hover:from-orange-700 hover:to-orange-600 text-white px-6 py-3 rounded-lg transition duration-200 font-medium shadow-lg hover:shadow-xl"
-        >
-          <Send size={20} />
-          Enviar Email
-        </button>
+      <div>
+        <p className="text-slate-600 mt-1">
+          {messages.length} {messages.length === 1 ? 'mensagem' : 'mensagens'} total
+          {newMessagesCount > 0 && ` • ${newMessagesCount} ${newMessagesCount === 1 ? 'nova' : 'novas'}`}
+        </p>
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="bg-white rounded-xl p-6 border border-slate-200 shadow-sm">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-slate-600 text-sm font-medium">Total de Inscritos</p>
-              <p className="text-4xl font-bold text-slate-900 mt-2">{subscribers.length}</p>
+              <p className="text-slate-600 text-sm font-medium">Novas Mensagens</p>
+              <p className="text-4xl font-bold text-blue-600 mt-2">{newMessagesCount}</p>
             </div>
-            <div className="bg-gradient-to-br from-orange-500 to-orange-600 p-4 rounded-lg">
+            <div className="bg-gradient-to-br from-blue-500 to-blue-600 p-4 rounded-lg">
               <Mail size={24} className="text-white" />
             </div>
           </div>
         </div>
+
         <div className="bg-white rounded-xl p-6 border border-slate-200 shadow-sm">
-          <p className="text-slate-600 text-sm font-medium mb-3">Taxa de Inscrição</p>
-          <div className="w-full bg-slate-200 rounded-full h-3">
-            <div
-              className="bg-gradient-to-r from-orange-500 to-orange-600 h-3 rounded-full transition-all duration-500"
-              style={{ width: `${totalUsers > 0 ? (subscribers.length / totalUsers) * 100 : 0}%` }}
-            />
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-slate-600 text-sm font-medium">Lidas</p>
+              <p className="text-4xl font-bold text-gray-600 mt-2">
+                {messages.filter(m => m.status === 'read').length}
+              </p>
+            </div>
+            <div className="bg-gradient-to-br from-gray-500 to-gray-600 p-4 rounded-lg">
+              <Eye size={24} className="text-white" />
+            </div>
           </div>
-          <p className="text-sm text-slate-600 mt-3">
-            {totalUsers > 0 ? `${((subscribers.length / totalUsers) * 100).toFixed(1)}%` : '0%'} da base de usuários ({subscribers.length} de {totalUsers})
-          </p>
+        </div>
+
+        <div className="bg-white rounded-xl p-6 border border-slate-200 shadow-sm">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-slate-600 text-sm font-medium">Respondidas</p>
+              <p className="text-4xl font-bold text-green-600 mt-2">
+                {messages.filter(m => m.status === 'replied').length}
+              </p>
+            </div>
+            <div className="bg-gradient-to-br from-green-500 to-green-600 p-4 rounded-lg">
+              <CheckCircle size={24} className="text-white" />
+            </div>
+          </div>
         </div>
       </div>
 
-      {/* Send Email Form */}
-      {showEmailForm && (
-        <div className="bg-white rounded-xl p-6 border border-slate-200 shadow-lg">
-          <h2 className="text-xl font-bold text-slate-900 mb-6">Enviar Email para Newsletter</h2>
-          <form onSubmit={handleSendEmail} className="space-y-4">
-            <div>
-              <label className="block text-sm font-bold text-slate-900 mb-2">Assunto</label>
-              <input
-                type="text"
-                placeholder="Assunto do email"
-                value={emailData.subject}
-                onChange={(e) => setEmailData({ ...emailData, subject: e.target.value })}
-                className="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 placeholder-slate-500 focus:outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 transition"
-                required
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-bold text-slate-900 mb-2">Mensagem</label>
-              <textarea
-                placeholder="Conteúdo do email"
-                value={emailData.message}
-                onChange={(e) => setEmailData({ ...emailData, message: e.target.value })}
-                className="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 placeholder-slate-500 focus:outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 transition"
-                rows={6}
-                required
-              />
-            </div>
-            <div className="flex gap-3 pt-4">
-              <button
-                type="submit"
-                className="bg-gradient-to-r from-green-600 to-green-500 hover:from-green-700 hover:to-green-600 text-white px-6 py-3 rounded-lg transition duration-200 font-medium shadow-md hover:shadow-lg flex items-center gap-2"
-              >
-                <Send size={18} />
-                Enviar
-              </button>
-              <button
-                type="button"
-                onClick={() => setShowEmailForm(false)}
-                className="bg-slate-200 hover:bg-slate-300 text-slate-900 px-6 py-3 rounded-lg transition duration-200 font-medium"
-              >
-                Cancelar
-              </button>
-            </div>
-          </form>
+      {/* Filters */}
+      <div className="flex flex-col sm:flex-row gap-4">
+        <div className="relative flex-1">
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400" size={20} />
+          <input
+            type="text"
+            placeholder="Buscar por nome, email ou assunto..."
+            className="w-full pl-10 pr-4 py-2.5 border border-slate-300 rounded-lg bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-slate-900"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
         </div>
-      )}
+        <select
+          className="px-4 py-2.5 border border-slate-300 rounded-lg bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-900 font-medium"
+          value={statusFilter}
+          onChange={(e) => setStatusFilter(e.target.value)}
+        >
+          <option value="all">Todas</option>
+          <option value="new">Novas</option>
+          <option value="read">Lidas</option>
+          <option value="replied">Respondidas</option>
+        </select>
+      </div>
 
-      {/* Subscribers Table */}
-      <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+      {/* Messages Table - Desktop */}
+      <div className="hidden lg:block bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full">
-            <thead className="bg-gradient-to-r from-slate-50 to-slate-100 border-b border-slate-200">
+            <thead className="bg-slate-50 border-b border-slate-200">
               <tr>
-                <th className="px-6 py-4 text-left text-sm font-bold text-slate-900">Email</th>
-                <th className="px-6 py-4 text-left text-sm font-bold text-slate-900">Data de Inscrição</th>
-                <th className="px-6 py-4 text-left text-sm font-bold text-slate-900">Ações</th>
+                <th className="px-6 py-4 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Nome</th>
+                <th className="px-6 py-4 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Email</th>
+                <th className="px-6 py-4 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Assunto</th>
+                <th className="px-6 py-4 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Status</th>
+                <th className="px-6 py-4 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Data</th>
+                <th className="px-6 py-4 text-right text-xs font-medium text-slate-500 uppercase tracking-wider">Ações</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody className="bg-white divide-y divide-slate-200">
               {loading ? (
                 <tr>
-                  <td colSpan={3} className="px-6 py-8 text-center text-slate-500">
+                  <td colSpan={6} className="px-6 py-8 text-center text-slate-500">
                     <div className="flex items-center justify-center gap-2">
-                      <div className="w-4 h-4 border-2 border-orange-500 border-t-transparent rounded-full animate-spin"></div>
-                      Carregando...
+                      <div className="w-5 h-5 border-2 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+                      Carregando mensagens...
                     </div>
                   </td>
                 </tr>
-              ) : subscribers.length === 0 ? (
+              ) : filteredMessages.length === 0 ? (
                 <tr>
-                  <td colSpan={3} className="px-6 py-8 text-center text-slate-500">
-                    Nenhum inscrito encontrado
+                  <td colSpan={6} className="px-6 py-8 text-center text-slate-500">
+                    {searchTerm || statusFilter !== 'all' ? 'Nenhuma mensagem encontrada' : 'Nenhuma mensagem recebida'}
                   </td>
                 </tr>
               ) : (
-                subscribers.map((subscriber) => (
-                  <tr key={subscriber.id} className="border-b border-slate-200 hover:bg-slate-50 transition duration-200">
-                    <td className="px-6 py-4 text-slate-900 font-medium">{subscriber.email}</td>
-                    <td className="px-6 py-4 text-slate-600 text-sm">
-                      {new Date(subscriber.subscribed_at).toLocaleDateString('pt-BR')}
+                filteredMessages.map((message) => (
+                  <tr key={message.id} className="hover:bg-slate-50 transition-colors">
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="flex items-center">
+                        <div className="text-sm font-medium text-slate-900">{message.name}</div>
+                        {message.status === 'new' && (
+                          <span className="ml-2 w-2 h-2 bg-blue-500 rounded-full"></span>
+                        )}
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="text-sm text-slate-600">{message.email}</div>
+                      {message.phone && (
+                        <div className="text-xs text-slate-400">{message.phone}</div>
+                      )}
                     </td>
                     <td className="px-6 py-4">
-                      <button
-                        onClick={() => handleDeleteSubscriber(subscriber.id)}
-                        className="p-2 hover:bg-red-100 rounded-lg transition text-red-600 font-medium"
-                      >
-                        <Trash2 size={18} />
-                      </button>
+                      <div className="text-sm text-slate-900 max-w-xs truncate">{message.subject}</div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <span className={`px-3 py-1 text-xs font-medium rounded-full ${getStatusColor(message.status)}`}>
+                        {getStatusLabel(message.status)}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600">
+                      {new Date(message.created_at).toLocaleDateString('pt-BR')}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                      <div className="flex justify-end space-x-2">
+                        <button
+                          onClick={() => handleViewMessage(message)}
+                          className="text-blue-600 hover:text-blue-900 p-1.5 rounded-full hover:bg-blue-50 transition-colors"
+                          title="Ver detalhes"
+                        >
+                          <Eye size={18} />
+                        </button>
+                        <button
+                          onClick={() => handleDeleteMessage(message.id)}
+                          className="text-red-600 hover:text-red-900 p-1.5 rounded-full hover:bg-red-50 transition-colors"
+                          title="Excluir"
+                        >
+                          <Trash2 size={18} />
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 ))
@@ -236,6 +285,144 @@ export default function AdminNewsletter() {
           </table>
         </div>
       </div>
+
+      {/* Messages Cards - Mobile */}
+      <div className="lg:hidden space-y-4">
+        {loading ? (
+          <div className="flex items-center justify-center gap-2 py-8">
+            <div className="w-5 h-5 border-2 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+            <span className="text-slate-500">Carregando mensagens...</span>
+          </div>
+        ) : filteredMessages.length === 0 ? (
+          <div className="text-center py-8 text-slate-500">
+            {searchTerm || statusFilter !== 'all' ? 'Nenhuma mensagem encontrada' : 'Nenhuma mensagem recebida'}
+          </div>
+        ) : (
+          filteredMessages.map((message) => (
+            <div key={message.id} className="bg-white rounded-lg border border-slate-200 p-4 shadow-sm hover:shadow-md transition-shadow">
+              <div className="flex justify-between items-start mb-3">
+                <div className="flex-1">
+                  <div className="flex items-center gap-2 mb-1">
+                    <h3 className="font-semibold text-slate-900 text-sm">{message.name}</h3>
+                    {message.status === 'new' && (
+                      <span className="w-2 h-2 bg-blue-500 rounded-full"></span>
+                    )}
+                  </div>
+                  <p className="text-xs text-slate-600">{message.email}</p>
+                  {message.phone && <p className="text-xs text-slate-400">{message.phone}</p>}
+                </div>
+                <span className={`px-2 py-1 text-xs font-medium rounded-full ${getStatusColor(message.status)}`}>
+                  {getStatusLabel(message.status)}
+                </span>
+              </div>
+
+              <p className="text-sm text-slate-900 font-medium mb-2">{message.subject}</p>
+              <p className="text-xs text-slate-500 mb-3">
+                {new Date(message.created_at).toLocaleDateString('pt-BR')}
+              </p>
+
+              <div className="flex gap-2 justify-end">
+                <button
+                  onClick={() => handleViewMessage(message)}
+                  className="text-blue-600 hover:text-blue-900 p-2 rounded-lg hover:bg-blue-50 transition-colors"
+                  title="Ver detalhes"
+                >
+                  <Eye size={18} />
+                </button>
+                <button
+                  onClick={() => handleDeleteMessage(message.id)}
+                  className="text-red-600 hover:text-red-900 p-2 rounded-lg hover:bg-red-50 transition-colors"
+                  title="Excluir"
+                >
+                  <Trash2 size={18} />
+                </button>
+              </div>
+            </div>
+          ))
+        )}
+      </div>
+
+      {/* Message Detail Modal */}
+      {selectedMessage && (
+        <div 
+          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50"
+          onClick={() => setSelectedMessage(null)}
+        >
+          <div 
+            className="bg-white rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="p-6">
+              <div className="flex justify-between items-start mb-6">
+                <div>
+                  <h3 className="text-2xl font-bold text-slate-900">{selectedMessage.subject}</h3>
+                  <span className={`inline-block mt-2 px-3 py-1 text-sm font-medium rounded-full ${getStatusColor(selectedMessage.status)}`}>
+                    {getStatusLabel(selectedMessage.status)}
+                  </span>
+                </div>
+                <button
+                  onClick={() => setSelectedMessage(null)}
+                  className="text-slate-400 hover:text-slate-500 transition-colors"
+                  title="Fechar"
+                >
+                  <X size={24} />
+                </button>
+              </div>
+
+              <div className="space-y-4 mb-6">
+                <div className="flex items-start">
+                  <Mail className="h-5 w-5 text-slate-400 mt-0.5 mr-3 flex-shrink-0" />
+                  <div>
+                    <p className="text-sm text-slate-500">De</p>
+                    <p className="text-slate-900 font-medium">{selectedMessage.name}</p>
+                    <p className="text-sm text-slate-600">{selectedMessage.email}</p>
+                    {selectedMessage.phone && (
+                      <p className="text-sm text-slate-600">{selectedMessage.phone}</p>
+                    )}
+                  </div>
+                </div>
+
+                <div className="flex items-start">
+                  <Clock className="h-5 w-5 text-slate-400 mt-0.5 mr-3 flex-shrink-0" />
+                  <div>
+                    <p className="text-sm text-slate-500">Data</p>
+                    <p className="text-slate-900 font-medium">
+                      {new Date(selectedMessage.created_at).toLocaleString('pt-BR')}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="pt-4 border-t border-slate-200">
+                  <p className="text-sm text-slate-500 mb-2">Mensagem</p>
+                  <p className="text-slate-700 whitespace-pre-line leading-relaxed">
+                    {selectedMessage.message}
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex justify-end space-x-3 pt-4 border-t border-slate-200">
+                <a
+                  href={`mailto:${selectedMessage.email}?subject=Re: ${selectedMessage.subject}`}
+                  className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium flex items-center gap-2"
+                >
+                  <Mail size={18} />
+                  Responder por Email
+                </a>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSelectedMessage(null);
+                    handleDeleteMessage(selectedMessage.id);
+                  }}
+                  className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-medium"
+                >
+                  Excluir
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

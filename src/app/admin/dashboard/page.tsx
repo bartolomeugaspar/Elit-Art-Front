@@ -29,7 +29,7 @@ interface Stats {
   totalUsers: number;
   totalEvents: number;
   totalRegistrations: number;
-  newsletterSubscribers: number;
+  contactMessages: number;
   totalArtworks: number;
   totalBlogPosts: number;
   totalProducts: number;
@@ -67,7 +67,7 @@ export default function AdminDashboard() {
     totalUsers: 0,
     totalEvents: 0,
     totalRegistrations: 0,
-    newsletterSubscribers: 0,
+    contactMessages: 0,
     totalArtworks: 0,
     totalBlogPosts: 0,
     totalProducts: 0,
@@ -86,21 +86,21 @@ export default function AdminDashboard() {
 
       const headers = { Authorization: `Bearer ${token}` };
 
-      const [usersRes, eventsRes, registrationsRes, newsletterRes, artworksRes, blogRes, artistsRes] = await Promise.all([
+      const [usersRes, eventsRes, registrationsRes, contactRes, artworksRes, blogRes, artistsRes] = await Promise.all([
         fetch(`${API_URL}/users`, { headers }),
         fetch(`${API_URL}/events`, { headers }),
         fetch(`${API_URL}/registrations`, { headers }),
-        fetch(`${API_URL}/newsletter`, { headers }),
+        fetch(`${API_URL}/contact`, { headers }),
         fetch(`${API_URL}/artworks`, { headers }),
         fetch(`${API_URL}/blog`, { headers }),
         fetch(`${API_URL}/artists`, { headers }),
       ]);
 
-      const [usersData, eventsData, registrationsData, newsletterData, artworksData, blogData, artistsData] = await Promise.all([
+      const [usersData, eventsData, registrationsData, contactData, artworksData, blogData, artistsData] = await Promise.all([
         usersRes.json(),
         eventsRes.json(),
         registrationsRes.json(),
-        newsletterRes.json(),
+        contactRes.json(),
         artworksRes.json(),
         blogRes.json(),
         artistsRes.json(),
@@ -110,7 +110,7 @@ export default function AdminDashboard() {
       const users = usersData.users || [];
       const events = eventsData.events || [];
       const registrations = registrationsData.registrations || [];
-      const subscribers = newsletterData.subscribers || [];
+      const messages = Array.isArray(contactData) ? contactData : [];
       const artworks = artworksData.artworks || [];
       const blogPosts = blogData.posts || [];
       const artists = artistsData.artists || [];
@@ -137,7 +137,7 @@ export default function AdminDashboard() {
         totalUsers: users.length,
         totalEvents: events.length,
         totalRegistrations: registrations.length,
-        newsletterSubscribers: subscribers.length,
+        contactMessages: messages.length,
         totalArtworks: artworks.length,
         totalBlogPosts: blogPosts.length,
         totalProducts: 0,
@@ -148,7 +148,6 @@ export default function AdminDashboard() {
         recentActivity: [],
       });
     } catch (error) {
-      console.error('Failed to fetch stats:', error);
     } finally {
       setLoading(false);
     }
@@ -182,12 +181,6 @@ export default function AdminDashboard() {
       { name: 'Cancelado', value: 12 },
     ];
   }
-
-  console.log('[Dashboard] Dados dos gráficos:', {
-    usersByRoleData,
-    eventsByCategoryData,
-    registrationsByStatusData,
-  });
 
   return (
     <div className="space-y-6">
@@ -238,19 +231,19 @@ export default function AdminDashboard() {
           <p className="text-slate-500 text-xs">Total registradas</p>
         </div>
 
-        {/* Newsletter */}
+        {/* Mensagens */}
         <div className="group bg-white rounded-xl p-5 border border-slate-100 shadow-sm hover:shadow-lg hover:border-orange-200 transition-all duration-300">
           <div className="flex items-start justify-between mb-4">
             <div className="bg-orange-100 p-2.5 rounded-lg group-hover:bg-orange-200 transition-all">
-              <Palette size={20} className="text-orange-600" />
+              <Mail size={20} className="text-orange-600" />
             </div>
-            <span className="inline-block bg-green-100 text-green-700 text-xs font-bold px-2 py-0.5 rounded-full">+5%</span>
+            <span className="inline-block bg-green-100 text-green-700 text-xs font-bold px-2 py-0.5 rounded-full">Contactos</span>
           </div>
-          <p className="text-slate-600 text-xs font-medium mb-1">Newsletter</p>
+          <p className="text-slate-600 text-xs font-medium mb-1">Mensagens</p>
           <p className="text-3xl font-bold text-slate-900 mb-1">
-            {loading ? '...' : stats.newsletterSubscribers}
+            {loading ? '...' : stats.contactMessages}
           </p>
-          <p className="text-slate-500 text-xs">Inscritos ativos</p>
+          <p className="text-slate-500 text-xs">Recebidas</p>
         </div>
 
         {/* Galeria */}
@@ -464,9 +457,9 @@ export default function AdminDashboard() {
           >
             <div className="flex items-center gap-3 mb-2">
               <Mail size={24} className="text-orange-600 group-hover:scale-110 transition-transform" />
-              <span className="text-orange-900 font-bold text-sm sm:text-base">Newsletter</span>
+              <span className="text-orange-900 font-bold text-sm sm:text-base">Mensagens</span>
             </div>
-            <p className="text-orange-700 text-xs sm:text-sm">Gerenciar newsletter</p>
+            <p className="text-orange-700 text-xs sm:text-sm">Mensagens de contacto</p>
           </Link>
           <Link
             href="/admin/galeria"

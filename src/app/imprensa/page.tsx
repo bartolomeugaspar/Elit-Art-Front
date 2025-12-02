@@ -70,7 +70,6 @@ export default function ImprensaPage() {
         method: 'POST',
       })
     } catch (err) {
-      console.error('Erro ao registrar download')
     }
   }
 

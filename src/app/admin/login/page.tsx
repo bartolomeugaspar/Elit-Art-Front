@@ -6,17 +6,14 @@ import { useAuth } from '@/hooks/useAuth';
 import { AlertCircle, Eye, EyeOff, Lock, Mail, CheckCircle } from 'lucide-react';
 
 export default function AdminLogin() {
-  console.log('[Login] Componente sendo renderizado');
   
   // Efeito para verificar se o componente está montando corretamente
   useEffect(() => {
-    console.log('[Login] Componente montado');
     // Forçar tema claro
     document.documentElement.classList.remove('dark');
     document.documentElement.classList.add('light');
     
     return () => {
-      console.log('[Login] Componente desmontado');
     };
   }, []);
 
@@ -51,19 +48,14 @@ export default function AdminLogin() {
     setSuccess('');
     setLoading(true);
 
-    console.log('[Login] Iniciando tentativa de login');
     try {
-      console.log('[Login] Chamando função login');
       const data = await login(email, password);
-      console.log('[Login] Resposta da API:', data);
       
       // Verifica se o usuário foi retornado corretamente
       if (!data || !data.user) {
-        console.error('[Login] Dados do usuário não encontrados na resposta');
         throw new Error('Falha ao obter dados do usuário. Tente novamente.');
       }
       
-      console.log('[Login] Verificando permissões do usuário');
       if (data.user.role !== 'admin') {
         setError('Acesso negado. Apenas administradores podem acessar.');
         localStorage.removeItem('token');
@@ -72,14 +64,11 @@ export default function AdminLogin() {
       
       // Show success toast
       const welcomeMessage = `Bem-vindo, ${data.user.name}!`;
-      console.log('[Login]', welcomeMessage);
       setSuccess(welcomeMessage);
       
       // Redirect immediately after successful login
-      console.log('[Login] Redirecionando para o dashboard');
       router.push('/admin/dashboard');
     } catch (err: any) {
-      console.error('[Login] Erro durante o login:', err);
       setError(err.message || 'Email ou senha incorretos');
       
       // Limpar token em caso de erro

@@ -91,7 +91,6 @@ export default function EventGalleryModal({
         },
       })
     } catch (error) {
-      console.error('Failed to upload images:', error)
       toast.error(
         error instanceof Error ? error.message : 'Erro ao enviar imagens',
         {
@@ -138,7 +137,6 @@ export default function EventGalleryModal({
       onImagesUpdated(localImages)
       onClose()
     } catch (error) {
-      console.error('Failed to save gallery:', error)
       toast.error(
         error instanceof Error ? error.message : 'Erro ao atualizar galeria'
       )

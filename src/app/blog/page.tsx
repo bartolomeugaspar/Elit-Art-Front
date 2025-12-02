@@ -49,7 +49,7 @@ export default function BlogPage() {
           <div className="max-w-3xl">
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-elit-light mb-3 md:mb-4 flex items-center gap-3">
               <BookOpen size={40} />
-              Blog Elit'Arte
+              Revista Elit'Arte
             </h1>
             <p className="text-base sm:text-lg md:text-xl text-elit-light/90">
               Revistas, Contos, Artigos, Poesia e Textos Dramáticos

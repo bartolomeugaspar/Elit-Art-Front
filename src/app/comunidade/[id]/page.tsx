@@ -49,8 +49,23 @@ export default function TopicDetailPage() {
         if (!response.ok) throw new Error('Tópico não encontrado')
 
         const data = await response.json()
+        
         setTopic(data.topic || data)
-        setReplies(data.replies || [])
+        
+        // Se os replies vieram na resposta do tópico, usar eles
+        if (data.replies && Array.isArray(data.replies)) {
+          setReplies(data.replies)
+        } else {
+          // Caso contrário, buscar os replies separadamente
+          const repliesResponse = await fetch(`${apiUrl}/forum/topics/${topicId}/replies`)
+          if (repliesResponse.ok) {
+            const repliesData = await repliesResponse.json()
+            setReplies(repliesData.replies || [])
+          } else {
+            setReplies([])
+          }
+        }
+        
         setError(null)
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Erro ao carregar tópico')
@@ -89,17 +104,21 @@ export default function TopicDetailPage() {
         const data = await response.json()
         setReplies([...replies, data.reply])
         setReplyContent('')
+        // Atualizar contador de comentários do tópico
+        if (topic) {
+          setTopic({ ...topic, replies_count: topic.replies_count + 1 })
+        }
+        // Recarregar os comentários do servidor para garantir sincronização
+        const repliesResponse = await fetch(`${apiUrl}/forum/topics/${topicId}/replies`)
+        if (repliesResponse.ok) {
+          const repliesData = await repliesResponse.json()
+          setReplies(repliesData.replies || [])
+        }
       } else {
         const errorData = await response.json().catch(() => ({}))
-        console.error('Erro ao enviar resposta:', {
-          status: response.status,
-          statusText: response.statusText,
-          error: errorData,
-        })
         throw new Error(errorData.message || `Erro ${response.status}: ${response.statusText}`)
       }
     } catch (err) {
-      console.error('Erro ao enviar resposta:', err)
       alert(`Erro ao enviar resposta: ${err instanceof Error ? err.message : 'Tente novamente.'}`)
     } finally {
       setSubmittingReply(false)
@@ -119,13 +138,13 @@ export default function TopicDetailPage() {
 
   const getCategoryColor = (category: string) => {
     const colors: { [key: string]: string } = {
-      general: 'bg-blue-100 text-blue-800',
-      art: 'bg-purple-100 text-purple-800',
-      events: 'bg-green-100 text-green-800',
-      collaboration: 'bg-orange-100 text-orange-800',
-      feedback: 'bg-red-100 text-red-800',
+      general: 'bg-elit-light text-elit-dark border border-elit-orange',
+      art: 'bg-elit-orange text-white',
+      events: 'bg-elit-yellow text-elit-dark',
+      collaboration: 'bg-elit-red text-white',
+      feedback: 'bg-elit-brown text-white',
     }
-    return colors[category] || 'bg-gray-100 text-gray-800'
+    return colors[category] || 'bg-elit-light text-elit-dark'
   }
 
   if (loading) {
@@ -169,39 +188,54 @@ export default function TopicDetailPage() {
     <div className="min-h-screen bg-elit-light">
       <Header />
 
-      {/* Breadcrumb */}
-      <div className="bg-white border-b">
-        <div className="container mx-auto px-4 py-4">
+      {/* Hero Section */}
+      <section className="pt-24 pb-8 md:pt-32 md:pb-12 bg-gradient-to-r from-elit-dark via-elit-red to-elit-orange">
+        <div className="container mx-auto px-4 sm:px-6">
           <Link
             href="/comunidade"
-            className="inline-flex items-center gap-2 text-elit-red hover:text-elit-brown transition"
+            className="inline-flex items-center gap-2 text-elit-light hover:text-elit-yellow transition mb-6"
           >
             <ArrowLeft size={20} />
             Voltar à Comunidade
           </Link>
+          {topic && (
+            <div className="max-w-3xl">
+              <span className={`inline-block px-3 py-1 rounded-full text-sm font-semibold mb-3 ${getCategoryColor(topic.category)}`}>
+                {getCategoryLabel(topic.category)}
+              </span>
+              <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-elit-light mb-3">
+                {topic.title}
+              </h1>
+              <div className="flex items-center gap-4 text-elit-light/80 text-sm">
+                <span className="flex items-center gap-1">
+                  <Eye size={16} />
+                  {topic.views} visualizações
+                </span>
+                <span className="flex items-center gap-1">
+                  <MessageCircle size={16} />
+                  {replies.length} {replies.length === 1 ? 'comentário' : 'comentários'}
+                </span>
+              </div>
+            </div>
+          )}
         </div>
-      </div>
+      </section>
 
       {/* Main Content */}
-      <div className="py-8 md:py-12 pb-24 md:pb-32 bg-gray-50">
-        <div className="container mx-auto px-4">
-          <div className="max-w-2xl mx-auto">
-            {/* Main Post Card - Estilo Facebook */}
-            <div className="bg-white rounded-lg shadow mb-4">
+      <div className="py-8 md:py-12 pb-24 md:pb-32">
+        <div className="container mx-auto px-4 sm:px-6">
+          <div className="max-w-3xl mx-auto">
+            {/* Main Post Card */}
+            <div className="bg-white rounded-xl shadow-lg mb-6">
               {/* Author Info */}
-              <div className="p-4 border-b">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-elit-red to-elit-orange flex items-center justify-center text-white font-bold">
+              <div className="p-6 border-b border-elit-light">
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-elit-red to-elit-orange flex items-center justify-center text-white font-bold text-lg">
                     {topic.author_name.charAt(0).toUpperCase()}
                   </div>
                   <div className="flex-1">
-                    <div className="flex items-center gap-2">
-                      <p className="font-semibold text-elit-dark">{topic.author_name}</p>
-                      <span className={`inline-block px-2 py-0.5 rounded text-xs font-semibold ${getCategoryColor(topic.category)}`}>
-                        {getCategoryLabel(topic.category)}
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-2 text-xs text-elit-dark/60">
+                    <p className="font-bold text-elit-dark text-lg">{topic.author_name}</p>
+                    <div className="flex items-center gap-2 text-sm text-elit-dark/60">
                       <span>
                         {new Date(topic.created_at).toLocaleDateString('pt-BR', {
                           day: 'numeric',
@@ -209,88 +243,54 @@ export default function TopicDetailPage() {
                           year: 'numeric',
                         })}
                       </span>
-                      {topic.is_pinned && <span className="text-yellow-600">• 📌 Fixado</span>}
-                      {topic.is_closed && <span className="text-red-600">• 🔒 Fechado</span>}
+                      {topic.is_pinned && <span className="text-elit-orange">• 📌 Fixado</span>}
+                      {topic.is_closed && <span className="text-elit-red">• 🔒 Fechado</span>}
                     </div>
                   </div>
                 </div>
               </div>
 
               {/* Post Content */}
-              <div className="p-4">
-                <h1 className="text-xl md:text-2xl font-bold text-elit-dark mb-3">
-                  {topic.title}
-                </h1>
-                <p className="text-elit-dark leading-relaxed whitespace-pre-wrap">
+              <div className="p-6">
+                <p className="text-elit-dark leading-relaxed text-base whitespace-pre-wrap">
                   {topic.description}
                 </p>
               </div>
-
-              {/* Stats Bar */}
-              <div className="px-4 py-2 border-t border-b flex items-center justify-between text-sm text-elit-dark/60">
-                <div className="flex items-center gap-4">
-                  <span className="flex items-center gap-1">
-                    <Eye size={16} />
-                    {topic.views} visualizações
-                  </span>
-                </div>
-                <span className="flex items-center gap-1">
-                  {replies.length} {replies.length === 1 ? 'comentário' : 'comentários'}
-                </span>
-              </div>
-
-              {/* Action Buttons (opcional) */}
-              <div className="px-4 py-2 flex items-center gap-2">
-                <button className="flex-1 py-2 hover:bg-gray-100 rounded-lg transition text-elit-dark/70 font-semibold text-sm">
-                  👍 Curtir
-                </button>
-                <button className="flex-1 py-2 hover:bg-gray-100 rounded-lg transition text-elit-dark/70 font-semibold text-sm">
-                  💬 Comentar
-                </button>
-                <button className="flex-1 py-2 hover:bg-gray-100 rounded-lg transition text-elit-dark/70 font-semibold text-sm">
-                  ↗️ Compartilhar
-                </button>
-              </div>
             </div>
 
-            {/* Comments Section - Estilo Facebook */}
-            <div className="bg-white rounded-lg shadow">
+            {/* Comments Section */}
+            <div className="bg-white rounded-xl shadow-lg mb-6">
+              <div className="p-6 border-b border-elit-light">
+                <h2 className="text-xl font-bold text-elit-dark flex items-center gap-2">
+                  <MessageCircle size={24} className="text-elit-orange" />
+                  Comentários ({replies.length})
+                </h2>
+              </div>
+              
               {replies.length === 0 ? (
-                <div className="p-6 text-center text-elit-dark/60">
-                  Nenhum comentário ainda. Seja o primeiro a comentar!
+                <div className="p-8 text-center">
+                  <MessageCircle size={48} className="mx-auto text-elit-orange/30 mb-3" />
+                  <p className="text-elit-dark/60">Nenhum comentário ainda. Seja o primeiro a comentar!</p>
                 </div>
               ) : (
-                <div>
-                  {replies.map((reply, index) => (
-                    <div key={reply.id} className={`p-4 ${index !== 0 ? 'border-t' : ''} hover:bg-gray-50 transition`}>
-                      <div className="flex gap-3">
+                <div className="divide-y divide-elit-light">
+                  {replies.map((reply) => (
+                    <div key={reply.id} className="p-6 hover:bg-elit-light/50 transition">
+                      <div className="flex gap-4">
                         {/* Avatar */}
                         <div className="flex-shrink-0">
-                          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-elit-dark to-elit-brown flex items-center justify-center text-white font-bold text-sm">
+                          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-elit-red to-elit-orange flex items-center justify-center text-white font-bold">
                             {reply.author_name.charAt(0).toUpperCase()}
                           </div>
                         </div>
 
                         {/* Content */}
                         <div className="flex-1 min-w-0">
-                          <div className="bg-gray-100 rounded-2xl px-4 py-2.5">
-                            <p className="font-semibold text-elit-dark text-sm mb-1">
+                          <div className="flex items-center gap-2 mb-2">
+                            <p className="font-bold text-elit-dark">
                               {reply.author_name}
                             </p>
-                            <p className="text-elit-dark text-sm leading-relaxed break-words">
-                              {reply.content}
-                            </p>
-                          </div>
-
-                          {/* Actions */}
-                          <div className="flex items-center gap-4 mt-1 px-2 text-xs">
-                            <button className="text-elit-dark/60 hover:underline font-semibold hover:text-elit-red transition">
-                              Curtir
-                            </button>
-                            <button className="text-elit-dark/60 hover:underline font-semibold hover:text-elit-red transition">
-                              Responder
-                            </button>
-                            <span className="text-elit-dark/50">
+                            <span className="text-xs text-elit-dark/50">
                               {new Date(reply.created_at).toLocaleDateString('pt-BR', {
                                 day: 'numeric',
                                 month: 'short',
@@ -300,11 +300,17 @@ export default function TopicDetailPage() {
                                 minute: '2-digit',
                               })}
                             </span>
-                            {reply.likes > 0 && (
-                              <span className="flex items-center gap-1 text-elit-red font-semibold ml-auto">
-                                ❤️ {reply.likes}
-                              </span>
-                            )}
+                          </div>
+                          <p className="text-elit-dark leading-relaxed break-words mb-3">
+                            {reply.content}
+                          </p>
+
+                          {/* Actions */}
+                          <div className="flex items-center gap-4">
+                            <button className="text-sm text-elit-red hover:text-elit-orange transition font-semibold flex items-center gap-1">
+                              <Heart size={16} />
+                              {reply.likes > 0 ? `Curtir (${reply.likes})` : 'Curtir'}
+                            </button>
                           </div>
                         </div>
                       </div>
@@ -314,52 +320,46 @@ export default function TopicDetailPage() {
               )}
             </div>
 
-            {/* Comment Input - Estilo Facebook */}
+            {/* Comment Input */}
             {!topic.is_closed ? (
-              <div className="bg-white rounded-lg shadow mt-4 p-4">
+              <div className="bg-white rounded-xl shadow-lg p-6">
+                <h3 className="text-lg font-bold text-elit-dark mb-4">Deixe seu comentário</h3>
                 <form onSubmit={handleSubmitReply}>
-                  <div className="flex gap-2">
-                    {/* Avatar */}
-                    <div className="flex-shrink-0">
-                      <div className="w-8 h-8 rounded-full bg-gradient-to-br from-gray-400 to-gray-600 flex items-center justify-center text-white font-bold text-sm">
-                        U
-                      </div>
-                    </div>
-
-                    {/* Input */}
-                    <div className="flex-1">
-                      <div className="relative">
-                        <input
-                          type="text"
-                          value={replyContent}
-                          onChange={(e) => setReplyContent(e.target.value)}
-                          placeholder="Escreva um comentário..."
-                          className="w-full text-elit-dark text-sm px-4 py-2 bg-gray-100 border-none rounded-full focus:outline-none focus:ring-2 focus:ring-elit-red"
-                          onKeyDown={(e) => {
-                            if (e.key === 'Enter' && !e.shiftKey) {
-                              e.preventDefault()
-                              handleSubmitReply(e)
-                            }
-                          }}
-                        />
-                        {replyContent.trim() && (
-                          <button
-                            type="submit"
-                            disabled={submittingReply}
-                            className="absolute right-2 top-1/2 -translate-y-1/2 text-elit-red hover:text-elit-brown transition disabled:opacity-50"
-                          >
+                  <div className="space-y-4">
+                    <textarea
+                      value={replyContent}
+                      onChange={(e) => setReplyContent(e.target.value)}
+                      placeholder="Compartilhe sua opinião..."
+                      rows={4}
+                      className="w-full px-4 py-3 border-2 border-elit-light rounded-xl focus:outline-none focus:ring-2 focus:ring-elit-orange focus:border-transparent text-elit-dark placeholder-elit-dark/40 resize-none"
+                    />
+                    <div className="flex justify-end">
+                      <button
+                        type="submit"
+                        disabled={submittingReply || !replyContent.trim()}
+                        className="px-6 py-3 bg-elit-red text-white rounded-xl hover:bg-elit-brown transition font-semibold disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                      >
+                        {submittingReply ? (
+                          <>
+                            <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                            Enviando...
+                          </>
+                        ) : (
+                          <>
                             <Send size={18} />
-                          </button>
+                            Comentar
+                          </>
                         )}
-                      </div>
+                      </button>
                     </div>
                   </div>
                 </form>
               </div>
             ) : (
-              <div className="bg-white rounded-lg shadow mt-4 p-6 text-center border-2 border-gray-200">
-                <p className="text-gray-600 font-semibold">
-                  🔒 Este tópico foi fechado e não aceita mais comentários.
+              <div className="bg-elit-light border-2 border-elit-orange rounded-xl p-8 text-center">
+                <p className="text-elit-dark font-semibold flex items-center justify-center gap-2">
+                  <MessageCircle size={20} className="text-elit-orange" />
+                  Este tópico foi fechado e não aceita mais comentários.
                 </p>
               </div>
             )}

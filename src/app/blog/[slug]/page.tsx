@@ -85,7 +85,6 @@ export default function BlogPostPage() {
         })
       }
     } catch (err) {
-      console.error('Erro ao curtir:', err)
     }
   }
 
@@ -100,7 +99,6 @@ export default function BlogPostPage() {
           url: window.location.href,
         })
       } catch (err) {
-        console.error('Erro ao compartilhar:', err)
       }
     } else {
       navigator.clipboard.writeText(window.location.href)

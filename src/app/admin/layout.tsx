@@ -12,18 +12,11 @@ export default function RootLayout({
   const pathname = usePathname();
   
   // Don't apply AdminLayout to login and forgot-password pages
-  if (pathname === '/admin/login' || pathname === '/admin/forgot-password') {
-    return (
-      <>
-        {children}
-        <Toaster position="top-right" />
-      </>
-    );
-  }
+  const isAuthPage = pathname === '/admin/login' || pathname === '/admin/forgot-password';
   
   return (
     <>
-      <AdminLayout>{children}</AdminLayout>
+      {isAuthPage ? children : <AdminLayout>{children}</AdminLayout>}
       <Toaster position="top-right" />
     </>
   );
