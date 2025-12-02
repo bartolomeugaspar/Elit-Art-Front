@@ -1,6 +1,6 @@
 'use client'
 
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react'
+import { createContext, useContext, useState, useEffect, ReactNode, useCallback } from 'react'
 import { API_URL } from '@/lib/api'
 
 export interface Notification {
@@ -29,33 +29,46 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
   const [notifications, setNotifications] = useState<Notification[]>([])
   const [isAdmin, setIsAdmin] = useState(false)
 
-  // Verificar se usuário é admin
+  // Verificar se usuário é admin (se tem token e está em página admin, exceto login)
   useEffect(() => {
-    const token = localStorage.getItem('token')
-    const user = localStorage.getItem('user')
-    console.log('🔍 Verificando admin:', { token: !!token, user })
-    if (token && user) {
-      try {
-        const userData = JSON.parse(user)
-        console.log('👤 User data:', userData)
-        setIsAdmin(userData.role === 'admin')
-        console.log('✅ isAdmin:', userData.role === 'admin')
-      } catch (error) {
-        console.error('❌ Erro ao parsear user:', error)
-        setIsAdmin(false)
+    const checkIsAdmin = () => {
+      const token = localStorage.getItem('token')
+      const pathname = typeof window !== 'undefined' ? window.location.pathname : ''
+      const isAdminPage = pathname.startsWith('/admin') && pathname !== '/admin/dashoard/'
+      const hasToken = !!token
+      
+      // É admin se tiver token E estiver em página admin (exceto login)
+      setIsAdmin(hasToken && isAdminPage)
+    }
+    
+    checkIsAdmin()
+    
+    // Verificar novamente quando a URL mudar ou quando houver login
+    const handleLocationChange = () => checkIsAdmin()
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === 'token') {
+        checkIsAdmin()
       }
+    }
+    
+    window.addEventListener('popstate', handleLocationChange)
+    window.addEventListener('storage', handleStorageChange)
+    
+    // Criar um intervalo para verificar mudanças (para navegação SPA)
+    const interval = setInterval(checkIsAdmin, 1000)
+    
+    return () => {
+      window.removeEventListener('popstate', handleLocationChange)
+      window.removeEventListener('storage', handleStorageChange)
+      clearInterval(interval)
     }
   }, [])
 
   // Buscar notificações do backend
-  const refreshNotifications = async () => {
-    console.log('🔔 refreshNotifications chamado. isAdmin:', isAdmin)
+  const refreshNotifications = useCallback(async () => {
     if (!isAdmin) {
-      console.log('⚠️ Não é admin, retornando...')
       return
     }
-
-    console.log('🚀 Buscando notificações...')
     try {
       const token = localStorage.getItem('token')
       if (!token) return
@@ -65,15 +78,11 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
 
       // 1. Buscar mensagens de contacto não lidas
       try {
-        console.log('📧 Buscando mensagens de contato...', `${API_URL}/contact`)
         const contactRes = await fetch(`${API_URL}/contact`, { headers })
-        console.log('📧 Status:', contactRes.status)
         if (contactRes.ok) {
           const contactData = await contactRes.json()
-          console.log('📧 Dados recebidos:', contactData)
           const messages = contactData.messages || []
           const unreadMessages = messages.filter((msg: any) => msg.status === 'new')
-          console.log('📧 Mensagens não lidas:', unreadMessages.length)
 
           const contactNotifications: Notification[] = unreadMessages.map((msg: any) => ({
             id: `contact-${msg.id}`,
@@ -86,11 +95,9 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
           }))
 
           allNotifications.push(...contactNotifications)
-        } else {
-          console.error('❌ Erro ao buscar contato:', await contactRes.text())
         }
       } catch (error) {
-        console.error('❌ Exceção ao buscar contato:', error)
+        // Continuar mesmo se falhar
       }
 
       // 2. Buscar novas inscrições (últimas 24h)
@@ -210,7 +217,7 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
           allNotifications.push(...userNotifications)
         }
       } catch (error) {
-        console.error('❌ Exceção ao buscar usuários:', error)
+        // Continuar mesmo se falhar
       }
 
       // Ordenar por data (mais recente primeiro)
@@ -218,22 +225,20 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
         new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
       )
 
-      console.log('✅ Notificações coletadas:', allNotifications.length)
-      console.log('📋 Notificações:', allNotifications)
       setNotifications(allNotifications)
     } catch (error) {
-      console.error('❌ Erro ao buscar notificações:', error)
+      // Erro ao buscar notificações
     }
-  }
+  }, [isAdmin])
 
-  // Atualizar notificações a cada 10 segundos
+  // Atualizar notificações a cada 5 segundos quando admin
   useEffect(() => {
     if (isAdmin) {
       refreshNotifications()
-      const interval = setInterval(refreshNotifications, 10000) // 10 segundos
+      const interval = setInterval(refreshNotifications, 5000) // 5 segundos
       return () => clearInterval(interval)
     }
-  }, [isAdmin])
+  }, [isAdmin, refreshNotifications])
 
   // Escutar eventos de novas mensagens
   useEffect(() => {
@@ -242,10 +247,21 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
         refreshNotifications()
       }
     }
+    
+    const handleMessagesUpdated = () => {
+      if (isAdmin) {
+        refreshNotifications()
+      }
+    }
 
     window.addEventListener('newContactMessage', handleNewContactMessage)
-    return () => window.removeEventListener('newContactMessage', handleNewContactMessage)
-  }, [isAdmin])
+    window.addEventListener('messagesUpdated', handleMessagesUpdated)
+    
+    return () => {
+      window.removeEventListener('newContactMessage', handleNewContactMessage)
+      window.removeEventListener('messagesUpdated', handleMessagesUpdated)
+    }
+  }, [isAdmin, refreshNotifications])
 
   const addNotification = (notification: Omit<Notification, 'id' | 'createdAt' | 'read'>) => {
     if (!isAdmin) return // Só adicionar se for admin

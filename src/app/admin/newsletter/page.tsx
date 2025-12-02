@@ -44,6 +44,9 @@ export default function AdminMessages() {
       if (response.ok) {
         const data = await response.json();
         setMessages(data.messages || []);
+        
+        // Disparar evento para atualizar notificações no header
+        window.dispatchEvent(new CustomEvent('messagesUpdated'));
       }
     } catch (error) {
       toast.error('Erro ao carregar mensagens');
