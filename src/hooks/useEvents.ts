@@ -106,7 +106,17 @@ export const useEvents = () => {
   }
 
   const getEventById = (id: number | string): Event | undefined => {
-    return events.find(event => event.id === id || event.id === parseInt(String(id)))
+    return events.find(event => {
+      // Comparação direta para UUIDs (strings) ou números
+      if (typeof event.id === 'string' && typeof id === 'string') {
+        return event.id === id
+      }
+      // Comparação numérica se ambos forem ou puderem ser números
+      if (typeof event.id === 'number' || typeof id === 'number') {
+        return event.id === id || event.id === parseInt(String(id)) || parseInt(String(event.id)) === parseInt(String(id))
+      }
+      return event.id === id
+    })
   }
 
   const getEventsByCategory = (category: string): Event[] => {

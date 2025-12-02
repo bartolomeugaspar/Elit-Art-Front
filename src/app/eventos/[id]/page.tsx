@@ -8,7 +8,7 @@ import { useState } from 'react'
 import EventRegistrationModal from '@/components/EventRegistrationModal'
 
 export default function EventDetailPage({ params }: { params: { id: string } }) {
-  const { getEventById, getTestimonialsByEventId } = useEvents()
+  const { getEventById, getTestimonialsByEventId, loading } = useEvents()
   const event = getEventById(params.id)
   const testimonials = event ? getTestimonialsByEventId(event.id as number) : []
   const [isLiked, setIsLiked] = useState(false)
@@ -25,6 +25,21 @@ export default function EventDetailPage({ params }: { params: { id: string } }) 
     setRegistrationMessage({ type: 'success', text: 'Inscrição realizada com sucesso!' })
     // Atualizar a página após 2 segundos
     setTimeout(() => window.location.reload(), 2000)
+  }
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-elit-light">
+        <Header />
+        <div className="pt-32 pb-16 text-center">
+          <div className="flex flex-col items-center justify-center">
+            <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-elit-orange mb-4"></div>
+            <p className="text-elit-dark text-lg">Carregando evento...</p>
+          </div>
+        </div>
+        <Footer />
+      </div>
+    )
   }
 
   if (!event) {
