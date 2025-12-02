@@ -24,6 +24,7 @@ export default function AdminUsers() {
     email: '',
     password: '',
     role: 'user' as 'admin' | 'Arteist' | 'user',
+    is_active: true,
   });
   
   const [isEditing, setIsEditing] = useState(false);
@@ -70,6 +71,7 @@ export default function AdminUsers() {
       email: '',
       password: '',
       role: 'user',
+      is_active: true,
     });
     setIsEditing(false);
   };
@@ -86,6 +88,7 @@ export default function AdminUsers() {
       email: user.email,
       password: '',
       role: user.role,
+      is_active: user.is_active,
     });
     setIsEditing(true);
     setShowForm(true);
@@ -299,6 +302,37 @@ export default function AdminUsers() {
                     <option value="admin">Admin</option>
                   </select>
                 </div>
+
+                {isEditing && (
+                  <div className="space-y-2">
+                    <label className="block text-sm font-medium text-slate-700">Status da Conta</label>
+                    <div className="flex items-center gap-3 p-4 bg-slate-50 border border-slate-300 rounded-lg">
+                      <button
+                        type="button"
+                        onClick={() => setFormData({ ...formData, is_active: !formData.is_active })}
+                        className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
+                          formData.is_active ? 'bg-green-600' : 'bg-red-600'
+                        }`}
+                      >
+                        <span
+                          className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                            formData.is_active ? 'translate-x-6' : 'translate-x-1'
+                          }`}
+                        />
+                      </button>
+                      <div>
+                        <p className={`text-sm font-medium ${formData.is_active ? 'text-green-700' : 'text-red-700'}`}>
+                          {formData.is_active ? 'Conta Ativa' : 'Conta Desativada'}
+                        </p>
+                        <p className="text-xs text-slate-500">
+                          {formData.is_active 
+                            ? 'O usuário pode fazer login normalmente' 
+                            : 'O usuário não poderá fazer login'}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
               
               <div className="flex justify-end gap-3 pt-4 border-t border-slate-200">
