@@ -57,7 +57,7 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
       const contactRes = await fetch(`${API_URL}/contact`, { headers })
       if (contactRes.ok) {
         const contactData = await contactRes.json()
-        const messages = Array.isArray(contactData) ? contactData : []
+        const messages = contactData.messages || []
         const unreadMessages = messages.filter((msg: any) => msg.status === 'new')
 
         const contactNotifications: Notification[] = unreadMessages.map((msg: any) => ({
@@ -103,11 +103,11 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
     }
   }
 
-  // Atualizar notificações a cada 30 segundos
+  // Atualizar notificações a cada 10 segundos
   useEffect(() => {
     if (isAdmin) {
       refreshNotifications()
-      const interval = setInterval(refreshNotifications, 30000) // 30 segundos
+      const interval = setInterval(refreshNotifications, 10000) // 10 segundos
       return () => clearInterval(interval)
     }
   }, [isAdmin])
