@@ -10,7 +10,7 @@ interface Artwork {
   id: string
   title: string
   artist_name: string
-  type: 'painting' | 'sculpture' | 'photography' | 'digital' | 'other'
+  type: 'musica' | 'literatura' | 'teatro' | 'danca' | 'cinema' | 'desenho'
   image_url: string
   created_at: string
 }
@@ -32,7 +32,7 @@ export default function GaleriaAdminPage() {
     description: '',
     artist_id: '',
     artist_name: '',
-    type: 'painting' as 'painting' | 'sculpture' | 'photography' | 'digital' | 'mixed_media' | 'other',
+    type: 'desenho' as 'musica' | 'literatura' | 'teatro' | 'danca' | 'cinema' | 'desenho',
     year: new Date().getFullYear(),
     image_url: '',
   })
@@ -50,11 +50,12 @@ export default function GaleriaAdminPage() {
 
   const types = [
     { value: 'all', label: 'Todos' },
-    { value: 'painting', label: 'Pintura' },
-    { value: 'sculpture', label: 'Escultura' },
-    { value: 'photography', label: 'Fotografia' },
-    { value: 'digital', label: 'Digital' },
-    { value: 'other', label: 'Outro' },
+    { value: 'musica', label: 'Música' },
+    { value: 'literatura', label: 'Literatura' },
+    { value: 'teatro', label: 'Teatro' },
+    { value: 'danca', label: 'Dança' },
+    { value: 'cinema', label: 'Cinema' },
+    { value: 'desenho', label: 'Desenho' },
   ]
 
   const filteredArtworks = artworks.filter(a => {
@@ -281,7 +282,7 @@ export default function GaleriaAdminPage() {
           description: '',
           artist_id: '',
           artist_name: '',
-          type: 'painting',
+          type: 'desenho',
           year: new Date().getFullYear(),
           image_url: '',
         })
@@ -419,7 +420,7 @@ export default function GaleriaAdminPage() {
                     description: '',
                     artist_id: '',
                     artist_name: '',
-                    type: 'painting',
+                    type: 'desenho',
                     year: new Date().getFullYear(),
                     image_url: '',
                   })
@@ -558,12 +559,12 @@ export default function GaleriaAdminPage() {
                       className="w-full px-4 py-2.5 bg-white border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
                       required
                     >
-                      <option value="painting">🎨 Pintura</option>
-                      <option value="sculpture">🗿 Escultura</option>
-                      <option value="photography">📷 Fotografia</option>
-                      <option value="digital">💻 Digital</option>
-                      <option value="mixed_media">🎭 Mídia Mista</option>
-                      <option value="other">📋 Outro</option>
+                      <option value="musica">🎵 Música</option>
+                      <option value="literatura">📚 Literatura</option>
+                      <option value="teatro">🎭 Teatro</option>
+                      <option value="danca">💃 Dança</option>
+                      <option value="cinema">🎬 Cinema</option>
+                      <option value="desenho">🎨 Desenho</option>
                     </select>
                   </div>
                 </div>
@@ -606,7 +607,7 @@ export default function GaleriaAdminPage() {
                       description: '',
                       artist_id: '',
                       artist_name: '',
-                      type: 'painting',
+                      type: 'desenho',
                       year: new Date().getFullYear(),
                       image_url: '',
                     })

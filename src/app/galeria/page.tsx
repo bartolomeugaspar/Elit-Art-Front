@@ -14,11 +14,12 @@ export default function GaleriaPage() {
   const [showFilters, setShowFilters] = useState(false)
 
   const types = [
-    { value: 'painting', label: '🎨 Pintura' },
-    { value: 'sculpture', label: '🗿 Escultura' },
-    { value: 'photography', label: '📷 Fotografia' },
-    { value: 'digital', label: '💻 Digital' },
-    { value: 'mixed_media', label: '🎭 Mídia Mista' },
+    { value: 'musica', label: '🎵 Música' },
+    { value: 'literatura', label: '📚 Literatura' },
+    { value: 'teatro', label: '🎭 Teatro' },
+    { value: 'danca', label: '💃 Dança' },
+    { value: 'cinema', label: '🎬 Cinema' },
+    { value: 'desenho', label: '🎨 Desenho' },
   ]
 
   const handleTypeChange = (type: string) => {
