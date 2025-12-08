@@ -27,7 +27,7 @@ export function useArtists(showAll: boolean = false) {
         setLoading(true)
         const token = localStorage.getItem('token')
         const url = showAll ? `${API_URL}/artists?showAll=true` : `${API_URL}/artists`
-        const headers = showAll && token ? { Authorization: `Bearer ${token}` } : {}
+        const headers: HeadersInit = showAll && token ? { Authorization: `Bearer ${token}` } : {}
         
         const response = await fetch(url, { headers })
         
