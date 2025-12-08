@@ -9,7 +9,7 @@ interface BlogPost {
   id: string
   title: string
   slug: string
-  category: 'magazine' | 'story' | 'article' | 'poetry' | 'drama'
+  category: 'musica' | 'literatura' | 'teatro' | 'danca' | 'cinema' | 'desenho'
   author_name: string
   status: 'draft' | 'published' | 'archived'
   views: number
@@ -33,7 +33,7 @@ export default function BlogAdminPage() {
     content: '',
     excerpt: '',
     featured_image: '',
-    category: 'article' as 'magazine' | 'story' | 'article' | 'poetry' | 'drama' | 'other',
+    category: 'literatura' as 'musica' | 'literatura' | 'teatro' | 'danca' | 'cinema' | 'desenho',
     author_id: '',
     author_name: '',
   })
@@ -612,12 +612,12 @@ export default function BlogAdminPage() {
                       className="w-full px-4 py-2.5 bg-white border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
                       required
                     >
-                      <option value="article">Artigo</option>
-                      <option value="story">Conto</option>
-                      <option value="poetry">Poesia</option>
-                      <option value="drama">Drama</option>
-                      <option value="magazine">Revista</option>
-                      <option value="other">Outro</option>
+                      <option value="musica">Música</option>
+                      <option value="literatura">Literatura</option>
+                      <option value="teatro">Teatro</option>
+                      <option value="danca">Dança</option>
+                      <option value="cinema">Cinema</option>
+                      <option value="desenho">Desenho</option>
                     </select>
                   </div>
 

@@ -17,7 +17,7 @@ export default function EventosPage() {
   const [newsletterEmail, setNewsletterEmail] = useState('')
   const [isSubscribing, setIsSubscribing] = useState(false)
 
-  const categories = ['Workshop', 'Exposição', 'Masterclass', 'Networking']
+  const categories = ['Música', 'Literatura', 'Teatro', 'Dança', 'Cinema', 'Desenho']
 
   const filteredEvents = useMemo(() => {
     let filtered = searchQuery ? searchEvents(searchQuery) : upcomingEvents

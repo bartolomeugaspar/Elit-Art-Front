@@ -14,11 +14,12 @@ export default function BlogPage() {
   const [showFilters, setShowFilters] = useState(false)
 
   const categories = [
-    { value: 'magazine', label: '📰 Revista' },
-    { value: 'story', label: '📖 Contos' },
-    { value: 'article', label: '📝 Artigos' },
-    { value: 'poetry', label: '✨ Poesia' },
-    { value: 'drama', label: '🎭 Textos Dramáticos' },
+    { value: 'musica', label: '🎵 Música' },
+    { value: 'literatura', label: '📚 Literatura' },
+    { value: 'teatro', label: '🎭 Teatro' },
+    { value: 'danca', label: '💃 Dança' },
+    { value: 'cinema', label: '🎬 Cinema' },
+    { value: 'desenho', label: '🎨 Desenho' },
   ]
 
   const handleCategoryChange = (category: string) => {

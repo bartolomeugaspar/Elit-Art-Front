@@ -32,13 +32,12 @@ interface EventFormProps {
 }
 
 const CATEGORIES = [
-  'Exposição',
-  'Workshop',
-  'Palestra',
-  'Performance',
-  'Lançamento',
-  'Encontro',
-  'Outro'
+  'Música',
+  'Literatura',
+  'Teatro',
+  'Dança',
+  'Cinema',
+  'Desenho'
 ];
 
 export default function EventForm({ 
