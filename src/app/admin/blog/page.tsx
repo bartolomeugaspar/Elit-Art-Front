@@ -279,7 +279,7 @@ export default function BlogAdminPage() {
           content: '',
           excerpt: '',
           featured_image: '',
-          category: 'article',
+          category: 'literatura',
           author_id: '',
           author_name: '',
         })
@@ -515,7 +515,7 @@ export default function BlogAdminPage() {
                     content: '',
                     excerpt: '',
                     featured_image: '',
-                    category: 'article',
+                    category: 'literatura',
                     author_id: '',
                     author_name: '',
                   })
@@ -673,7 +673,7 @@ export default function BlogAdminPage() {
                       content: '',
                       excerpt: '',
                       featured_image: '',
-                      category: 'article',
+                      category: 'literatura',
                       author_id: '',
                       author_name: '',
                     })
