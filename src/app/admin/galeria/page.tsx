@@ -256,7 +256,7 @@ export default function GaleriaAdminPage() {
         : `${API_URL}/artworks`
       
       const response = await fetch(url, {
-        method: editingArtwork ? 'PUT' : 'POST',
+        method: editingArtwork ? 'PATCH' : 'POST',
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
