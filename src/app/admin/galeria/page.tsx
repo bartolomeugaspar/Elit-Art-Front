@@ -526,19 +526,20 @@ export default function GaleriaAdminPage() {
                                 key={artist.id}
                                 type="button"
                                 onClick={() => {
+                                  const displayName = artist.artisticName || artist.name
                                   setFormData({
                                     ...formData,
                                     artist_id: artist.id,
-                                    artist_name: artist.name,
+                                    artist_name: displayName,
                                   })
-                                  setArtistSearchTerm(artist.name)
+                                  setArtistSearchTerm(displayName)
                                   setShowArtistDropdown(false)
                                 }}
                                 className="w-full text-left px-4 py-2.5 hover:bg-blue-50 transition border-b border-slate-100 last:border-b-0"
                               >
-                                <div className="font-medium text-slate-900">{artist.name}</div>
+                                <div className="font-medium text-slate-900">{artist.artisticName || artist.name}</div>
                                 {artist.artisticName && (
-                                  <div className="text-xs text-slate-500">{artist.artisticName}</div>
+                                  <div className="text-xs text-slate-500">Nome real: {artist.name}</div>
                                 )}
                               </button>
                             ))

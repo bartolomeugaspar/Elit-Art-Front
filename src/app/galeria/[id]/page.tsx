@@ -71,8 +71,26 @@ export default function ArtworkDetailPage() {
     return types[type] || type
   }
 
-  const handleLike = () => {
-    setLiked(!liked)
+  const handleLike = async () => {
+    if (!artwork) return
+
+    try {
+      let apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://elit-arte-back.vercel.app/api'
+      apiUrl = apiUrl.replace(/\/$/, '')
+
+      const endpoint = liked ? 'unlike' : 'like'
+      const response = await fetch(`${apiUrl}/artworks/${id}/${endpoint}`, {
+        method: 'POST',
+      })
+
+      if (response.ok) {
+        const data = await response.json()
+        setArtwork({ ...artwork, likes: data.likes })
+        setLiked(!liked)
+      }
+    } catch (error) {
+      console.error('Erro ao processar like:', error)
+    }
   }
 
   const handleShare = () => {
@@ -207,7 +225,7 @@ export default function ArtworkDetailPage() {
                   <div className="bg-white rounded-lg p-3 sm:p-4 border border-gray-200 text-center">
                     <div className="flex items-center justify-center gap-1 sm:gap-2 mb-2">
                       <Heart size={16} className={`sm:w-5 sm:h-5 ${liked ? 'fill-elit-red text-elit-red' : 'text-elit-red'}`} />
-                      <span className="font-semibold text-elit-dark text-sm sm:text-base">{(artwork.likes || 0) + (liked ? 1 : 0)}</span>
+                      <span className="font-semibold text-elit-dark text-sm sm:text-base">{artwork.likes || 0}</span>
                     </div>
                     <p className="text-xs text-elit-dark/60">Curtidas</p>
                   </div>
