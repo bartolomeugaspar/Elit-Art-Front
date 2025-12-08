@@ -16,7 +16,7 @@ interface Artwork {
 }
 
 export default function GaleriaAdminPage() {
-  const { artists, loading: artistsLoading } = useArtists()
+  const { artists, loading: artistsLoading } = useArtists(true)
   const [artworks, setArtworks] = useState<Artwork[]>([])
   const [loading, setLoading] = useState(true)
   const [searchTerm, setSearchTerm] = useState('')

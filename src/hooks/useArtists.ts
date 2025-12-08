@@ -16,7 +16,7 @@ export interface Artist {
   updatedAt?: string
 }
 
-export function useArtists() {
+export function useArtists(showAll: boolean = false) {
   const [artists, setArtists] = useState<Artist[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -25,7 +25,11 @@ export function useArtists() {
     const fetchArtists = async () => {
       try {
         setLoading(true)
-        const response = await fetch(`${API_URL}/artists`)
+        const token = localStorage.getItem('token')
+        const url = showAll ? `${API_URL}/artists?showAll=true` : `${API_URL}/artists`
+        const headers = showAll && token ? { Authorization: `Bearer ${token}` } : {}
+        
+        const response = await fetch(url, { headers })
         
         if (!response.ok) {
           throw new Error('Erro ao buscar artistas')
@@ -43,7 +47,7 @@ export function useArtists() {
     }
 
     fetchArtists()
-  }, [])
+  }, [showAll])
 
   return { artists, loading, error }
 }
