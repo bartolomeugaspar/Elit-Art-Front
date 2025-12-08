@@ -16,6 +16,7 @@ interface Artist {
   phone: string
   image?: string
   role?: string
+  show_in_public?: boolean
   created_at: string
 }
 
@@ -39,7 +40,7 @@ export default function AdminArtists() {
   const fetchArtists = async () => {
     try {
       const token = localStorage.getItem('token')
-      const response = await fetch(`${API_URL}/artists`, {
+      const response = await fetch(`${API_URL}/artists?showAll=true`, {
         headers: { Authorization: `Bearer ${token}` },
       })
 
@@ -166,6 +167,7 @@ export default function AdminArtists() {
             phone: editingArtist.phone,
             role: editingArtist.role,
             image: editingArtist.image,
+            show_in_public: editingArtist.show_in_public,
           } : undefined}
           isEditing={!!editingArtist}
         />

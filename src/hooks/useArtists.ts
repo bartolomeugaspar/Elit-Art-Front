@@ -11,6 +11,7 @@ export interface Artist {
   phone: string
   image?: string
   role?: string
+  showInPublic?: boolean
   createdAt?: string
   updatedAt?: string
 }

@@ -18,6 +18,7 @@ interface ArtistFormProps {
     phone: string
     role?: string
     image?: string
+    show_in_public?: boolean
   }
   isEditing: boolean
 }
@@ -32,6 +33,7 @@ export default function ArtistForm({ onSuccess, onCancel, initialData, isEditing
     phone: initialData?.phone || '',
     role: initialData?.role || '',
     image: initialData?.image || '',
+    show_in_public: initialData?.show_in_public !== undefined ? initialData.show_in_public : true,
   })
   const [loading, setLoading] = useState(false)
   const [imagePreview, setImagePreview] = useState<string | null>(initialData?.image || null)
@@ -264,6 +266,19 @@ export default function ArtistForm({ onSuccess, onCancel, initialData, isEditing
                 </div>
               )}
             </div>
+          </div>
+
+          <div className="flex items-center gap-3 p-4 bg-blue-50 rounded-lg border border-blue-200">
+            <input
+              type="checkbox"
+              id="show_in_public"
+              checked={formData.show_in_public}
+              onChange={(e) => setFormData({ ...formData, show_in_public: e.target.checked })}
+              className="w-5 h-5 text-blue-600 rounded focus:ring-2 focus:ring-blue-500"
+            />
+            <label htmlFor="show_in_public" className="text-sm font-medium text-slate-700 cursor-pointer flex-1">
+              Mostrar na seção "Artistas do Movimento" (página pública)
+            </label>
           </div>
 
           <div>
