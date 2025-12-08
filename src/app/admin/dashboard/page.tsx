@@ -102,7 +102,7 @@ export default function AdminDashboard() {
         fetch(`${API_URL}/contact`, { headers }),
         fetch(`${API_URL}/artworks`, { headers }),
         fetch(`${API_URL}/blog`, { headers }),
-        fetch(`${API_URL}/artists`, { headers }),
+        fetch(`${API_URL}/artists?showAll=true`, { headers }),
       ]);
 
       const [usersData, eventsData, registrationsData, contactData, artworksData, blogData, artistsData] = await Promise.all([
