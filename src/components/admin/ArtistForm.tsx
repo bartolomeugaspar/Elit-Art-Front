@@ -177,20 +177,14 @@ export default function ArtistForm({ onSuccess, onCancel, initialData, isEditing
               <label className="block text-sm font-medium text-slate-700 mb-1">
                 Área *
               </label>
-              <select
+              <input
+                type="text"
                 value={formData.area}
                 onChange={(e) => setFormData({ ...formData, area: e.target.value })}
+                placeholder="Ex: Música, Literatura, Teatro, etc."
                 className="w-full px-4 py-2.5 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 bg-white text-slate-900"
                 required
-              >
-                <option value="">Selecione uma área</option>
-                <option value="Música">Música</option>
-                <option value="Literatura">Literatura</option>
-                <option value="Teatro">Teatro</option>
-                <option value="Dança">Dança</option>
-                <option value="Cinema">Cinema</option>
-                <option value="Desenho">Desenho</option>
-              </select>
+              />
             </div>
 
             <div>
