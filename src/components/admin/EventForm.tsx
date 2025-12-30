@@ -32,12 +32,12 @@ interface EventFormProps {
 }
 
 const CATEGORIES = [
-  'Música',
-  'Literatura',
-  'Teatro',
-  'Dança',
-  'Cinema',
-  'Desenho'
+  { label: 'Música', value: 'musica' },
+  { label: 'Literatura', value: 'literatura' },
+  { label: 'Teatro', value: 'teatro' },
+  { label: 'Dança', value: 'danca' },
+  { label: 'Cinema', value: 'cinema' },
+  { label: 'Desenho', value: 'desenho' }
 ];
 
 export default function EventForm({ 
@@ -282,33 +282,38 @@ export default function EventForm({
       const url = isEditing ? `${API_URL}/events/${formData.id}` : `${API_URL}/events`;
       const method = isEditing ? 'PUT' : 'POST';
       
+      const payload = {
+        title: formData.title.trim(),
+        description: formData.description.trim(),
+        category: formData.category,
+        date: formData.date,
+        time: formData.time,
+        location: formData.location.trim(),
+        image: formData.image,
+        capacity: parseInt(formData.capacity),
+        price: formData.isFree ? 0 : parseFloat(String(formData.price)) || 0,
+        is_free: formData.isFree,
+        bank_details: !formData.isFree ? {
+          account_holder: formData.bankDetails.accountHolder || undefined,
+          account_number: formData.bankDetails.accountNumber || undefined,
+          bank_name: formData.bankDetails.bankName || undefined,
+          iban: formData.bankDetails.iban || undefined,
+        } : undefined,
+      };
+
+      console.log('📤 Enviando dados do evento:', payload);
+      
       const response = await fetch(url, {
         method,
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({
-          title: formData.title.trim(),
-          description: formData.description.trim(),
-          category: formData.category,
-          date: formData.date,
-          time: formData.time,
-          location: formData.location.trim(),
-          image: formData.image,
-          capacity: parseInt(formData.capacity),
-          price: formData.isFree ? 0 : parseFloat(String(formData.price)) || 0,
-          is_free: formData.isFree,
-          bank_details: !formData.isFree ? {
-            account_holder: formData.bankDetails.accountHolder || undefined,
-            account_number: formData.bankDetails.accountNumber || undefined,
-            bank_name: formData.bankDetails.bankName || undefined,
-            iban: formData.bankDetails.iban || undefined,
-          } : undefined,
-        }),
+        body: JSON.stringify(payload),
       });
 
       const data = await response.json();
+      console.log('📥 Resposta do servidor:', data);
 
       if (response.ok) {
         onSuccess();
@@ -326,9 +331,15 @@ export default function EventForm({
           }
         );
       } else {
+        // Se houver erros de validação, mostrar detalhes
+        if (data.errors && Array.isArray(data.errors)) {
+          const errorMessages = data.errors.map((err: any) => err.msg || err.message).join(', ');
+          throw new Error(errorMessages);
+        }
         throw new Error(data.message || 'Erro ao salvar evento');
       }
     } catch (error) {
+      console.error('❌ Erro ao salvar evento:', error);
       toast.error(
         error instanceof Error ? error.message : 'Erro ao salvar evento',
         {
@@ -426,7 +437,7 @@ export default function EventForm({
           >
             <option value="">Selecione uma categoria</option>
             {CATEGORIES.map(cat => (
-              <option key={cat} value={cat}>{cat}</option>
+              <option key={cat.value} value={cat.value}>{cat.label}</option>
             ))}
           </select>
         </div>
