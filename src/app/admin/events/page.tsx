@@ -11,8 +11,10 @@ interface Event {
   id: string;
   title: string;
   description: string;
+  full_description?: string;
   category: string;
   date: string;
+  time?: string;
   location: string;
   capacity: number;
   available_spots: number;
@@ -20,6 +22,14 @@ interface Event {
   image: string;
   images?: string[];
   status?: 'upcoming' | 'ongoing' | 'completed' | 'cancelled';
+  price?: number;
+  is_free?: boolean;
+  bank_details?: {
+    account_holder?: string;
+    account_number?: string;
+    bank_name?: string;
+    iban?: string;
+  };
 }
 
 const formatDate = (dateString: string | null | undefined) => {
