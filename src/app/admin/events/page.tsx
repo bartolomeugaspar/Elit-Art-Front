@@ -323,6 +323,9 @@ export default function AdminEvents() {
             location: editingEvent.location,
             capacity: editingEvent.capacity.toString(),
             image: editingEvent.image,
+            price: editingEvent.price,
+            isFree: editingEvent.is_free,
+            bankDetails: editingEvent.bank_details,
           } : undefined}
           isEditing={isEditing}
         />
