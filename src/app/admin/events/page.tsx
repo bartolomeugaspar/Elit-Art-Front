@@ -325,7 +325,12 @@ export default function AdminEvents() {
             image: editingEvent.image,
             price: editingEvent.price,
             isFree: editingEvent.is_free,
-            bankDetails: editingEvent.bank_details,
+            bankDetails: editingEvent.bank_details ? {
+              accountHolder: editingEvent.bank_details.account_holder,
+              accountNumber: editingEvent.bank_details.account_number,
+              bankName: editingEvent.bank_details.bank_name,
+              iban: editingEvent.bank_details.iban,
+            } : undefined,
           } : undefined}
           isEditing={isEditing}
         />
