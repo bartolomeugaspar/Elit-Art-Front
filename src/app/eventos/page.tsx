@@ -9,7 +9,7 @@ import { API_URL } from '@/lib/api'
 import toast from 'react-hot-toast'
 
 export default function EventosPage() {
-  const { getUpcomingEvents, getPastEvents, searchEvents } = useEvents()
+  const { getUpcomingEvents, getPastEvents } = useEvents()
   const upcomingEvents = getUpcomingEvents()
   const pastEvents = getPastEvents()
   const [searchQuery, setSearchQuery] = useState('')
@@ -20,14 +20,26 @@ export default function EventosPage() {
   const categories = ['Música', 'Literatura', 'Teatro', 'Dança', 'Cinema', 'Desenho']
 
   const filteredEvents = useMemo(() => {
-    let filtered = searchQuery ? searchEvents(searchQuery) : upcomingEvents
+    let filtered = upcomingEvents
 
+    // Apply search filter
+    if (searchQuery.trim()) {
+      const lowerQuery = searchQuery.toLowerCase()
+      filtered = filtered.filter(event =>
+        event.title.toLowerCase().includes(lowerQuery) ||
+        event.description.toLowerCase().includes(lowerQuery) ||
+        event.category.toLowerCase().includes(lowerQuery) ||
+        event.location.toLowerCase().includes(lowerQuery)
+      )
+    }
+
+    // Apply category filter
     if (selectedCategory) {
       filtered = filtered.filter(event => event.category === selectedCategory)
     }
 
     return filtered
-  }, [searchQuery, selectedCategory, upcomingEvents, searchEvents])
+  }, [searchQuery, selectedCategory, upcomingEvents])
 
   const handleNewsletterSubscribe = async (e: React.FormEvent) => {
     e.preventDefault()
