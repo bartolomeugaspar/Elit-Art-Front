@@ -21,6 +21,7 @@ import {
   ShoppingCart,
   BookOpen,
   MessageCircle,
+  TrendingUp,
 } from 'lucide-react';
 import { useToast, ToastContainer } from './Toast';
 import NotificationBell from './NotificationBell';
@@ -160,6 +161,11 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
       label: 'Inscrições',
       href: '/admin/registrations',
       icon: UserCheck,
+    },
+    {
+      label: 'Relatórios Financeiros',
+      href: '/admin/financial-reports',
+      icon: TrendingUp,
     },
     {
       label: 'Mensagens',
