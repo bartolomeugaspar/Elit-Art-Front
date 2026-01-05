@@ -50,9 +50,9 @@ export default function FinancialReportsPage() {
   }
 
   const formatCurrency = (value: number) => {
-    return new Intl.NumberFormat('pt-PT', {
+    return new Intl.NumberFormat('pt-AO', {
       style: 'currency',
-      currency: 'EUR',
+      currency: 'AOA',
     }).format(value)
   }
 
