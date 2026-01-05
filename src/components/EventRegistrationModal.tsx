@@ -146,7 +146,8 @@ export default function EventRegistrationModal({
         return
       }
 
-      if (!paymentProofFile) {
+      // Comprovativo só é obrigatório se não for pagamento em dinheiro
+      if (paymentMethod !== 'Cash' && !paymentProofFile) {
         toast.error('Comprovativo de pagamento é obrigatório')
         return
       }
@@ -353,14 +354,25 @@ export default function EventRegistrationModal({
                     >
                       <option value="">Selecione um método</option>
                       <option value="Bank Transfer">Transferência Bancária</option>
+                      <option value="Cash">Dinheiro (Pagamento em mão)</option>
                       <option value="Other">Outro</option>
                     </select>
                   </div>
 
+                  {paymentMethod === 'Cash' && (
+                    <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                      <p className="text-sm text-blue-800">
+                        💵 <strong>Pagamento em Dinheiro:</strong> Você deve trazer o valor exato no dia do evento. 
+                        Sua inscrição ficará como "pendente" até a confirmação do pagamento pela nossa equipe.
+                      </p>
+                    </div>
+                  )}
+
                   {/* Payment Proof */}
+                  {paymentMethod !== 'Cash' && (
                   <div>
                     <label className="block text-sm font-medium text-elit-dark mb-2">
-                      Comprovativo de Pagamento *
+                      Comprovativo de Pagamento {paymentMethod && '*'}
                     </label>
                     <p className="text-xs text-elit-dark/60 mb-3">
                       Envie uma imagem ou PDF do comprovativo (recibo, screenshot, etc.)
@@ -417,6 +429,7 @@ export default function EventRegistrationModal({
                       />
                     </label>
                   </div>
+                  )}
                 </div>
               </>
             )}
@@ -448,7 +461,9 @@ export default function EventRegistrationModal({
 
             {!isFree && (
               <p className="text-xs text-elit-dark/60 text-center pt-2">
-                Seu comprovativo será verificado. Você receberá confirmação em breve.
+                {paymentMethod === 'Cash' 
+                  ? 'Sua inscrição ficará pendente até o pagamento no dia do evento.' 
+                  : 'Seu comprovativo será verificado. Você receberá confirmação em breve.'}
               </p>
             )}
           </form>
