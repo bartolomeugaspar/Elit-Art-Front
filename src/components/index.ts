@@ -2,6 +2,10 @@
 export { default as Header } from './layout/Header'
 export { default as Footer } from './layout/Footer'
 
+// UI Components
+export { Modal, useModal } from './Modal'
+export { ToastContainer, useToast } from './Toast'
+
 // Section Components
 export { default as HeroSection } from './sections/HeroSection'
 export { default as PresentationSection } from './sections/PresentationSection'

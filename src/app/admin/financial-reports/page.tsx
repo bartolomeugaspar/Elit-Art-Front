@@ -1,10 +1,26 @@
 'use client'
 
+/**
+ * Página de Relatórios Financeiros
+ * 
+ * Features:
+ * - Visão geral de receitas e inscrições
+ * - Filtros por data e ano
+ * - Exportação para PDF com jsPDF
+ * - Modais para feedback ao usuário
+ * 
+ * Nota: Se houver problemas com a geração de PDF, considere atualizar:
+ * - jspdf para versão ^2.5.1
+ * - jspdf-autotable para versão ^3.8.2
+ */
+
 import { useEffect, useState } from 'react'
 import { useFinancialReports, EventFinancialSummary } from '@/hooks/useFinancialReports'
 import { Download } from 'lucide-react'
+import { Modal, useModal } from '@/components/Modal'
 
 export default function FinancialReportsPage() {
+  const { isOpen, message, type, title, showCancel, onConfirm, showModal, closeModal } = useModal()
   const {
     overview,
     eventSummaries,
@@ -81,7 +97,10 @@ export default function FinancialReportsPage() {
     try {
       const token = localStorage.getItem('token')
       if (!token) {
-        alert('Token não encontrado')
+        showModal('Token não encontrado. Por favor, faça login novamente.', {
+          type: 'error',
+          title: 'Erro de Autenticação',
+        })
         return
       }
 
@@ -101,19 +120,55 @@ export default function FinancialReportsPage() {
 
       // Importar jsPDF dinamicamente
       const jsPDFModule = await import('jspdf')
-      const jsPDF = jsPDFModule.default || (jsPDFModule as any).jsPDF
-      await import('jspdf-autotable')
+      const jsPDF = (jsPDFModule as any).jsPDF || jsPDFModule.default
+      const autoTableModule = await import('jspdf-autotable')
+      const autoTable = autoTableModule.default
 
-      const doc = new (jsPDF as any)()
-      let yPosition = 20
+      const doc = new jsPDF()
+      let yPosition = 10
 
-      // Título
-      doc.setFontSize(18)
-      doc.text('Relatório Financeiro - Elit\'Arte', 14, yPosition)
-      yPosition += 10
+      // Adicionar logotipo
+      try {
+        const logoUrl = '/icon.jpeg'
+        const img = new Image()
+        img.src = logoUrl
+        
+        // Adicionar imagem ao PDF (centralizada)
+        const imgWidth = 25
+        const imgHeight = 25
+        const pageWidth = doc.internal.pageSize.getWidth()
+        const xPosition = (pageWidth - imgWidth) / 2
+        
+        doc.addImage(img, 'PNG', xPosition, yPosition, imgWidth, imgHeight)
+        yPosition += imgHeight + 5
+      } catch (error) {
+        console.warn('Não foi possível adicionar o logotipo ao PDF:', error)
+      }
+
+      // Título da organização
+      doc.setFontSize(16)
+      doc.setFont(undefined, 'bold')
+      const pageWidth = doc.internal.pageSize.getWidth()
+      const orgTitle = 'Elit\'Arte - Amantes da Arte'
+      const titleWidth = doc.getTextWidth(orgTitle)
+      doc.text(orgTitle, (pageWidth - titleWidth) / 2, yPosition)
+      yPosition += 8
+
+      // Linha separadora
+      doc.setLineWidth(0.5)
+      doc.setDrawColor(59, 130, 246)
+      doc.line(14, yPosition, pageWidth - 14, yPosition)
+      yPosition += 8
+
+      // Título do relatório
+      doc.setFontSize(14)
+      doc.setFont(undefined, 'bold')
+      doc.text('Relatório Financeiro', 14, yPosition)
+      yPosition += 8
 
       // Data de geração
       doc.setFontSize(10)
+      doc.setFont(undefined, 'normal')
       doc.text(`Gerado em: ${formatDate(new Date().toISOString())}`, 14, yPosition)
       yPosition += 5
 
@@ -160,7 +215,7 @@ export default function FinancialReportsPage() {
           formatCurrency(event.confirmed_revenue),
         ])
 
-        ;(doc as any).autoTable({
+        autoTable(doc, {
           startY: yPosition,
           head: [['Evento', 'Data', 'Categoria', 'Inscrições', 'Confirmadas', 'Receita']],
           body: eventTableData,
@@ -187,7 +242,7 @@ export default function FinancialReportsPage() {
           formatCurrency(month.confirmed_revenue),
         ])
 
-        ;(doc as any).autoTable({
+        autoTable(doc, {
           startY: yPosition,
           head: [['Mês', 'Inscrições', 'Receita Total', 'Receita Confirmada']],
           body: monthlyTableData,
@@ -217,7 +272,7 @@ export default function FinancialReportsPage() {
           `${method.total_transactions > 0 ? Math.round((method.completed_transactions / method.total_transactions) * 100) : 0}%`,
         ])
 
-        ;(doc as any).autoTable({
+        autoTable(doc, {
           startY: yPosition,
           head: [['Método', 'Total', 'Completas', 'Receita', 'Taxa']],
           body: paymentTableData,
@@ -229,9 +284,21 @@ export default function FinancialReportsPage() {
       // Salvar PDF
       const fileName = `relatorio-financeiro-${new Date().toISOString().split('T')[0]}.pdf`
       doc.save(fileName)
+      
+      showModal('Relatório PDF gerado com sucesso!', {
+        type: 'success',
+        title: 'Sucesso',
+      })
     } catch (error) {
       console.error('Erro ao gerar PDF:', error)
-      alert('Erro ao gerar PDF. Verifique o console para mais detalhes.')
+      const errorMessage = error instanceof Error ? error.message : 'Erro desconhecido'
+      showModal(
+        `Não foi possível gerar o relatório PDF.\n\nDetalhes: ${errorMessage}\n\nVerifique se todas as dependências estão instaladas corretamente.`,
+        {
+          type: 'error',
+          title: 'Erro ao Gerar PDF',
+        }
+      )
     }
   }
 
@@ -623,6 +690,16 @@ export default function FinancialReportsPage() {
           )}
         </>
       )}
+      
+      <Modal
+        isOpen={isOpen}
+        onClose={closeModal}
+        message={message}
+        type={type}
+        title={title}
+        showCancel={showCancel}
+        onConfirm={onConfirm}
+      />
     </div>
   )
 }
