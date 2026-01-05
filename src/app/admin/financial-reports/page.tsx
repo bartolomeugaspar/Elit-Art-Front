@@ -78,13 +78,6 @@ export default function FinancialReportsPage() {
 
   return (
     <div className="p-6">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold mb-2">Relatórios Financeiros</h1>
-        <p className="text-gray-600">
-          Visualize e analise as receitas das inscrições de eventos
-        </p>
-      </div>
-
       {/* Filtros */}
       <div className="bg-white p-6 rounded-lg shadow-md mb-6">
         <h2 className="text-xl font-semibold mb-4">Filtros</h2>
