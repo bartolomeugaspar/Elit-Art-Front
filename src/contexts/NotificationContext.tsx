@@ -29,38 +29,38 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
   const [notifications, setNotifications] = useState<Notification[]>([])
   const [isAdmin, setIsAdmin] = useState(false)
 
-  // Verificar se usuário é admin (se tem token e está em página admin, exceto login)
+  // Verificar se usuário é admin (se tem token)
   useEffect(() => {
     const checkIsAdmin = () => {
       const token = localStorage.getItem('token')
-      const pathname = typeof window !== 'undefined' ? window.location.pathname : ''
-      const isAdminPage = pathname.startsWith('/admin') && pathname !== '/admin/dashoard/'
-      const hasToken = !!token
+      const user = localStorage.getItem('user')
       
-      // É admin se tiver token E estiver em página admin (exceto login)
-      setIsAdmin(hasToken && isAdminPage)
+      // É admin se tiver token e user com role admin
+      if (token && user) {
+        try {
+          const userData = JSON.parse(user)
+          setIsAdmin(userData.role === 'admin')
+        } catch {
+          setIsAdmin(false)
+        }
+      } else {
+        setIsAdmin(false)
+      }
     }
     
     checkIsAdmin()
     
-    // Verificar novamente quando a URL mudar ou quando houver login
-    const handleLocationChange = () => checkIsAdmin()
+    // Verificar novamente quando houver mudanças no localStorage
     const handleStorageChange = (e: StorageEvent) => {
-      if (e.key === 'token') {
+      if (e.key === 'token' || e.key === 'user') {
         checkIsAdmin()
       }
     }
     
-    window.addEventListener('popstate', handleLocationChange)
     window.addEventListener('storage', handleStorageChange)
     
-    // Criar um intervalo para verificar mudanças (para navegação SPA)
-    const interval = setInterval(checkIsAdmin, 1000)
-    
     return () => {
-      window.removeEventListener('popstate', handleLocationChange)
       window.removeEventListener('storage', handleStorageChange)
-      clearInterval(interval)
     }
   }, [])
 
@@ -69,9 +69,12 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
     if (!isAdmin) {
       return
     }
+    
     try {
       const token = localStorage.getItem('token')
-      if (!token) return
+      if (!token) {
+        return
+      }
 
       const headers = { Authorization: `Bearer ${token}` }
       const allNotifications: Notification[] = []
@@ -111,17 +114,18 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
 
           const recentRegistrations = registrations.filter((reg: any) => {
             const regDate = new Date(reg.created_at)
-            return regDate > yesterday && reg.status === 'pending'
+            // Mostrar inscrições das últimas 24h que não foram canceladas
+            return regDate > yesterday && reg.status !== 'cancelled'
           })
 
           const regNotifications: Notification[] = recentRegistrations.map((reg: any) => ({
             id: `registration-${reg.id}`,
             type: 'registration' as const,
             title: 'Nova Inscrição em Evento',
-            message: `${reg.name} inscreveu-se em um evento`,
+            message: `${reg.full_name || reg.name} inscreveu-se em um evento`,
             read: false,
             createdAt: reg.created_at,
-            link: '/admin/registrations'
+            link: '/admin/events'
           }))
 
           allNotifications.push(...regNotifications)
@@ -171,14 +175,15 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
 
           const recentOrders = orders.filter((order: any) => {
             const orderDate = new Date(order.created_at)
-            return orderDate > yesterday && order.status === 'pending'
+            // Mostrar encomendas recentes que não foram canceladas
+            return orderDate > yesterday && order.status !== 'cancelled'
           })
 
           const orderNotifications: Notification[] = recentOrders.map((order: any) => ({
             id: `order-${order.id}`,
             type: 'order' as const,
             title: 'Nova Encomenda',
-            message: `${order.customer_name} - ${order.total_amount} Kz`,
+            message: `${order.full_name} - ${order.final_amount} Kz`,
             read: false,
             createdAt: order.created_at,
             link: '/admin/loja'
@@ -211,7 +216,7 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
             message: `${user.name} (${user.email})`,
             read: false,
             createdAt: user.created_at,
-            link: '/admin/users'
+            link: '/admin/profile'
           }))
 
           allNotifications.push(...userNotifications)
@@ -231,11 +236,11 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
     }
   }, [isAdmin])
 
-  // Atualizar notificações a cada 5 segundos quando admin
+  // Atualizar notificações a cada 30 segundos quando admin
   useEffect(() => {
     if (isAdmin) {
       refreshNotifications()
-      const interval = setInterval(refreshNotifications, 5000) // 5 segundos
+      const interval = setInterval(refreshNotifications, 30000) // 30 segundos
       return () => clearInterval(interval)
     }
   }, [isAdmin, refreshNotifications])
