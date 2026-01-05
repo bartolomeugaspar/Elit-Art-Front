@@ -23,9 +23,9 @@ export default function BackgroundMusic() {
         await audio.play()
         setIsPlaying(true)
       } catch (error) {
-        // Auto-play bloqueado pelo browser, tentar novamente com interacção do usuário
+        // Auto-play bloqueado pelo browser, tentar novamente com interação do usuário
         
-        // Adicionar listener para primeira interacção do usuário
+        // Adicionar listener para primeira interação do usuário
         const handleUserInteraction = async () => {
           try {
             await audio.play()
@@ -38,7 +38,7 @@ export default function BackgroundMusic() {
           }
         }
 
-        // Escutar qualquer interacção do usuário
+        // Escutar qualquer interação do usuário
         document.addEventListener('click', handleUserInteraction, { once: true })
         document.addEventListener('touchstart', handleUserInteraction, { once: true })
         document.addEventListener('keydown', handleUserInteraction, { once: true })

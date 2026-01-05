@@ -35,11 +35,11 @@ export default function HistorySection() {
                     <p className="text-gray-700 leading-relaxed">
                       O Elit'Arte, fundado no pretérito 13 de Fevereiro de 2024, é um Movimento Artístico que nasceu da 
                       paixão pela Arte de dois jovens, <strong>Faustino Domingos</strong> e <strong>Luísa Gonçalves</strong>, 
-                      como forma de transformacção pessoal, social, cultural e espiritual.
+                      como forma de transformação pessoal, social, cultural e espiritual.
                     </p>
                     <p className="text-gray-700 leading-relaxed mt-4">
                       O Movimento congrega várias expressõesArtísticas num só lugar (teatro, dança, música, literatura, 
-                      pintura e cinema), a fim de promover um espaço de criacção, expressão, promoção e reflexão, 
+                      pintura e cinema), a fim de promover um espaço de criação, expressão, promoção e reflexão, 
                       sempre com forte conexão com a nossa identidade cultural.
                     </p>
                   </div>

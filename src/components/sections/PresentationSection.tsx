@@ -47,7 +47,7 @@ export default function PresentationSection() {
               <div className="relative overflow-hidden rounded-2xl shadow-2xl">
                 <img 
                   src="/lideres.jpeg" 
-                  alt="Elit'Arte em acção" 
+                  alt="Elit'Arte em ação" 
                   className="w-full h-96 object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>

@@ -23,10 +23,10 @@
 O **Elit'Arte** é um movimento Artístico angolano fundado em **13 de Fevereiro de 2024** que une **teatro, música, dança, literatura, pintura e cinema**, com o objetivo de promover e celebrar nossa rica cultura através da fusão entre tradição e contemporaneidade.
 
 ### 🎯 Nossa Missão
-Promover a Arte nas suas múltiplas expressões como ferramentas de transformacção da nossa sociedade e de desenvolvimento dos angolanos, marcadamente com traços da nossa cultura angolana tradicional.
+Promover a Arte nas suas múltiplas expressões como ferramentas de transformação da nossa sociedade e de desenvolvimento dos angolanos, marcadamente com traços da nossa cultura angolana tradicional.
 
 ### 👁️ Nossa Visão
-Ser reconhecido como o maior movimento Artístico de Angola, em inovacçãoArtística, inspirando gerações e transformando vidas por meio da Arte.
+Ser reconhecido como o maior movimento Artístico de Angola, em inovaçãoArtística, inspirando gerações e transformando vidas por meio da Arte.
 
 ## 🛠️ Stack Tecnológico
 
@@ -157,12 +157,12 @@ Elit-Art-Back/
 ## 🎨 ÁreasArtísticas
 
 ### 🎭 **Teatro**
-- Dramatizacção de peças teatrais de vanguarda
+- Dramatização de peças teatrais de vanguarda
 - Temáticas sociais e culturais angolanas
 - espectáculos: "Octhali", "O preço da ingratidão"
 
 ### 🎵 **Música**
-- Interpretacção e produção de canções angolanas
+- Interpretação e produção de canções angolanas
 - Fusão de estilos tradicionais com modernos
 - Concursos e oficinas de canto
 
@@ -184,7 +184,7 @@ Elit-Art-Back/
 ### 🎨 **Pintura**
 - Arte visual angolana
 - Exposições e workshops
-- Preservacção da Arte tradicional
+- Preservação da Arte tradicional
 
 ## ✨ Funcionalidades Principais
 

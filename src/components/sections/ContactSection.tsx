@@ -86,7 +86,7 @@ export default function ContactSection() {
       icon: Mail,
       title: "Email",
       value: "faustinodomingos83@hotmail.com",
-      description: "Para comunicacção formal"
+      description: "Para comunicação formal"
     },
     {
       icon: Phone,

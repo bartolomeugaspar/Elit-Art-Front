@@ -13,7 +13,7 @@ export default function TeamSection() {
       ArteisticName: "Guido Alves",
       role: "Coordenador",
       area: "Literatura e Cinema",
-      description: "Coordenador do Elit'Arte, director da área do cinema e fundador. FormacçãoArtística em teatro (15+ anos) e cinema.",
+      description: "Coordenador do Elit'Arte, director da área do cinema e fundador. FormaçãoArtística em teatro (15+ anos) e cinema.",
       quote: "Gosto tanto de escrever quanto gosto de comer, é uma necessidade vital para a minha alma.",
       email: "faustinodomingos83@hotmail.com",
       phone: "927935543",

@@ -29,7 +29,7 @@ export default function GallerySection() {
     {
       type: 'image',
       src: '/WhatsApp Image 2025-11-13 at 16.39.50 (3).jpeg',
-      alt: 'Talento em acção',
+      alt: 'Talento em ação',
       category: 'Teatro'
     },
     {
@@ -72,7 +72,7 @@ export default function GallerySection() {
     {
       type: 'image',
       src: '/WhatsApp Image 2025-11-13 at 16.44.24 (1).jpeg',
-      alt: 'CriacçãoArtística',
+      alt: 'CriaçãoArtística',
       category: 'Pintura'
     },
     {
@@ -96,7 +96,7 @@ export default function GallerySection() {
     {
       type: 'image',
       src: '/WhatsApp Image 2025-11-13 at 17.41.22 (1).jpeg',
-      alt: 'ColaboracçãoArtística',
+      alt: 'ColaboraçãoArtística',
       category: 'Equipa'
     },
     {
@@ -138,7 +138,7 @@ export default function GallerySection() {
     {
       type: 'image',
       src: '/Sem título.jpeg',
-      alt: 'Criacção visual',
+      alt: 'Criação visual',
       category: 'Pintura'
     },
     {
@@ -216,7 +216,7 @@ export default function GallerySection() {
     {
       type: 'image',
       src: '/uniao.jpeg',
-      alt: 'União e colaboracçãoArtística',
+      alt: 'União e colaboraçãoArtística',
       category: 'Fundação'
     },
     {
@@ -358,7 +358,7 @@ export default function GallerySection() {
                 </video>
               </div>
               <h4 className="text-lg sm:text-xl font-bold mb-2">"O preço da ingratidão"</h4>
-              <p className="text-elit-light text-sm">Apresentacção no LAASP - 27 de Dezembro</p>
+              <p className="text-elit-light text-sm">Apresentação no LAASP - 27 de Dezembro</p>
             </div>
 
             <div className="bg-gray-800 rounded-xl p-4 sm:p-6 text-center">
@@ -372,7 +372,7 @@ export default function GallerySection() {
                   Seu navegador não suporta o elemento de vídeo.
                 </video>
               </div>
-              <h4 className="text-lg sm:text-xl font-bold mb-2">Apresentacção Especial</h4>
+              <h4 className="text-lg sm:text-xl font-bold mb-2">Apresentação Especial</h4>
               <p className="text-elit-light text-sm">Momento Artístico do Elit'Arte</p>
             </div>
 
@@ -400,7 +400,7 @@ export default function GallerySection() {
             <div className="bg-elit-red/10 p-6 rounded-xl">
               <Camera className="w-12 h-12 text-elit-red mx-auto mb-4" />
               <h4 className="text-xl font-bold mb-2">Ensaios</h4>
-              <p className="text-elit-light">Momentos de preparacção e dedicacção</p>
+              <p className="text-elit-light">Momentos de preparação e dedicação</p>
             </div>
             <div className="bg-elit-yellow/10 p-6 rounded-xl">
               <ImageIcon className="w-12 h-12 text-elit-yellow mx-auto mb-4" />

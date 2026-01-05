@@ -9,13 +9,13 @@ export default function CommunitySection() {
     },
     {
       icon: Users,
-      title: "Transformacção Social",
-      description: "Promoção das Artes e ofícios como ferramentas de transformacção pessoal e social nas periferias de Luanda."
+      title: "Transformação Social",
+      description: "Promoção das Artes e ofícios como ferramentas de transformação pessoal e social nas periferias de Luanda."
     },
     {
       icon: GraduationCap,
       title: "Apoio Educativo",
-      description: "Serviços de educacção para melhorar a proficiência em Língua Portuguesa e Matemática."
+      description: "Serviços de educação para melhorar a proficiência em Língua Portuguesa e Matemática."
     }
   ]
 
@@ -69,7 +69,7 @@ export default function CommunitySection() {
         <div className="mb-20">
           <div className="text-center mb-12">
             <p className="text-xl font-light text-elit-orange italic mb-4">
-              "Mais do que Arte, somos inspiracção para uma Angola melhor."
+              "Mais do que Arte, somos inspiração para uma Angola melhor."
             </p>
             <h3 className="text-3xl font-bold text-elit-dark">Diferenciais</h3>
           </div>
@@ -104,14 +104,14 @@ export default function CommunitySection() {
               <h4 className="text-xl font-bold mb-4">Benefícios</h4>
               <ul className="text-elit-dark space-y-2">
                 <li>• Visibilidade da marca nos espectáculos</li>
-                <li>• PArteicipacção nas actividades culturais</li>
+                <li>• PArteicipação nas actividades culturais</li>
                 <li>• Acompanhamento escolar para filhos</li>
               </ul>
             </div>
             <div className="bg-white/10 p-6 rounded-xl">
               <h4 className="text-xl font-bold mb-4">Impacto Social</h4>
               <ul className="text-elit-dark space-y-2">
-                <li>• Orientacção vocacional para jovens</li>
+                <li>• Orientação vocacional para jovens</li>
                 <li>• Desconstrução de mentalidades limitantes</li>
                 <li>• Desenvolvimento cultural sustentável</li>
               </ul>
