@@ -146,7 +146,7 @@ export default function FinancialReportsPage() {
       }
 
       // Título da organização
-      doc.setFontSize(16)
+      doc.setFontSize(14)
       doc.setFont(undefined, 'bold')
       const pageWidth = doc.internal.pageSize.getWidth()
       const orgTitle = 'Elit\'Arte - Amantes da Arte'
