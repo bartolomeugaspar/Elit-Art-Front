@@ -222,7 +222,6 @@ export default function EventRegistrationModal({
       })
 
       // Disparar evento de notificação para o header
-      console.log('[EventRegistrationModal] Disparando evento newRegistration', {
         name: fullName,
         email: email,
         eventTitle: eventTitle
@@ -237,7 +236,6 @@ export default function EventRegistrationModal({
             eventTitle: eventTitle
           }
         }))
-        console.log('[EventRegistrationModal] Evento newRegistration disparado')
       }, 100)
 
       onSuccess()

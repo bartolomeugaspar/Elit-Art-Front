@@ -10,7 +10,6 @@ export default function NotificationBell() {
   const [isOpen, setIsOpen] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
 
-  console.log('[NotificationBell] Renderizando com', notifications.length, 'notificações, unread:', unreadCount)
 
   // Fechar dropdown ao clicar fora
   useEffect(() => {

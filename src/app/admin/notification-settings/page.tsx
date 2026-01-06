@@ -46,7 +46,6 @@ export default function NotificationSettingsPage() {
         setSettings(data)
       }
     } catch (error) {
-      console.error('Erro ao carregar configurações:', error)
       toast.error('Erro ao carregar configurações')
     } finally {
       setLoading(false)

@@ -31,27 +31,21 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
   const [notifications, setNotifications] = useState<Notification[]>([])
   const [isAdmin, setIsAdmin] = useState(false)
 
-  console.log('[NotificationProvider] Renderizando, notificações:', notifications.length, 'isAdmin:', isAdmin)
-
   // Verificar se usuário é admin (se tem token)
   useEffect(() => {
     const checkIsAdmin = () => {
       const token = localStorage.getItem('token')
       const user = localStorage.getItem('user')
       
-      console.log('[NotificationContext] Verificando se é admin, token:', !!token, 'user:', !!user)
-      
       // Tentar obter dados do user do localStorage
       if (user) {
         try {
           const userData = JSON.parse(user)
-          console.log('[NotificationContext] User data:', userData)
           const isAdminUser = userData.role === 'admin'
-          console.log('[NotificationContext] É admin?', isAdminUser)
           setIsAdmin(isAdminUser)
           return
         } catch {
-          console.log('[NotificationContext] Erro ao parsear user data')
+          // Erro ao parsear, continuar para decodificar token
         }
       }
       
@@ -68,11 +62,9 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
               .join('')
           )
           const tokenData = JSON.parse(jsonPayload)
-          console.log('[NotificationContext] Token data:', tokenData)
           
           // Verificar se tem role admin no token
           const isAdminUser = tokenData.role === 'admin' || tokenData.userRole === 'admin'
-          console.log('[NotificationContext] É admin (do token)?', isAdminUser)
           setIsAdmin(isAdminUser)
           
           // Salvar dados do usuário no localStorage para próximas vezes
@@ -84,14 +76,11 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
               role: tokenData.role || tokenData.userRole
             }
             localStorage.setItem('user', JSON.stringify(userData))
-            console.log('[NotificationContext] Salvando user data no localStorage:', userData)
           }
         } catch (error) {
-          console.error('[NotificationContext] Erro ao decodificar token:', error)
           setIsAdmin(false)
         }
       } else {
-        console.log('[NotificationContext] Nenhum token encontrado')
         setIsAdmin(false)
       }
     }
@@ -114,31 +103,26 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
 
   // Buscar notificações do backend
   const refreshNotifications = useCallback(async () => {
-    console.log('[NotificationContext] refreshNotifications chamado, isAdmin:', isAdmin)
     
     if (!isAdmin) {
-      console.log('[NotificationContext] Usuário não é admin, ignorando')
       return
     }
     
     try {
       const token = localStorage.getItem('token')
       if (!token) {
-        console.log('[NotificationContext] Token não encontrado')
         return
       }
 
       const headers = { Authorization: `Bearer ${token}` }
       
       // Buscar notificações do novo endpoint
-      console.log('[NotificationContext] Buscando notificações do banco de dados...')
       const notificationsRes = await fetch(`${API_URL}/notifications`, { headers })
       
       if (notificationsRes.ok) {
         const notificationsData = await notificationsRes.json()
         const dbNotifications = notificationsData.notifications || []
         
-        console.log('[NotificationContext] Notificações do BD:', dbNotifications.length)
         
         // Converter formato do BD para o formato do frontend
         const formattedNotifications: Notification[] = dbNotifications.map((notif: any) => ({
@@ -152,12 +136,9 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
         }))
         
         setNotifications(formattedNotifications)
-        console.log('[NotificationContext] Total de notificações:', formattedNotifications.length)
       } else {
-        console.error('[NotificationContext] Erro ao buscar notificações:', notificationsRes.status)
       }
     } catch (error) {
-      console.error('[NotificationContext] Erro geral ao buscar notificações:', error)
     }
   }, [isAdmin])
 
@@ -172,16 +153,13 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
 
   // Escutar eventos de novas mensagens e inscrições
   useEffect(() => {
-    console.log('[NotificationContext] Configurando listeners de eventos, isAdmin:', isAdmin)
     
     const handleNewContactMessage = (event?: CustomEvent) => {
-      console.log('[NotificationContext] Evento newContactMessage recebido', event)
       if (!isAdmin) return
       
       // Adicionar notificação instantânea se tiver detalhes
       const detail = (event as CustomEvent)?.detail
       if (detail?.name && detail?.subject) {
-        console.log('[NotificationContext] Adicionando notificação de contato instantânea')
         const newNotification: Notification = {
           id: `contact-instant-${Date.now()}`,
           type: 'contact',
@@ -200,25 +178,20 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
     }
     
     const handleMessagesUpdated = () => {
-      console.log('[NotificationContext] Evento messagesUpdated recebido')
       if (isAdmin) {
         refreshNotifications()
       }
     }
 
     const handleNewRegistration = (event: CustomEvent) => {
-      console.log('[NotificationContext] Evento newRegistration recebido', event)
       if (!isAdmin) {
-        console.log('[NotificationContext] Usuário não é admin, ignorando evento')
         return
       }
       
       // Adicionar notificação instantânea
       const { name, eventTitle } = event.detail || {}
-      console.log('[NotificationContext] Detalhes da inscrição:', { name, eventTitle })
       
       if (name && eventTitle) {
-        console.log('[NotificationContext] Adicionando notificação de inscrição instantânea')
         const newNotification: Notification = {
           id: `registration-instant-${Date.now()}`,
           type: 'registration',
@@ -230,9 +203,7 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
         }
         
         setNotifications(prev => {
-          console.log('[NotificationContext] Estado anterior de notificações:', prev.length)
           const newState = [newNotification, ...prev]
-          console.log('[NotificationContext] Novo estado de notificações:', newState.length)
           return newState
         })
       }
@@ -242,12 +213,10 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
     }
 
     const handleNewOrder = (event: CustomEvent) => {
-      console.log('[NotificationContext] Evento newOrder recebido', event)
       if (!isAdmin) return
       
       const { customerName, amount } = event.detail || {}
       if (customerName && amount) {
-        console.log('[NotificationContext] Adicionando notificação de pedido instantânea')
         const newNotification: Notification = {
           id: `order-instant-${Date.now()}`,
           type: 'order',
@@ -265,7 +234,6 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
     }
 
     const handleNewUser = (event: CustomEvent) => {
-      console.log('[NotificationContext] Evento newUser recebido', event)
       if (!isAdmin) return
       
       const { name, email } = event.detail || {}
@@ -287,7 +255,6 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
     }
 
     const handleNewBlogPost = (event: CustomEvent) => {
-      console.log('[NotificationContext] Evento newBlogPost recebido', event)
       if (!isAdmin) return
       
       const { title } = event.detail || {}
@@ -309,7 +276,6 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
     }
 
     const handleNewArtwork = (event: CustomEvent) => {
-      console.log('[NotificationContext] Evento newArtwork recebido', event)
       if (!isAdmin) return
       
       const { title, artist } = event.detail || {}
@@ -331,7 +297,6 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
     }
 
     const handleNewArtist = (event: CustomEvent) => {
-      console.log('[NotificationContext] Evento newArtist recebido', event)
       if (!isAdmin) return
       
       const { name, specialty } = event.detail || {}
@@ -353,7 +318,6 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
     }
 
     const handleNewEvent = (event: CustomEvent) => {
-      console.log('[NotificationContext] Evento newEvent recebido', event)
       if (!isAdmin) return
       
       const { title, date } = event.detail || {}
@@ -375,7 +339,6 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
     }
 
     const handleNewComment = (event: CustomEvent) => {
-      console.log('[NotificationContext] Evento newComment recebido', event)
       if (!isAdmin) return
       
       const { author, content, type } = event.detail || {}
@@ -466,7 +429,6 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
         })
       }
     } catch (error) {
-      console.error('[NotificationContext] Erro ao marcar como lida:', error)
     }
   }
 
@@ -486,7 +448,6 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
         })
       }
     } catch (error) {
-      console.error('[NotificationContext] Erro ao marcar todas como lidas:', error)
     }
   }
 
@@ -503,7 +464,6 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
         setNotifications(prev => prev.filter(n => n.id !== id))
       }
     } catch (error) {
-      console.error('[NotificationContext] Erro ao deletar notificação:', error)
       throw error
     }
   }
@@ -526,7 +486,6 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
         setNotifications([])
       }
     } catch (error) {
-      console.error('[NotificationContext] Erro ao deletar todas as notificações:', error)
       throw error
     }
   }
