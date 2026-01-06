@@ -14,6 +14,8 @@ export function useAuth(onLogout?: (message: string) => void) {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
+  const INACTIVITY_TIMEOUT = 15 * 60 * 1000; // 15 minutos em milissegundos
+  const [lastActivityTime, setLastActivityTime] = useState<number>(Date.now());
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -80,6 +82,44 @@ export function useAuth(onLogout?: (message: string) => void) {
       window.removeEventListener('userLoggedIn', handleUserLoggedIn);
     };
   }, []);
+
+  // Rastreamento de atividade e auto-logout por inatividade
+  useEffect(() => {
+    if (!user) return;
+
+    const updateActivity = () => {
+      setLastActivityTime(Date.now());
+    };
+
+    // Eventos que indicam atividade do usuário
+    const activityEvents = ['mousedown', 'keydown', 'scroll', 'touchstart', 'mousemove'];
+    activityEvents.forEach(event => {
+      window.addEventListener(event, updateActivity);
+    });
+
+    // Verificar inatividade a cada minuto
+    const inactivityChecker = setInterval(() => {
+      const now = Date.now();
+      const timeSinceLastActivity = now - lastActivityTime;
+
+      if (timeSinceLastActivity >= INACTIVITY_TIMEOUT) {
+        // Auto-logout por inatividade
+        localStorage.removeItem('token');
+        setUser(null);
+        if (onLogout) {
+          onLogout('Sessão expirada por inatividade. Faça login novamente.');
+        }
+        router.push('/admin/login');
+      }
+    }, 60000); // Verificar a cada 1 minuto
+
+    return () => {
+      activityEvents.forEach(event => {
+        window.removeEventListener(event, updateActivity);
+      });
+      clearInterval(inactivityChecker);
+    };
+  }, [user, lastActivityTime, INACTIVITY_TIMEOUT, onLogout, router]);
 
   const login = async (email: string, password: string) => {
     const response = await apiCall('auth/login', {
