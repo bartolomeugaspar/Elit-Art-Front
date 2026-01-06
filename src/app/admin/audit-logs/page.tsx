@@ -3,8 +3,9 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { useRouter } from 'next/navigation';
-import { FileText, Search, Calendar as CalendarIcon, User, X, LogIn, LogOut, AlertTriangle, Shield } from 'lucide-react';
+import { FileText, Search, Calendar as CalendarIcon, User, X, LogIn, LogOut, AlertTriangle, Shield, Trash2 } from 'lucide-react';
 import { API_URL } from '@/lib/api';
+import toast from 'react-hot-toast';
 
 interface User {
   id: string;
@@ -37,6 +38,8 @@ export default function AuditLogsPage() {
   const [dateFilter, setDateFilter] = useState<Date | null>(null);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
   const [stats, setStats] = useState({
     totalLogins: 0,
     totalLogouts: 0,
@@ -80,6 +83,34 @@ export default function AuditLogsPage() {
     } catch (error) {
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleDeleteAllLogs = async () => {
+    setIsDeleting(true);
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch(`${API_URL}/audit-logs/cleanup/all`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        toast.success(`✅ ${data.deleted} logs foram eliminados!`);
+        setShowDeleteModal(false);
+        fetchLogs(); // Recarregar lista
+      } else {
+        toast.error('Erro ao eliminar logs');
+      }
+    } catch (error) {
+      toast.error('Erro ao eliminar logs');
+    } finally {
+      setIsDeleting(false);
     }
   };
 
@@ -229,43 +260,76 @@ export default function AuditLogsPage() {
       </div>
 
       <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-4 mb-6">
-        <div className="flex flex-col sm:flex-row gap-4">
-          <div className="relative flex-1">
-            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              <Search className="h-4 w-4 text-gray-400" />
+        <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
+          <div className="flex flex-col sm:flex-row gap-4 flex-1 w-full">
+            <div className="relative flex-1">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <Search className="h-4 w-4 text-gray-400" />
+              </div>
+              <input
+                type="text"
+                placeholder="Buscar por ação..."
+                className="pl-10 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm py-2 border text-gray-900"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
             </div>
-            <input
-              type="text"
-              placeholder="Buscar por ação..."
-              className="pl-10 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm py-2 border text-gray-900"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
           </div>
           
-          <div className="relative flex-1 sm:flex-none">
-            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              <CalendarIcon className="h-4 w-4 text-gray-400" />
-            </div>
-            <input
-              type="date"
-              className="pl-10 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm py-2 border text-gray-900"
-              value={dateFilter ? dateFilter.toISOString().split('T')[0] : ''}
-              onChange={(e) => setDateFilter(e.target.value ? new Date(e.target.value) : null)}
-            />
-          </div>
-          
-          {(searchTerm || dateFilter || selectedUser) && (
-            <button
-              onClick={clearFilters}
-              className="inline-flex items-center justify-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 w-full sm:w-auto"
-            >
-              <X className="h-4 w-4 mr-1" />
-              Limpar
-            </button>
-          )}
+          <button
+            onClick={() => setShowDeleteModal(true)}
+            className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg font-medium transition-colors flex items-center gap-2 whitespace-nowrap"
+          >
+            <Trash2 className="w-4 h-4" />
+            Eliminar Todos
+          </button>
         </div>
       </div>
+
+      {/* Delete All Modal */}
+      {showDeleteModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-lg max-w-md w-full p-6">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="bg-red-100 p-2 rounded-full">
+                <AlertTriangle className="h-6 w-6 text-red-600" />
+              </div>
+              <h3 className="text-lg font-semibold text-gray-900">Eliminar Todos os Logs</h3>
+            </div>
+            
+            <p className="text-gray-600 mb-6">
+              Tem certeza que deseja eliminar <strong>todos os logs de auditoria</strong>? Esta ação não pode ser revertida.
+            </p>
+            
+            <div className="flex gap-3 justify-end">
+              <button
+                onClick={() => setShowDeleteModal(false)}
+                disabled={isDeleting}
+                className="px-4 py-2 border border-gray-300 rounded-lg font-medium text-gray-700 hover:bg-gray-50 transition-colors disabled:opacity-50"
+              >
+                Cancelar
+              </button>
+              <button
+                onClick={handleDeleteAllLogs}
+                disabled={isDeleting}
+                className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg font-medium transition-colors flex items-center gap-2 disabled:opacity-50"
+              >
+                {isDeleting ? (
+                  <>
+                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                    A eliminar...
+                  </>
+                ) : (
+                  <>
+                    <Trash2 className="w-4 h-4" />
+                    Eliminar Todos
+                  </>
+                )}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Logs Table - Desktop */}
       <div className="hidden lg:block bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
