@@ -10,6 +10,8 @@ export default function NotificationBell() {
   const [isOpen, setIsOpen] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
 
+  console.log('[NotificationBell] Renderizando com', notifications.length, 'notificações, unread:', unreadCount)
+
   // Fechar dropdown ao clicar fora
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -40,6 +42,18 @@ export default function NotificationBell() {
         return '🛒'
       case 'comment':
         return '💬'
+      case 'user':
+        return '👤'
+      case 'blog':
+        return '📝'
+      case 'artwork':
+        return '🎨'
+      case 'artist':
+        return '👨‍🎨'
+      case 'event':
+        return '📅'
+      case 'press':
+        return '📰'
       default:
         return '🔔'
     }

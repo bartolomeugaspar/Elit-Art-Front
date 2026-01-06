@@ -222,6 +222,11 @@ export default function EventRegistrationModal({
       })
 
       // Disparar evento de notificação para o header
+      console.log('[EventRegistrationModal] Disparando evento newRegistration', {
+        name: fullName,
+        email: email,
+        eventTitle: eventTitle
+      })
       
       // Disparar evento com pequeno delay para garantir que o listener está pronto
       setTimeout(() => {
@@ -231,8 +236,9 @@ export default function EventRegistrationModal({
             email: email,
             eventTitle: eventTitle
           }
-        }));
-      }, 100);
+        }))
+        console.log('[EventRegistrationModal] Evento newRegistration disparado')
+      }, 100)
 
       onSuccess()
     } catch (error) {

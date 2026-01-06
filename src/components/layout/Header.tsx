@@ -16,13 +16,36 @@ export default function Header() {
   useEffect(() => {
     const token = localStorage.getItem('token')
     const user = localStorage.getItem('user')
-    if (token && user) {
+    
+    // Tentar obter do localStorage primeiro
+    if (user) {
       try {
         const userData = JSON.parse(user)
         setIsAdmin(userData.role === 'admin')
+        return
+      } catch (error) {
+        // Continuar para decodificar o token
+      }
+    }
+    
+    // Se não tiver user mas tiver token, decodificar
+    if (token) {
+      try {
+        const base64Url = token.split('.')[1]
+        const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/')
+        const jsonPayload = decodeURIComponent(
+          atob(base64)
+            .split('')
+            .map((c) => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
+            .join('')
+        )
+        const tokenData = JSON.parse(jsonPayload)
+        setIsAdmin(tokenData.role === 'admin' || tokenData.userRole === 'admin')
       } catch (error) {
         setIsAdmin(false)
       }
+    } else {
+      setIsAdmin(false)
     }
   }, [])
 
