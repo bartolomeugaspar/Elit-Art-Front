@@ -11,6 +11,7 @@ export default function Header() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
   const [isAdmin, setIsAdmin] = useState(false)
   const pathname = usePathname()
+  const isAdminRoute = pathname?.startsWith('/admin')
 
   // Verificar se usuário é admin
   useEffect(() => {
@@ -160,7 +161,7 @@ export default function Header() {
 
           {/* CTA Buttons */}
           <div className="hidden md:flex items-center space-x-4">
-            {isAdmin && <NotificationBell />}
+            {isAdmin && isAdminRoute && <NotificationBell />}
             <button
               onClick={() => window.location.href = isAdmin ? '/admin/dashboard' : '/admin/login'}
               className="bg-gray-200 hover:bg-gray-300 text-gray-900 px-6 py-2 rounded-full text-sm font-semibold transition-all duration-300 hover:scale-105"

@@ -19,6 +19,8 @@ interface NotificationContextType {
   addNotification: (notification: Omit<Notification, 'id' | 'createdAt' | 'read'>) => void
   markAsRead: (id: string) => void
   markAllAsRead: () => void
+  deleteNotification: (id: string) => void
+  deleteAllNotifications: () => void
   refreshNotifications: () => Promise<void>
   clearNotifications: () => void
 }
@@ -488,6 +490,47 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
     }
   }
 
+  const deleteNotification = async (id: string) => {
+    try {
+      const token = localStorage.getItem('token')
+      if (token) {
+        await fetch(`${API_URL}/notifications/${id}`, {
+          method: 'DELETE',
+          headers: { Authorization: `Bearer ${token}` }
+        })
+        
+        // Atualizar estado local
+        setNotifications(prev => prev.filter(n => n.id !== id))
+      }
+    } catch (error) {
+      console.error('[NotificationContext] Erro ao deletar notificação:', error)
+      throw error
+    }
+  }
+
+  const deleteAllNotifications = async () => {
+    try {
+      const token = localStorage.getItem('token')
+      if (token) {
+        // Deletar todas as notificações uma por uma
+        const deletePromises = notifications.map(notification =>
+          fetch(`${API_URL}/notifications/${notification.id}`, {
+            method: 'DELETE',
+            headers: { Authorization: `Bearer ${token}` }
+          })
+        )
+        
+        await Promise.all(deletePromises)
+        
+        // Limpar estado local
+        setNotifications([])
+      }
+    } catch (error) {
+      console.error('[NotificationContext] Erro ao deletar todas as notificações:', error)
+      throw error
+    }
+  }
+
   const clearNotifications = () => {
     setNotifications([])
   }
@@ -502,6 +545,8 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
         addNotification,
         markAsRead,
         markAllAsRead,
+        deleteNotification,
+        deleteAllNotifications,
         refreshNotifications,
         clearNotifications
       }}

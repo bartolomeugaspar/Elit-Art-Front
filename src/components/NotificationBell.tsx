@@ -153,7 +153,7 @@ export default function NotificationBell() {
           {notifications.length > 0 && (
             <div className="p-3 border-t border-gray-200 text-center">
               <Link
-                href="/admin/dashboard"
+                href="/admin/notifications"
                 className="text-sm text-blue-600 hover:text-blue-800 font-medium"
                 onClick={() => setIsOpen(false)}
               >
