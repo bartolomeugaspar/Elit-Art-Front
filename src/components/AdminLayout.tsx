@@ -341,9 +341,17 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
                   >
                     <div className="flex-shrink-0">
                       <div className="relative">
-                        <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-gradient-to-br from-blue-600 to-indigo-600 flex items-center justify-center text-white font-medium text-xs sm:text-sm">
-                          {user?.name?.charAt(0).toUpperCase() || 'A'}
-                        </div>
+                        {user?.profile_image ? (
+                          <img
+                            src={user.profile_image}
+                            alt={user.name || 'Admin'}
+                            className="w-8 h-8 sm:w-9 sm:h-9 rounded-full object-cover"
+                          />
+                        ) : (
+                          <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-gradient-to-br from-blue-600 to-indigo-600 flex items-center justify-center text-white font-medium text-xs sm:text-sm">
+                            {user?.name?.charAt(0).toUpperCase() || 'A'}
+                          </div>
+                        )}
                         <span className="absolute bottom-0 right-0 block h-2 w-2 sm:h-2.5 sm:w-2.5 rounded-full bg-green-500 ring-2 ring-white"></span>
                       </div>
                     </div>

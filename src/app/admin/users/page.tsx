@@ -28,7 +28,6 @@ export default function AdminUsers() {
     is_active: true,
     profile_image: '',
   });
-  const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   
   const [isEditing, setIsEditing] = useState(false);
@@ -78,7 +77,6 @@ export default function AdminUsers() {
       is_active: true,
       profile_image: '',
     });
-    setImageFile(null);
     setImagePreview(null);
     setIsEditing(false);
   };
@@ -99,7 +97,6 @@ export default function AdminUsers() {
       profile_image: user.profile_image || '',
     });
     setImagePreview(user.profile_image || null);
-    setImageFile(null);
     setIsEditing(true);
     setShowForm(true);
   };
@@ -109,15 +106,51 @@ export default function AdminUsers() {
     setShowForm(!showForm);
   };
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file) {
-      setImageFile(file);
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImagePreview(reader.result as string);
-      };
-      reader.readAsDataURL(file);
+    if (!file) return;
+
+    if (!['image/jpeg', 'image/png', 'image/webp', 'image/gif'].includes(file.type)) {
+      toast.error('Apenas imagens (JPEG, PNG, WebP, GIF) são permitidas');
+      return;
+    }
+
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error('Imagem não pode ser maior que 5MB');
+      return;
+    }
+
+    const uploadToast = toast.loading('Enviando imagem...');
+
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) throw new Error('Token não encontrado');
+
+      const formDataUpload = new FormData();
+      formDataUpload.append('image', file);
+
+      const response = await fetch(`${API_URL}/upload/image`, {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${token}` },
+        body: formDataUpload,
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.imageUrl) {
+        setFormData({ ...formData, profile_image: data.imageUrl });
+        setImagePreview(data.imageUrl);
+        toast.success('Imagem enviada com sucesso!', {
+          id: uploadToast,
+          duration: 2000,
+        });
+      } else {
+        throw new Error(data.message || 'Erro ao enviar imagem');
+      }
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : 'Erro ao fazer upload', {
+        id: uploadToast,
+      });
     }
   };
 
@@ -127,34 +160,13 @@ export default function AdminUsers() {
     
     try {
       const token = localStorage.getItem('token');
-      let imageUrl = formData.profile_image;
-
-      // Upload da imagem se houver
-      if (imageFile) {
-        const formDataImage = new FormData();
-        formDataImage.append('image', imageFile);
-
-        const uploadResponse = await fetch(`${API_URL}/upload`, {
-          method: 'POST',
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          body: formDataImage,
-        });
-
-        if (uploadResponse.ok) {
-          const uploadData = await uploadResponse.json();
-          imageUrl = uploadData.url;
-        }
-      }
-      
       const url = isEditing ? `${API_URL}/users/${formData.id}` : `${API_URL}/auth/register`;
       const method = isEditing ? 'PUT' : 'POST';
       
       // Se estiver editando e a senha estiver vazia, não envia o campo password
       const requestData = isEditing && !formData.password
-        ? { ...formData, password: undefined, profile_image: imageUrl }
-        : { ...formData, profile_image: imageUrl };
+        ? { ...formData, password: undefined }
+        : formData;
       
       const response = await fetch(url, {
         method,
@@ -168,7 +180,7 @@ export default function AdminUsers() {
       const data = await response.json();
 
       if (response.ok) {
-        setFormData({ id: '', name: '', email: '', password: '', role: 'user', is_active: true });
+        setFormData({ id: '', name: '', email: '', password: '', role: 'user', is_active: true, profile_image: '' });
         setShowForm(false);
         setIsEditing(false);
         fetchUsers();
