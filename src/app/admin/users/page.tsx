@@ -12,6 +12,7 @@ interface User {
   role: 'admin' | 'artista' | 'user';
   is_active: boolean;
   created_at: string;
+  profile_image?: string;
 }
 
 export default function AdminUsers() {
@@ -25,7 +26,10 @@ export default function AdminUsers() {
     password: '',
     role: 'user' as 'admin' | 'artista' | 'user',
     is_active: true,
+    profile_image: '',
   });
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
   
   const [isEditing, setIsEditing] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -72,7 +76,10 @@ export default function AdminUsers() {
       password: '',
       role: 'user',
       is_active: true,
+      profile_image: '',
     });
+    setImageFile(null);
+    setImagePreview(null);
     setIsEditing(false);
   };
 
@@ -89,7 +96,10 @@ export default function AdminUsers() {
       password: '',
       role: user.role,
       is_active: user.is_active,
+      profile_image: user.profile_image || '',
     });
+    setImagePreview(user.profile_image || null);
+    setImageFile(null);
     setIsEditing(true);
     setShowForm(true);
   };
@@ -99,19 +109,52 @@ export default function AdminUsers() {
     setShowForm(!showForm);
   };
 
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setImageFile(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   const handleCreateUser = async (e: React.FormEvent) => {
     e.preventDefault();
     const loadingToast = toast.loading('Salvando usuário...');
     
     try {
       const token = localStorage.getItem('token');
+      let imageUrl = formData.profile_image;
+
+      // Upload da imagem se houver
+      if (imageFile) {
+        const formDataImage = new FormData();
+        formDataImage.append('image', imageFile);
+
+        const uploadResponse = await fetch(`${API_URL}/upload`, {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          body: formDataImage,
+        });
+
+        if (uploadResponse.ok) {
+          const uploadData = await uploadResponse.json();
+          imageUrl = uploadData.url;
+        }
+      }
+      
       const url = isEditing ? `${API_URL}/users/${formData.id}` : `${API_URL}/auth/register`;
       const method = isEditing ? 'PUT' : 'POST';
       
       // Se estiver editando e a senha estiver vazia, não envia o campo password
       const requestData = isEditing && !formData.password
-        ? { ...formData, password: undefined }
-        : formData;
+        ? { ...formData, password: undefined, profile_image: imageUrl }
+        : { ...formData, profile_image: imageUrl };
       
       const response = await fetch(url, {
         method,
@@ -264,6 +307,29 @@ export default function AdminUsers() {
                 </div>
                 
                 <div className="space-y-2">
+                  <label className="block text-sm font-medium text-slate-700">Foto de Perfil</label>
+                  <div className="flex items-center gap-4">
+                    {imagePreview ? (
+                      <img
+                        src={imagePreview}
+                        alt="Preview"
+                        className="h-16 w-16 rounded-full object-cover"
+                      />
+                    ) : (
+                      <div className="h-16 w-16 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+                        <User className="h-8 w-8 text-white" />
+                      </div>
+                    )}
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleImageChange}
+                      className="flex-1 text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                    />
+                  </div>
+                </div>
+                
+                <div className="space-y-2">
                   <label className="block text-sm font-medium text-slate-700">Email</label>
                   <input
                     type="email"
@@ -362,7 +428,7 @@ export default function AdminUsers() {
             <thead className="bg-slate-50">
               <tr>
                 <th scope="col" className="px-4 lg:px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
-                  Nome
+                  Usuário
                 </th>
                 <th scope="col" className="px-4 lg:px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
                   Email
@@ -401,7 +467,26 @@ export default function AdminUsers() {
                 filteredUsers.map((user) => (
                   <tr key={user.id} className="hover:bg-slate-50 transition-colors">
                     <td className="px-4 lg:px-6 py-4 whitespace-nowrap">
-                      <div className="text-xs lg:text-sm font-medium text-slate-900">{user.name}</div>
+                      <div className="flex items-center">
+                        <div className="flex-shrink-0 h-10 w-10">
+                          {user.profile_image ? (
+                            <img
+                              className="h-10 w-10 rounded-full object-cover"
+                              src={user.profile_image}
+                              alt={user.name}
+                            />
+                          ) : (
+                            <div className="h-10 w-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+                              <span className="text-white font-semibold text-sm">
+                                {user.name.charAt(0).toUpperCase()}
+                              </span>
+                            </div>
+                          )}
+                        </div>
+                        <div className="ml-4">
+                          <div className="text-xs lg:text-sm font-medium text-slate-900">{user.name}</div>
+                        </div>
+                      </div>
                     </td>
                     <td className="px-4 lg:px-6 py-4 whitespace-nowrap">
                       <div className="text-xs lg:text-sm text-slate-600">{user.email}</div>
@@ -479,9 +564,26 @@ export default function AdminUsers() {
           filteredUsers.map((user) => (
             <div key={user.id} className="bg-white rounded-lg border border-slate-200 p-4 shadow-sm hover:shadow-md transition-shadow">
               <div className="flex justify-between items-start gap-3 mb-3">
-                <div className="flex-1 min-w-0">
-                  <h3 className="font-semibold text-slate-900 text-sm truncate">{user.name}</h3>
-                  <p className="text-xs text-slate-500 truncate">{user.email}</p>
+                <div className="flex items-center gap-3 flex-1 min-w-0">
+                  <div className="flex-shrink-0">
+                    {user.profile_image ? (
+                      <img
+                        className="h-12 w-12 rounded-full object-cover"
+                        src={user.profile_image}
+                        alt={user.name}
+                      />
+                    ) : (
+                      <div className="h-12 w-12 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+                        <span className="text-white font-semibold text-lg">
+                          {user.name.charAt(0).toUpperCase()}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <h3 className="font-semibold text-slate-900 text-sm truncate">{user.name}</h3>
+                    <p className="text-xs text-slate-500 truncate">{user.email}</p>
+                  </div>
                 </div>
               </div>
 
@@ -599,9 +701,19 @@ export default function AdminUsers() {
             
             <div className="space-y-4">
               <div className="flex items-center gap-3 p-3 bg-slate-50 rounded-lg">
-                <div className="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center text-blue-600">
-                  <User size={24} />
-                </div>
+                {selectedUser.profile_image ? (
+                  <img
+                    src={selectedUser.profile_image}
+                    alt={selectedUser.name}
+                    className="w-16 h-16 rounded-full object-cover"
+                  />
+                ) : (
+                  <div className="w-16 h-16 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+                    <span className="text-white font-semibold text-xl">
+                      {selectedUser.name.charAt(0).toUpperCase()}
+                    </span>
+                  </div>
+                )}
                 <div>
                   <h3 className="font-semibold text-slate-900">{selectedUser.name}</h3>
                   <p className="text-sm text-slate-500">{selectedUser.email}</p>
