@@ -21,7 +21,7 @@ export default function Home() {
       <PresentationSection />
       <IdentitySection />
       <HistorySection />
-      <AreasSection />
+      <AreasSection /> 
       <TeamSection />
       <CommunitySection />
       <GallerySection />
