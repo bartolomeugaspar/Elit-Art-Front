@@ -222,21 +222,13 @@ export default function EventRegistrationModal({
       })
 
       // Disparar evento de notificação para o header
-        name: fullName,
-        email: email,
-        eventTitle: eventTitle
-      })
-      
-      // Disparar evento com pequeno delay para garantir que o listener está pronto
-      setTimeout(() => {
-        window.dispatchEvent(new CustomEvent('newRegistration', {
-          detail: {
-            name: fullName,
-            email: email,
-            eventTitle: eventTitle
-          }
-        }))
-      }, 100)
+      window.dispatchEvent(new CustomEvent('newRegistration', {
+        detail: {
+          name: fullName,
+          email: email,
+          eventTitle: eventTitle
+        }
+      }))
 
       onSuccess()
     } catch (error) {
