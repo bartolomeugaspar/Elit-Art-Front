@@ -84,7 +84,7 @@ export default function WhatsAppControlPanel() {
     setLoading(true)
     try {
       const token = localStorage.getItem('token')
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/whatsapp/initialize`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/whatsapp-api/initialize`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`
