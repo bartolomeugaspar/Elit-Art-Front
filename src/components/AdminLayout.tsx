@@ -22,6 +22,7 @@ import {
   BookOpen,
   MessageCircle,
   TrendingUp,
+  MessageSquare,
 } from 'lucide-react';
 import { useToast, ToastContainer } from './Toast';
 import NotificationBell from './NotificationBell';
@@ -196,6 +197,11 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
       label: 'Comunidade',
       href: '/admin/comunidade',
       icon: MessageCircle,
+    },
+    {
+      label: 'WhatsApp',
+      href: '/admin/whatsapp',
+      icon: MessageSquare,
     },
     {
       label: 'Logs do Sistema',
