@@ -52,7 +52,8 @@ export default function WhatsAppControlPanel() {
 
   const checkStatus = async () => {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/whatsapp-api/status`)
+      const whatsappApiUrl = process.env.NEXT_PUBLIC_WHATSAPP_API_URL || 'https://elit-art-back.onrender.com'
+      const response = await fetch(`${whatsappApiUrl}/api/whatsapp-api/status`)
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`)
       }
@@ -70,7 +71,8 @@ export default function WhatsAppControlPanel() {
 
   const loadMessageHistory = async () => {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/whatsapp-api/messages`)
+      const whatsappApiUrl = process.env.NEXT_PUBLIC_WHATSAPP_API_URL || 'https://elit-art-back.onrender.com'
+      const response = await fetch(`${whatsappApiUrl}/api/whatsapp-api/messages`)
       const data = await response.json()
       if (data.success) {
         setMessageHistory(data.messages || [])
@@ -83,8 +85,9 @@ export default function WhatsAppControlPanel() {
   const initializeWhatsApp = async () => {
     setLoading(true)
     try {
+      const whatsappApiUrl = process.env.NEXT_PUBLIC_WHATSAPP_API_URL || 'https://elit-art-back.onrender.com'
       const token = localStorage.getItem('token')
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/whatsapp-api/initialize`, {
+      const response = await fetch(`${whatsappApiUrl}/api/whatsapp-api/initialize`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`
@@ -114,7 +117,8 @@ export default function WhatsAppControlPanel() {
 
     setLoading(true)
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/whatsapp-api/send`, {
+      const whatsappApiUrl = process.env.NEXT_PUBLIC_WHATSAPP_API_URL || 'https://elit-art-back.onrender.com'
+      const response = await fetch(`${whatsappApiUrl}/api/whatsapp-api/send`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ phoneNumber, message })
