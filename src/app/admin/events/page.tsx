@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState, useCallback, useRef } from 'react';
-import { Trash2, Edit2, Plus, CheckCircle, X, Calendar, MapPin, Users, Image as ImageIcon } from 'lucide-react';
+import { Trash2, Edit2, Plus, CheckCircle, X, Calendar, MapPin, Users, Image as ImageIcon, AlertCircle } from 'lucide-react';
 import { API_URL } from '@/lib/api';
 import toast from 'react-hot-toast';
 import EventForm from '@/components/admin/EventForm';
@@ -216,15 +216,27 @@ export default function AdminEvents() {
         });
       } else {
         const data = await response.json().catch(() => ({}));
-        toast.error(data.message || 'Erro ao gerar PDF. Verifique se há inscritos neste evento.', {
-          id: loadingToast,
-          icon: <X className="text-red-500" />,
-          style: {
-            background: '#fef2f2',
-            color: '#b91c1c',
-            border: '1px solid #fecaca',
-          },
-        });
+        
+        // Mensagem específica para evento sem inscrições
+        const errorMessage = data.message || 'Erro ao gerar PDF';
+        const detailsMessage = data.details || '';
+        
+        toast.error(
+          <div className="flex flex-col gap-1">
+            <span className="font-semibold">{errorMessage}</span>
+            {detailsMessage && <span className="text-sm opacity-90">{detailsMessage}</span>}
+          </div>,
+          {
+            id: loadingToast,
+            icon: <AlertCircle className="text-amber-500" />,
+            duration: 5000,
+            style: {
+              background: '#fffbeb',
+              color: '#92400e',
+              border: '1px solid #fde68a',
+            },
+          }
+        );
       }
     } catch (error) {
       toast.error('Erro ao conectar com o servidor', {
