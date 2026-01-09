@@ -1,7 +1,7 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { User, Mail, Shield, Calendar, Save, X, Lock, Eye, EyeOff, CheckCircle2, AlertCircle } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
+import { User, Mail, Shield, Calendar, Save, X, Lock, Eye, EyeOff, CheckCircle2, AlertCircle, Upload, Camera } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import toast from 'react-hot-toast';
 import { API_URL } from '@/lib/api';
@@ -15,12 +15,16 @@ export default function ProfilePage() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [passwordStrength, setPasswordStrength] = useState(0);
   const [passwordLength, setPasswordLength] = useState(12); // Tamanho padrão da senha
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [isUploadingImage, setIsUploadingImage] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     currentPassword: '',
     newPassword: '',
-    confirmPassword: ''
+    confirmPassword: '',
+    profile_image: ''
   });
 
   useEffect(() => {
@@ -28,8 +32,10 @@ export default function ProfilePage() {
       setFormData(prev => ({
         ...prev,
         name: user.name || '',
-        email: user.email || ''
+        email: user.email || '',
+        profile_image: user.profile_image || ''
       }));
+      setImagePreview(user.profile_image || null);
     }
   }, [user]);
 
@@ -91,6 +97,77 @@ export default function ProfilePage() {
     if (passwordStrength < 40) return 'Fraca';
     if (passwordStrength < 70) return 'Média';
     return 'Forte';
+  };
+
+  const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // Validar tipo de arquivo
+    if (!['image/jpeg', 'image/png', 'image/webp', 'image/gif'].includes(file.type)) {
+      toast.error('Apenas imagens (JPEG, PNG, WebP, GIF) são permitidas');
+      return;
+    }
+
+    // Validar tamanho (5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error('Imagem não pode ser maior que 5MB');
+      return;
+    }
+
+    setIsUploadingImage(true);
+    const uploadToast = toast.loading('Enviando imagem...');
+
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) throw new Error('Token não encontrado');
+
+      const formDataUpload = new FormData();
+      formDataUpload.append('image', file);
+
+      const response = await fetch(`${API_URL}/upload/image`, {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${token}` },
+        body: formDataUpload,
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.imageUrl) {
+        setFormData(prev => ({ ...prev, profile_image: data.imageUrl }));
+        setImagePreview(data.imageUrl);
+        toast.success('Imagem enviada com sucesso!', { id: uploadToast });
+        
+        // Atualizar a foto de perfil imediatamente no backend
+        await updateProfileImage(data.imageUrl, token);
+      } else {
+        throw new Error(data.message || 'Erro ao enviar imagem');
+      }
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : 'Erro ao enviar imagem', { id: uploadToast });
+    } finally {
+      setIsUploadingImage(false);
+    }
+  };
+
+  const updateProfileImage = async (imageUrl: string, token: string) => {
+    try {
+      const response = await fetch(`${API_URL}/users/profile-image`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ profile_image: imageUrl })
+      });
+
+      if (response.ok) {
+        // Recarregar para atualizar o contexto do usuário
+        setTimeout(() => window.location.reload(), 500);
+      }
+    } catch (error) {
+      console.error('Erro ao atualizar foto de perfil:', error);
+    }
   };
 
   const handleSaveProfile = async () => {
@@ -167,8 +244,10 @@ export default function ProfilePage() {
         email: user.email || '',
         currentPassword: '',
         newPassword: '',
-        confirmPassword: ''
+        confirmPassword: '',
+        profile_image: user.profile_image || ''
       });
+      setImagePreview(user.profile_image || null);
     }
     setIsEditing(false);
   };
@@ -188,8 +267,36 @@ export default function ProfilePage() {
     <div className="space-y-6">
       <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
         <div className="flex items-center gap-4">
-          <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-full flex items-center justify-center flex-shrink-0">
-            <User size={32} className="text-white" />
+          <div className="relative">
+            {imagePreview || user.profile_image ? (
+              <img
+                src={imagePreview || user.profile_image}
+                alt={user.name}
+                className="w-16 h-16 rounded-full object-cover flex-shrink-0"
+              />
+            ) : (
+              <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-full flex items-center justify-center flex-shrink-0">
+                <User size={32} className="text-white" />
+              </div>
+            )}
+            {isEditing && (
+              <button
+                type="button"
+                onClick={() => fileInputRef.current?.click()}
+                disabled={isUploadingImage}
+                className="absolute -bottom-1 -right-1 bg-blue-600 hover:bg-blue-700 text-white rounded-full p-1.5 shadow-lg transition-colors disabled:opacity-50"
+                title="Alterar foto de perfil"
+              >
+                <Camera size={14} />
+              </button>
+            )}
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              onChange={handleImageChange}
+              className="hidden"
+            />
           </div>
           <div className="flex-1">
             <h2 className="text-xl font-bold text-gray-900">{user.name}</h2>
