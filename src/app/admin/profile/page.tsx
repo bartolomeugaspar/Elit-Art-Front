@@ -264,18 +264,18 @@ export default function ProfilePage() {
   }
 
   return (
-    <div className="space-y-6">
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-        <div className="flex items-center gap-4">
-          <div className="relative">
+    <div className="space-y-4 sm:space-y-6">
+      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 sm:p-6">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+          <div className="relative flex-shrink-0">
             {imagePreview || user.profile_image ? (
               <img
                 src={imagePreview || user.profile_image}
                 alt={user.name}
-                className="w-16 h-16 rounded-full object-cover flex-shrink-0"
+                className="w-16 h-16 sm:w-20 sm:h-20 rounded-full object-cover"
               />
             ) : (
-              <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-full flex items-center justify-center flex-shrink-0">
+              <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-full flex items-center justify-center">
                 <User size={32} className="text-white" />
               </div>
             )}
@@ -298,43 +298,41 @@ export default function ProfilePage() {
               className="hidden"
             />
           </div>
-          <div className="flex-1">
-            <h2 className="text-xl font-bold text-gray-900">{user.name}</h2>
-            <p className="text-sm text-gray-500">{user.email}</p>
-          </div>
-          <div className="flex items-center gap-4">
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-blue-100 text-blue-800 rounded-lg text-xs font-semibold">
-              <Shield size={14} />
-              {user.role === 'admin' ? 'Administrador' : 'Usuário'}
-            </div>
-            {user.created_at && (
-              <div className="text-right hidden sm:block">
-                <p className="text-xs text-gray-500">Membro desde</p>
-                <p className="text-sm font-semibold text-gray-900">
-                  {new Date(user.created_at).toLocaleDateString('pt-BR')}
-                </p>
+          <div className="flex-1 min-w-0">
+            <h2 className="text-lg sm:text-xl font-bold text-gray-900 truncate">{user.name}</h2>
+            <p className="text-sm text-gray-500 truncate">{user.email}</p>
+            <div className="flex flex-wrap items-center gap-2 mt-2">
+              <div className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-blue-100 text-blue-800 rounded-lg text-xs font-semibold">
+                <Shield size={12} />
+                <span className="hidden xs:inline">{user.role === 'admin' ? 'Administrador' : 'Usuário'}</span>
+                <span className="xs:hidden">{user.role === 'admin' ? 'Admin' : 'User'}</span>
               </div>
-            )}
-             {!isEditing && (
-          <button
-            onClick={() => setIsEditing(true)}
-            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium"
-          >
-            Editar Perfil
-          </button>
-        )}
+              {user.created_at && (
+                <div className="text-xs text-gray-500">
+                  Membro desde {new Date(user.created_at).toLocaleDateString('pt-BR')}
+                </div>
+              )}
+            </div>
           </div>
+          {!isEditing && (
+            <button
+              onClick={() => setIsEditing(true)}
+              className="w-full sm:w-auto px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium whitespace-nowrap"
+            >
+              Editar Perfil
+            </button>
+          )}
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
         {/* Card de Informações Básicas */}
         <div className="bg-white rounded-lg shadow-sm border border-gray-200">
-          <div className="px-6 py-4 border-b border-gray-200">
-            <h3 className="text-lg font-semibold text-gray-900">Informações Pessoais</h3>
+          <div className="px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-200">
+            <h3 className="text-base sm:text-lg font-semibold text-gray-900">Informações Pessoais</h3>
           </div>
 
-          <div className="p-6 space-y-5">
+          <div className="p-4 sm:p-6 space-y-4 sm:space-y-5">
             {/* Name Field */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -388,12 +386,12 @@ export default function ProfilePage() {
         {/* Card de Segurança - Password Section */}
         {isEditing && (
           <div className="bg-white rounded-lg shadow-sm border border-gray-200">
-            <div className="px-6 py-4 border-b border-gray-200">
-              <h3 className="text-lg font-semibold text-gray-900">Alterar Senha</h3>
-              <p className="text-sm text-gray-500 mt-1">Deixe em branco se não quiser alterar</p>
+            <div className="px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-200">
+              <h3 className="text-base sm:text-lg font-semibold text-gray-900">Alterar Senha</h3>
+              <p className="text-xs sm:text-sm text-gray-500 mt-1">Deixe em branco se não quiser alterar</p>
             </div>
 
-            <div className="p-6 space-y-5">
+            <div className="p-4 sm:p-6 space-y-4 sm:space-y-5">
               {/* New Password */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -436,7 +434,7 @@ export default function ProfilePage() {
                         style={{ width: `${passwordStrength}%` }}
                       />
                     </div>
-                    <div className="mt-2 grid grid-cols-2 gap-2 text-xs">
+                    <div className="mt-2 grid grid-cols-1 xs:grid-cols-2 gap-1.5 sm:gap-2 text-xs">
                       <span className={formData.newPassword.length >= 8 ? 'text-green-600' : 'text-gray-400'}>
                         ✓ 8+ caracteres
                       </span>
@@ -493,11 +491,11 @@ export default function ProfilePage() {
 
       {/* Action Buttons */}
       {isEditing && (
-        <div className="flex gap-3">
+        <div className="flex flex-col sm:flex-row gap-3">
           <button
             onClick={handleSaveProfile}
             disabled={loading}
-            className="flex items-center justify-center gap-2 px-6 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+            className="flex items-center justify-center gap-2 px-4 sm:px-6 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed text-sm sm:text-base"
           >
             <Save size={18} />
             {loading ? 'Salvando...' : 'Salvar Alterações'}
@@ -505,7 +503,7 @@ export default function ProfilePage() {
           <button
             onClick={handleCancel}
             disabled={loading}
-            className="flex items-center justify-center gap-2 px-6 py-2.5 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+            className="flex items-center justify-center gap-2 px-4 sm:px-6 py-2.5 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed text-sm sm:text-base"
           >
             <X size={18} />
             Cancelar
