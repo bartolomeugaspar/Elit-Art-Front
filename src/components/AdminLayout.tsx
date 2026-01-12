@@ -23,6 +23,7 @@ import {
   MessageCircle,
   TrendingUp,
   MessageSquare,
+  CreditCard,
 } from 'lucide-react';
 import { useToast, ToastContainer } from './Toast';
 import NotificationBell from './NotificationBell';
@@ -167,6 +168,11 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
       label: 'Relatórios Financeiros',
       href: '/admin/financial-reports',
       icon: TrendingUp,
+    },
+    {
+      label: 'Quotas de Artistas',
+      href: '/admin/quotas',
+      icon: CreditCard,
     },
     {
       label: 'Mensagens',
