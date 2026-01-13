@@ -10,11 +10,7 @@ const nextConfig = {
   // Configurações de produção
   compress: true,
   poweredByHeader: false,
-  generateEtags: true,
-  // Otimizações
-  experimental: {
-    optimizeCss: true
-  }
+  generateEtags: true
 }
 
 module.exports = nextConfig
