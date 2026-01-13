@@ -57,6 +57,14 @@ export default function AdminLogin() {
       }
       
       if (data.user.role !== 'admin') {
+        // Redirecionar baseado no role
+        if (data.user.role === 'artista') {
+          setSuccess(`Bem-vindo, ${data.user.name}!`);
+          router.push('/artist');
+          return;
+        }
+        
+        // Se não for admin nem artista, negar acesso
         setError('Acesso negado. Apenas administradores podem acessar.');
         localStorage.removeItem('token');
         return;

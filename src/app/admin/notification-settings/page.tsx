@@ -75,7 +75,6 @@ export default function NotificationSettingsPage() {
         toast.error('Erro ao atualizar configuração')
       }
     } catch (error) {
-      console.error('Erro:', error)
       toast.error('Erro ao atualizar configuração')
     } finally {
       setSaving(false)

@@ -54,6 +54,7 @@ export default function Header() {
     { label: 'Home', href: '#home' },
     { label: 'Sobre Nós', href: '#sobre' },
     { label: 'Áreas de actuação', href: '#areas' },
+    { label: 'Serviços', href: '#servicos' },
     { label: 'Galeria', href: '#galeria' },
     { label: 'Artistas', href: '#equipa' },
     { label: 'Eventos', href: '/eventos' }

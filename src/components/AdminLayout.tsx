@@ -15,6 +15,7 @@ import {
   Menu,
   X,
   ChevronRight,
+  ChevronDown,
   Bell,
   FileText,
   Palette,
@@ -24,6 +25,9 @@ import {
   TrendingUp,
   MessageSquare,
   CreditCard,
+  Award,
+  Settings,
+  DollarSign,
 } from 'lucide-react';
 import { useToast, ToastContainer } from './Toast';
 import NotificationBell from './NotificationBell';
@@ -40,7 +44,15 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
   const [notificationCount, setNotificationCount] = useState(0);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
+  const [expandedMenus, setExpandedMenus] = useState<{ [key: string]: boolean }>({});
   const profileDropdownRef = useRef<HTMLDivElement>(null);
+
+  const toggleMenu = (menuKey: string) => {
+    setExpandedMenus(prev => ({
+      ...prev,
+      [menuKey]: !prev[menuKey]
+    }));
+  };
 
   // Fechar dropdown ao clicar fora
   useEffect(() => {
@@ -138,81 +150,70 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
     return null;
   }
 
-  const menuItems = [
+  const menuCategories = [
     {
+      key: 'dashboard',
       label: 'Dashboard',
       href: '/admin/dashboard',
       icon: LayoutDashboard,
+      single: true,
     },
     {
-      label: 'Usuários',
-      href: '/admin/users',
+      key: 'management',
+      label: 'Gestão',
       icon: Users,
+      items: [
+        { label: 'Usuários', href: '/admin/users', icon: Users },
+        { label: 'Artistas', href: '/admin/artists', icon: Palette },
+        { label: 'Avaliação de Desempenho', href: '/admin/performance-evaluations', icon: Award },
+      ],
     },
     {
-      label: 'Artistas',
-      href: '/admin/artists',
-      icon: Palette,
-    },
-    {
+      key: 'events',
       label: 'Eventos',
-      href: '/admin/events',
       icon: Calendar,
+      items: [
+        { label: 'Eventos', href: '/admin/events', icon: Calendar },
+        { label: 'Inscrições', href: '/admin/registrations', icon: UserCheck },
+      ],
     },
     {
-      label: 'Inscrições',
-      href: '/admin/registrations',
-      icon: UserCheck,
+      key: 'financial',
+      label: 'Financeiro',
+      icon: DollarSign,
+      items: [
+        { label: 'Relatórios', href: '/admin/financial-reports', icon: TrendingUp },
+        { label: 'Quotas', href: '/admin/quotas', icon: CreditCard },
+      ],
     },
     {
-      label: 'Relatórios Financeiros',
-      href: '/admin/financial-reports',
-      icon: TrendingUp,
-    },
-    {
-      label: 'Quotas de Artistas',
-      href: '/admin/quotas',
-      icon: CreditCard,
-    },
-    {
-      label: 'Mensagens',
-      href: '/admin/newsletter',
-      icon: Mail,
-    },
-    {
-      label: 'Newsletter',
-      href: '/admin/newsletter/subscribers',
-      icon: MailOpen,
-    },
-    {
-      label: 'Galeria',
-      href: '/admin/galeria',
-      icon: Palette,
-    },
-    {
-      label: 'Loja Digital',
-      href: '/admin/loja',
-      icon: ShoppingCart,
-    },
-    {
-      label: 'Revista',
-      href: '/admin/blog',
+      key: 'content',
+      label: 'Conteúdo',
       icon: BookOpen,
+      items: [
+        { label: 'Galeria', href: '/admin/galeria', icon: Palette },
+        { label: 'Loja Digital', href: '/admin/loja', icon: ShoppingCart },
+        { label: 'Revista', href: '/admin/blog', icon: BookOpen },
+        { label: 'Comunidade', href: '/admin/comunidade', icon: MessageCircle },
+      ],
     },
     {
-      label: 'Comunidade',
-      href: '/admin/comunidade',
-      icon: MessageCircle,
+      key: 'communication',
+      label: 'Comunicação',
+      icon: Mail,
+      items: [
+        { label: 'Mensagens', href: '/admin/newsletter', icon: Mail },
+        { label: 'Newsletter', href: '/admin/newsletter/subscribers', icon: MailOpen },
+        { label: 'WhatsApp', href: '/admin/whatsapp', icon: MessageSquare },
+      ],
     },
     {
-      label: 'WhatsApp',
-      href: '/admin/whatsapp',
-      icon: MessageSquare,
-    },
-    {
-      label: 'Logs do Sistema',
-      href: '/admin/audit-logs',
-      icon: FileText,
+      key: 'system',
+      label: 'Sistema',
+      icon: Settings,
+      items: [
+        { label: 'Logs do Sistema', href: '/admin/audit-logs', icon: FileText },
+      ],
     },
   ];
 
@@ -250,28 +251,88 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
 
         {/* Menu Items */}
         <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
-          {menuItems.map((item) => {
-            const Icon = item.icon;
-            const isActive = pathname === item.href;
+          {menuCategories.map((category) => {
+            const CategoryIcon = category.icon;
+            
+            // Se for item único (Dashboard)
+            if (category.single) {
+              const isActive = pathname === category.href;
+              return (
+                <Link
+                  key={category.key}
+                  href={category.href!}
+                  onClick={() => {
+                    if (window.innerWidth < 768) {
+                      setSidebarOpen(false);
+                    }
+                  }}
+                  className={`flex items-center gap-3 px-4 py-2.5 rounded-lg transition duration-200 ${
+                    isActive
+                      ? 'bg-slate-100 text-slate-900 font-semibold border-l-4 border-blue-600'
+                      : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
+                  }`}
+                >
+                  <CategoryIcon size={20} className={isActive ? 'text-blue-600' : 'text-slate-400'} />
+                  {sidebarOpen && <span className="text-sm md:text-base">{category.label}</span>}
+                </Link>
+              );
+            }
+
+            // Para categorias com submenu
+            const isExpanded = expandedMenus[category.key];
+            const hasActiveItem = category.items?.some(item => pathname === item.href);
+
             return (
-              <Link
-                key={item.href}
-                href={item.href}
-                onClick={() => {
-                  // Fechar sidebar no mobile após clicar
-                  if (window.innerWidth < 768) {
-                    setSidebarOpen(false);
-                  }
-                }}
-                className={`flex items-center gap-3 px-4 py-2.5 rounded-lg transition duration-200 ${
-                  isActive
-                    ? 'bg-slate-100 text-slate-900 font-semibold border-l-4 border-blue-600'
-                    : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
-                }`}
-              >
-                <Icon size={20} className={isActive ? 'text-blue-600' : 'text-slate-400'} />
-                {sidebarOpen && <span className="text-sm md:text-base">{item.label}</span>}
-              </Link>
+              <div key={category.key}>
+                <button
+                  onClick={() => toggleMenu(category.key)}
+                  className={`w-full flex items-center justify-between gap-3 px-4 py-2.5 rounded-lg transition duration-200 ${
+                    hasActiveItem
+                      ? 'bg-slate-100 text-slate-900 font-semibold'
+                      : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
+                  }`}
+                >
+                  <div className="flex items-center gap-3">
+                    <CategoryIcon size={20} className={hasActiveItem ? 'text-blue-600' : 'text-slate-400'} />
+                    {sidebarOpen && <span className="text-sm md:text-base">{category.label}</span>}
+                  </div>
+                  {sidebarOpen && (
+                    <ChevronDown 
+                      size={16} 
+                      className={`transition-transform ${isExpanded ? 'rotate-180' : ''}`}
+                    />
+                  )}
+                </button>
+                
+                {/* Submenu */}
+                {sidebarOpen && isExpanded && category.items && (
+                  <div className="ml-4 mt-1 space-y-1">
+                    {category.items.map((item) => {
+                      const ItemIcon = item.icon;
+                      const isActive = pathname === item.href;
+                      return (
+                        <Link
+                          key={item.href}
+                          href={item.href}
+                          onClick={() => {
+                            if (window.innerWidth < 768) {
+                              setSidebarOpen(false);
+                            }
+                          }}
+                          className={`flex items-center gap-3 px-4 py-2 rounded-lg transition duration-200 ${
+                            isActive
+                              ? 'bg-blue-50 text-blue-700 font-medium border-l-2 border-blue-600'
+                              : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
+                          }`}
+                        >
+                          <ItemIcon size={16} className={isActive ? 'text-blue-600' : 'text-slate-400'} />
+                          <span className="text-sm">{item.label}</span>
+                        </Link>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
             );
           })}
         </nav>
@@ -306,13 +367,15 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
                 
                 {/* Título visível em mobile */}
                 <h1 className="text-base font-bold text-gray-900 md:hidden truncate">
-                  {menuItems.find((item) => item.href === pathname)?.label}
+                  {menuCategories.find((cat) => cat.single && cat.href === pathname)?.label ||
+                   menuCategories.flatMap(cat => cat.items || []).find(item => item.href === pathname)?.label}
                 </h1>
                 
                 <div className="hidden md:flex items-center space-x-4">
                   <div className="flex items-center space-x-3">
                     <h1 className="text-2xl md:text-3xl font-bold text-gray-900">
-                      {menuItems.find((item) => item.href === pathname)?.label}
+                      {menuCategories.find((cat) => cat.single && cat.href === pathname)?.label ||
+                       menuCategories.flatMap(cat => cat.items || []).find(item => item.href === pathname)?.label}
                     </h1>
                     <div className="h-5 w-px bg-gray-200"></div>
                     <div className="flex items-center space-x-2 text-sm text-gray-500">

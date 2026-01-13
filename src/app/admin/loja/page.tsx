@@ -9,11 +9,12 @@ interface Product {
   id: string
   name: string
   description: string
-  category: 'book' | 'magazine' | 'ticket' | 'merchandise'
+  category: 'hat' | 'backpack' | 'tshirt'
   price: number
   discount_price?: number
   stock: number
   image_url: string
+  sku?: string
 }
 
 export default function LojaAdminPage() {
@@ -23,10 +24,12 @@ export default function LojaAdminPage() {
   const [showForm, setShowForm] = useState(false)
   const [showDeleteModal, setShowDeleteModal] = useState(false)
   const [productToDelete, setProductToDelete] = useState<string | null>(null)
+  const [editingProduct, setEditingProduct] = useState<Product | null>(null)
+  const [showEditModal, setShowEditModal] = useState(false)
   const [formData, setFormData] = useState({
     name: '',
     description: '',
-    category: 'book' as 'book' | 'magazine' | 'ticket' | 'merchandise',
+    category: 'hat' as 'hat' | 'backpack' | 'tshirt',
     price: 0,
     stock: 0,
     sku: '',
@@ -44,10 +47,14 @@ export default function LojaAdminPage() {
 
   const fetchProducts = useCallback(async () => {
     try {
-      const response = await fetch(`${API_URL}/api/products`)
+      const response = await fetch(`${API_URL}/products?includeInactive=true`)
+      
       if (response.ok) {
         const data = await response.json()
         setProducts(data.products || [])
+      } else {
+        const errorData = await response.json()
+        toast.error(`Erro ao carregar produtos: ${errorData.message || 'Erro desconhecido'}`)
       }
     } catch (error) {
       toast.error('Erro ao carregar produtos')
@@ -147,7 +154,7 @@ export default function LojaAdminPage() {
 
     try {
       const token = localStorage.getItem('token')
-      const response = await fetch(`${API_URL}/api/products`, {
+      const response = await fetch(`${API_URL}/products`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -172,7 +179,7 @@ export default function LojaAdminPage() {
         setFormData({
           name: '',
           description: '',
-          category: 'book',
+          category: 'hat',
           price: 0,
           stock: 0,
           sku: '',
@@ -210,7 +217,7 @@ export default function LojaAdminPage() {
 
     try {
       const token = localStorage.getItem('token')
-      const response = await fetch(`${API_URL}/api/products/${productToDelete}`, {
+      const response = await fetch(`${API_URL}/products/${productToDelete}`, {
         method: 'DELETE',
         headers: { Authorization: `Bearer ${token}` },
       })
@@ -241,6 +248,83 @@ export default function LojaAdminPage() {
     } finally {
       setShowDeleteModal(false)
       setProductToDelete(null)
+    }
+  }
+
+  const handleEditClick = (product: Product) => {
+    setEditingProduct(product)
+    setFormData({
+      name: product.name,
+      description: product.description,
+      category: product.category,
+      price: product.price,
+      stock: product.stock,
+      sku: product.sku || '',
+      image_url: product.image_url,
+    })
+    setImagePreview(product.image_url)
+    setShowEditModal(true)
+  }
+
+  const handleUpdateProduct = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!editingProduct) return
+
+    const loadingToast = toast.loading('Atualizando produto...')
+
+    try {
+      const token = localStorage.getItem('token')
+      const response = await fetch(`${API_URL}/products/${editingProduct.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(formData),
+      })
+
+      const data = await response.json()
+
+      if (response.ok) {
+        toast.success('Produto atualizado com sucesso!', {
+          id: loadingToast,
+          icon: <CheckCircle className="text-green-500" />,
+          style: {
+            background: '#f0fdf4',
+            color: '#15803d',
+            border: '1px solid #bbf7d0',
+          },
+          duration: 3000,
+        })
+        setFormData({
+          name: '',
+          description: '',
+          category: 'hat',
+          price: 0,
+          stock: 0,
+          sku: '',
+          image_url: '',
+        })
+        setImagePreview(null)
+        setShowEditModal(false)
+        setEditingProduct(null)
+        fetchProducts()
+      } else {
+        throw new Error(data.message || 'Erro ao atualizar produto')
+      }
+    } catch (error) {
+      toast.error(
+        error instanceof Error ? error.message : 'Erro ao atualizar produto',
+        {
+          id: loadingToast,
+          icon: <X className="text-red-500" />,
+          style: {
+            background: '#fef2f2',
+            color: '#b91c1c',
+            border: '1px solid #fecaca',
+          },
+        }
+      )
     }
   }
 
@@ -322,7 +406,7 @@ export default function LojaAdminPage() {
                       </span>
                     </td>
                     <td className="px-4 lg:px-6 py-4 whitespace-nowrap">
-                      <div className="text-xs lg:text-sm text-slate-600">R$ {product.price.toFixed(2)}</div>
+                      <div className="text-xs lg:text-sm text-slate-600">{product.price.toFixed(2)} AOA</div>
                     </td>
                     <td className="px-4 lg:px-6 py-4 whitespace-nowrap">
                       <div className="text-xs lg:text-sm text-slate-600">{product.stock}</div>
@@ -330,6 +414,7 @@ export default function LojaAdminPage() {
                     <td className="px-4 lg:px-6 py-4 whitespace-nowrap text-right text-xs lg:text-sm font-medium">
                       <div className="flex justify-end space-x-1 lg:space-x-2">
                         <button
+                          onClick={() => handleEditClick(product)}
                           className="text-blue-600 hover:text-blue-900 p-1.5 rounded-full hover:bg-blue-50 transition-colors"
                           title="Editar produto"
                         >
@@ -382,7 +467,7 @@ export default function LojaAdminPage() {
                 </div>
                 <div className="flex items-center justify-between gap-2">
                   <span className="text-xs text-slate-500">Preço:</span>
-                  <span className="text-xs text-slate-900 font-medium">R$ {product.price.toFixed(2)}</span>
+                  <span className="text-xs text-slate-900 font-medium">{product.price.toFixed(2)} AOA</span>
                 </div>
                 <div className="flex items-center justify-between gap-2">
                   <span className="text-xs text-slate-500">Estoque:</span>
@@ -392,6 +477,7 @@ export default function LojaAdminPage() {
 
               <div className="flex gap-2 justify-end">
                 <button
+                  onClick={() => handleEditClick(product)}
                   className="text-blue-600 hover:text-blue-900 p-2 rounded-lg hover:bg-blue-50 transition-colors"
                   title="Editar produto"
                 >
@@ -412,17 +498,17 @@ export default function LojaAdminPage() {
 
       {/* Modal de Criação de Produto */}
       {showForm && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-xl p-6 w-full max-w-2xl max-h-[90vh] overflow-hidden flex flex-col">
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-xl font-bold text-slate-900">Criar Novo Produto</h2>
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-2 sm:p-4 overflow-y-auto">
+          <div className="bg-white rounded-xl p-4 sm:p-6 w-full max-w-2xl my-auto">
+            <div className="flex items-center justify-between mb-4 sm:mb-6">
+              <h2 className="text-lg sm:text-xl font-bold text-slate-900">Criar Novo Produto</h2>
               <button
                 onClick={() => {
                   setShowForm(false)
                   setFormData({
                     name: '',
                     description: '',
-                    category: 'book',
+                    category: 'hat',
                     price: 0,
                     stock: 0,
                     sku: '',
@@ -430,18 +516,18 @@ export default function LojaAdminPage() {
                   })
                   setImagePreview(null)
                 }}
-                className="text-slate-400 hover:text-slate-600"
+                className="text-slate-400 hover:text-slate-600 p-1"
               >
-                <X size={24} />
+                <X size={20} className="sm:w-6 sm:h-6" />
               </button>
             </div>
             
-            <form onSubmit={handleCreateProduct} className="space-y-6 overflow-y-auto flex-1 pr-2">
+            <form onSubmit={handleCreateProduct} className="space-y-4 sm:space-y-6">
               {/* Seção de Imagem */}
-              <div className="bg-slate-50 rounded-lg p-4 border border-slate-200 shrink-0">
-                <label className="block text-sm font-semibold text-slate-900 mb-3">Imagem do Produto *</label>
-                <div className="flex flex-col gap-3">
-                  <div className="flex gap-3 items-center">
+              <div className="bg-slate-50 rounded-lg p-3 sm:p-4 border border-slate-200">
+                <label className="block text-xs sm:text-sm font-semibold text-slate-900 mb-2 sm:mb-3">Imagem do Produto *</label>
+                <div className="flex flex-col gap-2 sm:gap-3">
+                  <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 sm:items-center">
                     <input
                       ref={fileInputRef}
                       type="file"
@@ -454,7 +540,7 @@ export default function LojaAdminPage() {
                       type="button"
                       onClick={() => fileInputRef.current?.click()}
                       disabled={isUploadingImage}
-                      className="flex items-center gap-2 px-4 py-2.5 bg-white border border-slate-300 rounded-lg text-slate-700 hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed transition font-medium text-sm"
+                      className="flex items-center justify-center sm:justify-start gap-2 px-3 sm:px-4 py-2 sm:py-2.5 bg-white border border-slate-300 rounded-lg text-slate-700 hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed transition font-medium text-sm"
                     >
                       <Plus size={18} />
                       {isUploadingImage ? 'Enviando...' : 'Selecionar Imagem'}
@@ -462,7 +548,7 @@ export default function LojaAdminPage() {
                     {imagePreview && (
                       <div className="flex items-center gap-2 px-3 py-2 bg-green-50 border border-green-200 rounded-lg">
                         <img src={imagePreview} alt="Preview" className="h-10 w-10 object-cover rounded" />
-                        <span className="text-sm text-green-700 font-medium">Imagem enviada</span>
+                        <span className="text-xs sm:text-sm text-green-700 font-medium">Imagem enviada</span>
                       </div>
                     )}
                   </div>
@@ -473,56 +559,55 @@ export default function LojaAdminPage() {
               </div>
 
               {/* Seção de Informações Básicas */}
-              <div className="space-y-4 shrink-0">
-                <h3 className="text-sm font-semibold text-slate-900">Informações Básicas</h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <label className="block text-sm font-medium text-slate-700">Nome *</label>
+              <div className="space-y-3 sm:space-y-4">
+                <h3 className="text-xs sm:text-sm font-semibold text-slate-900">Informações Básicas</h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                  <div className="space-y-1.5 sm:space-y-2">
+                    <label className="block text-xs sm:text-sm font-medium text-slate-700">Nome *</label>
                     <input
                       type="text"
                       placeholder="Ex: Livro de Arte"
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      className="w-full px-4 py-2.5 bg-white border border-slate-300 rounded-lg text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                      className="w-full px-3 sm:px-4 py-2 sm:py-2.5 text-sm sm:text-base bg-white border border-slate-300 rounded-lg text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
                       required
                     />
                   </div>
                   
-                  <div className="space-y-2">
-                    <label className="block text-sm font-medium text-slate-700">Categoria *</label>
+                  <div className="space-y-1.5 sm:space-y-2">
+                    <label className="block text-xs sm:text-sm font-medium text-slate-700">Categoria *</label>
                     <select 
                       value={formData.category}
                       onChange={(e) => setFormData({ ...formData, category: e.target.value as any })}
-                      className="w-full px-4 py-2.5 bg-white border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                      className="w-full px-3 sm:px-4 py-2 sm:py-2.5 text-sm sm:text-base bg-white border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
                       required
                     >
-                      <option value="book">📚 Livro</option>
-                      <option value="magazine">📰 Revista</option>
-                      <option value="ticket">🎫 Ingresso</option>
-                      <option value="merchandise">🎁 Merchandising</option>
+                      <option value="hat">🎩 Chapéu</option>
+                      <option value="backpack">🎒 Mochila</option>
+                      <option value="tshirt">👕 T-shirt</option>
                     </select>
                   </div>
                 </div>
 
-                <div className="space-y-2">
-                  <label className="block text-sm font-medium text-slate-700">Descrição *</label>
+                <div className="space-y-1.5 sm:space-y-2">
+                  <label className="block text-xs sm:text-sm font-medium text-slate-700">Descrição *</label>
                   <textarea
                     placeholder="Descreva o produto em detalhes..."
                     rows={3}
                     value={formData.description}
                     onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                    className="w-full px-4 py-2.5 bg-white border border-slate-300 rounded-lg text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition resize-none"
+                    className="w-full px-3 sm:px-4 py-2 sm:py-2.5 text-sm sm:text-base bg-white border border-slate-300 rounded-lg text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition resize-none"
                     required
                   />
                 </div>
               </div>
 
               {/* Seção de Preço e Estoque */}
-              <div className="space-y-4 shrink-0">
-                <h3 className="text-sm font-semibold text-slate-900">Preço e Estoque</h3>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <div className="space-y-2">
-                    <label className="block text-sm font-medium text-slate-700">Preço (R$) *</label>
+              <div className="space-y-3 sm:space-y-4">
+                <h3 className="text-xs sm:text-sm font-semibold text-slate-900">Preço e Estoque</h3>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
+                  <div className="space-y-1.5 sm:space-y-2">
+                    <label className="block text-xs sm:text-sm font-medium text-slate-700">Preço (AOA) *</label>
                     <input
                       type="number"
                       step="0.01"
@@ -530,32 +615,32 @@ export default function LojaAdminPage() {
                       placeholder="0.00"
                       value={formData.price}
                       onChange={(e) => setFormData({ ...formData, price: parseFloat(e.target.value) || 0 })}
-                      className="w-full px-4 py-2.5 bg-white border border-slate-300 rounded-lg text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                      className="w-full px-3 sm:px-4 py-2 sm:py-2.5 text-sm sm:text-base bg-white border border-slate-300 rounded-lg text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
                       required
                     />
                   </div>
                   
-                  <div className="space-y-2">
-                    <label className="block text-sm font-medium text-slate-700">Estoque *</label>
+                  <div className="space-y-1.5 sm:space-y-2">
+                    <label className="block text-xs sm:text-sm font-medium text-slate-700">Estoque *</label>
                     <input
                       type="number"
                       min="0"
                       placeholder="0"
                       value={formData.stock}
                       onChange={(e) => setFormData({ ...formData, stock: parseInt(e.target.value) || 0 })}
-                      className="w-full px-4 py-2.5 bg-white border border-slate-300 rounded-lg text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                      className="w-full px-3 sm:px-4 py-2 sm:py-2.5 text-sm sm:text-base bg-white border border-slate-300 rounded-lg text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
                       required
                     />
                   </div>
 
-                  <div className="space-y-2">
-                    <label className="block text-sm font-medium text-slate-700">SKU *</label>
+                  <div className="space-y-1.5 sm:space-y-2">
+                    <label className="block text-xs sm:text-sm font-medium text-slate-700">SKU *</label>
                     <input
                       type="text"
                       placeholder="Ex: PROD-001"
                       value={formData.sku}
                       onChange={(e) => setFormData({ ...formData, sku: e.target.value })}
-                      className="w-full px-4 py-2.5 bg-white border border-slate-300 rounded-lg text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                      className="w-full px-3 sm:px-4 py-2 sm:py-2.5 text-sm sm:text-base bg-white border border-slate-300 rounded-lg text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
                       required
                     />
                   </div>
@@ -563,7 +648,7 @@ export default function LojaAdminPage() {
               </div>
               
               {/* Botões de Ação */}
-              <div className="flex justify-end gap-3 pt-6 border-t border-slate-200 shrink-0">
+              <div className="flex flex-col-reverse sm:flex-row justify-end gap-2 sm:gap-3 pt-4 sm:pt-6 border-t border-slate-200">
                 <button
                   type="button"
                   onClick={() => {
@@ -571,7 +656,7 @@ export default function LojaAdminPage() {
                     setFormData({
                       name: '',
                       description: '',
-                      category: 'book',
+                      category: 'hat',
                       price: 0,
                       stock: 0,
                       sku: '',
@@ -579,16 +664,192 @@ export default function LojaAdminPage() {
                     })
                     setImagePreview(null)
                   }}
-                  className="px-6 py-2.5 text-sm font-medium text-slate-700 bg-white hover:bg-slate-50 border border-slate-300 rounded-lg transition"
+                  className="w-full sm:w-auto px-4 sm:px-6 py-2 sm:py-2.5 text-sm font-medium text-slate-700 bg-white hover:bg-slate-50 border border-slate-300 rounded-lg transition"
                 >
                   Cancelar
                 </button>
                 <button
                   type="submit"
-                  className="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition flex items-center gap-2 shadow-sm"
+                  className="w-full sm:w-auto px-4 sm:px-6 py-2 sm:py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition flex items-center justify-center gap-2 shadow-sm"
                 >
                   <CheckCircle size={16} />
                   Criar Produto
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Modal de Edição de Produto */}
+      {showEditModal && editingProduct && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-2 sm:p-4 overflow-y-auto">
+          <div className="bg-white rounded-xl p-4 sm:p-6 w-full max-w-2xl my-auto">
+            <div className="flex items-center justify-between mb-4 sm:mb-6">
+              <h2 className="text-lg sm:text-xl font-bold text-slate-900">Editar Produto</h2>
+              <button
+                onClick={() => {
+                  setShowEditModal(false)
+                  setEditingProduct(null)
+                  setFormData({
+                    name: '',
+                    description: '',
+                    category: 'hat',
+                    price: 0,
+                    stock: 0,
+                    sku: '',
+                    image_url: '',
+                  })
+                  setImagePreview(null)
+                }}
+                className="text-slate-400 hover:text-slate-600 p-1"
+              >
+                <X size={20} className="sm:w-6 sm:h-6" />
+              </button>
+            </div>
+            
+            <form onSubmit={handleUpdateProduct} className="space-y-4 sm:space-y-6">
+              {/* Seção de Imagem */}
+              <div className="space-y-3 sm:space-y-4">
+                <h3 className="text-xs sm:text-sm font-semibold text-slate-900">Imagem do Produto</h3>
+                <div className="flex flex-col items-center gap-3 sm:gap-4">
+                  {imagePreview && (
+                    <img src={imagePreview} alt="Preview" className="w-24 h-24 sm:w-32 sm:h-32 object-cover rounded-lg border-2 border-slate-200" />
+                  )}
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageUpload}
+                    className="hidden"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => fileInputRef.current?.click()}
+                    disabled={isUploadingImage}
+                    className="px-3 sm:px-4 py-1.5 sm:py-2 text-sm bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg transition disabled:opacity-50"
+                  >
+                    {isUploadingImage ? 'Enviando...' : 'Alterar Imagem'}
+                  </button>
+                </div>
+              </div>
+
+              {/* Seção de Informações Básicas */}
+              <div className="space-y-3 sm:space-y-4">
+                <h3 className="text-xs sm:text-sm font-semibold text-slate-900">Informações Básicas</h3>
+                <div className="space-y-1.5 sm:space-y-2">
+                  <label className="block text-xs sm:text-sm font-medium text-slate-700">Nome do Produto *</label>
+                  <input
+                    type="text"
+                    placeholder="Ex: Livro de Arte Moderna"
+                    value={formData.name}
+                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    className="w-full px-3 sm:px-4 py-2 sm:py-2.5 text-sm sm:text-base bg-white border border-slate-300 rounded-lg text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                    required
+                  />
+                </div>
+                
+                <div className="space-y-1.5 sm:space-y-2">
+                  <label className="block text-xs sm:text-sm font-medium text-slate-700">Categoria *</label>
+                  <select
+                    value={formData.category}
+                    onChange={(e) => setFormData({ ...formData, category: e.target.value as any })}
+                    className="w-full px-3 sm:px-4 py-2 sm:py-2.5 text-sm sm:text-base bg-white border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                    required
+                  >
+                    <option value="hat">🎩 Chapéu</option>
+                    <option value="backpack">🎒 Mochila</option>
+                    <option value="tshirt">👕 T-shirt</option>
+                  </select>
+                </div>
+
+                <div className="space-y-1.5 sm:space-y-2">
+                  <label className="block text-xs sm:text-sm font-medium text-slate-700">Descrição *</label>
+                  <textarea
+                    placeholder="Descreva o produto em detalhes..."
+                    rows={3}
+                    value={formData.description}
+                    onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                    className="w-full px-3 sm:px-4 py-2 sm:py-2.5 text-sm sm:text-base bg-white border border-slate-300 rounded-lg text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition resize-none"
+                    required
+                  />
+                </div>
+              </div>
+
+              {/* Seção de Preço e Estoque */}
+              <div className="space-y-3 sm:space-y-4">
+                <h3 className="text-xs sm:text-sm font-semibold text-slate-900">Preço e Estoque</h3>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
+                  <div className="space-y-1.5 sm:space-y-2">
+                    <label className="block text-xs sm:text-sm font-medium text-slate-700">Preço (AOA) *</label>
+                    <input
+                      type="number"
+                      step="0.01"
+                      min="0"
+                      placeholder="0.00"
+                      value={formData.price}
+                      onChange={(e) => setFormData({ ...formData, price: parseFloat(e.target.value) || 0 })}
+                      className="w-full px-3 sm:px-4 py-2 sm:py-2.5 text-sm sm:text-base bg-white border border-slate-300 rounded-lg text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                      required
+                    />
+                  </div>
+                  
+                  <div className="space-y-1.5 sm:space-y-2">
+                    <label className="block text-xs sm:text-sm font-medium text-slate-700">Estoque *</label>
+                    <input
+                      type="number"
+                      min="0"
+                      placeholder="0"
+                      value={formData.stock}
+                      onChange={(e) => setFormData({ ...formData, stock: parseInt(e.target.value) || 0 })}
+                      className="w-full px-3 sm:px-4 py-2 sm:py-2.5 text-sm sm:text-base bg-white border border-slate-300 rounded-lg text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                      required
+                    />
+                  </div>
+
+                  <div className="space-y-1.5 sm:space-y-2">
+                    <label className="block text-xs sm:text-sm font-medium text-slate-700">SKU *</label>
+                    <input
+                      type="text"
+                      placeholder="Ex: PROD-001"
+                      value={formData.sku}
+                      onChange={(e) => setFormData({ ...formData, sku: e.target.value })}
+                      className="w-full px-3 sm:px-4 py-2 sm:py-2.5 text-sm sm:text-base bg-white border border-slate-300 rounded-lg text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition disabled:bg-slate-100 disabled:cursor-not-allowed"
+                      required
+                      disabled
+                    />
+                  </div>
+                </div>
+              </div>
+              
+              {/* Botões de Ação */}
+              <div className="flex flex-col-reverse sm:flex-row justify-end gap-2 sm:gap-3 pt-4 sm:pt-6 border-t border-slate-200">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowEditModal(false)
+                    setEditingProduct(null)
+                    setFormData({
+                      name: '',
+                      description: '',
+                      category: 'hat',
+                      price: 0,
+                      stock: 0,
+                      sku: '',
+                      image_url: '',
+                    })
+                    setImagePreview(null)
+                  }}
+                  className="w-full sm:w-auto px-4 sm:px-6 py-2 sm:py-2.5 text-sm font-medium text-slate-700 bg-white hover:bg-slate-50 border border-slate-300 rounded-lg transition"
+                >
+                  Cancelar
+                </button>
+                <button
+                  type="submit"
+                  className="w-full sm:w-auto px-4 sm:px-6 py-2 sm:py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition flex items-center justify-center gap-2 shadow-sm"
+                >
+                  <CheckCircle size={16} />
+                  Atualizar Produto
                 </button>
               </div>
             </form>

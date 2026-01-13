@@ -5,7 +5,8 @@ import {
   PresentationSection,
   IdentitySection,
   HistorySection,
-  AreasSection, 
+  AreasSection,
+  ServicesSection,
   TeamSection,
   CommunitySection,
   GallerySection,
@@ -21,7 +22,8 @@ export default function Home() {
       <PresentationSection />
       <IdentitySection />
       <HistorySection />
-      <AreasSection /> 
+      <AreasSection />
+      <ServicesSection />
       <TeamSection />
       <CommunitySection />
       <GallerySection />

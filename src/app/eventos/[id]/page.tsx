@@ -144,13 +144,6 @@ export default function EventDetailPage({ params }: { params: { id: string } }) 
                   </div>
                   <p className="text-elit-dark/70 text-sm md:text-base">{event.location}</p>
                 </div>
-                <div className="bg-white p-4 md:p-6 rounded-lg md:rounded-xl shadow-lg">
-                  <div className="flex items-center mb-2 md:mb-3">
-                    <Users className="w-5 h-5 md:w-6 md:h-6 text-elit-orange mr-2 md:mr-3" />
-                    <span className="font-semibold text-elit-dark text-sm md:text-base">Inscritos</span>
-                  </div>
-                  <p className="text-elit-dark/70 text-sm md:text-base">{event.attendees} pessoas</p>
-                </div>
                 
               </div>
 

@@ -300,8 +300,6 @@ export default function EventForm({
           iban: formData.bankDetails.iban || undefined,
         } : undefined,
       };
-
-      console.log('📤 Enviando dados do evento:', payload);
       
       const response = await fetch(url, {
         method,
@@ -313,7 +311,6 @@ export default function EventForm({
       });
 
       const data = await response.json();
-      console.log('📥 Resposta do servidor:', data);
 
       if (response.ok) {
         onSuccess();
@@ -339,7 +336,6 @@ export default function EventForm({
         throw new Error(data.message || 'Erro ao salvar evento');
       }
     } catch (error) {
-      console.error('❌ Erro ao salvar evento:', error);
       toast.error(
         error instanceof Error ? error.message : 'Erro ao salvar evento',
         {

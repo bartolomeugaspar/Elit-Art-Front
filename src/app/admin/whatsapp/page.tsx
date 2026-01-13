@@ -60,7 +60,6 @@ export default function WhatsAppControlPanel() {
       const data = await response.json()
       setStatus(data.status)
     } catch (error) {
-      console.error('Erro ao verificar status:', error)
       setStatus({
         connected: false,
         initializing: false,
@@ -78,7 +77,7 @@ export default function WhatsAppControlPanel() {
         setMessageHistory(data.messages || [])
       }
     } catch (error) {
-      console.error('Erro ao carregar histórico:', error)
+      // Erro ao carregar histórico
     }
   }
 

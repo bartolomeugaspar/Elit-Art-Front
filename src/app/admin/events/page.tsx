@@ -185,7 +185,6 @@ export default function AdminEvents() {
       }
       
       const url = `${API_URL}/events/${eventId}/registrations/pdf${detailed ? '?detailed=true' : ''}`;
-      console.log('Downloading PDF from:', url);
       
       const response = await fetch(url, {
         headers: { 

@@ -94,7 +94,6 @@ export function useArtistQuotas() {
       const response = await api.get('/artist-quotas/my-stats');
       setStats(response.data);
     } catch (err: any) {
-      console.error('Erro ao carregar estatísticas:', err);
     }
   };
 

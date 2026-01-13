@@ -89,7 +89,7 @@ export default function ArtworkDetailPage() {
         setLiked(!liked)
       }
     } catch (error) {
-      console.error('Erro ao processar like:', error)
+      // Erro ao processar like
     }
   }
 

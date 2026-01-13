@@ -60,7 +60,6 @@ export default function ProfilePage() {
         }
       } catch (error) {
         // Em caso de erro, manter o tamanho padrão
-        console.error('Erro ao buscar tamanho da senha:', error);
       }
     };
 
@@ -166,7 +165,7 @@ export default function ProfilePage() {
         setTimeout(() => window.location.reload(), 500);
       }
     } catch (error) {
-      console.error('Erro ao atualizar foto de perfil:', error);
+      // Erro silencioso
     }
   };
 
